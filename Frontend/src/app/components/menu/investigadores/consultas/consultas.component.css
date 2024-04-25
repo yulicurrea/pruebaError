@@ -1,0 +1,142 @@
+.tabs {
+  position: absolute; 
+  top: 100px; 
+  left: 150px; 
+  width: 70%;
+  height: 60%;
+}
+.mat-tab-group {
+    background-color: lightblue !important;
+    margin-bottom: 48px;
+}
+table {
+    width: 100%;
+}
+table {
+    width: 100%;
+  }
+  
+  tr.example-detail-row {
+    height: 0;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+  
+  .example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+  }
+  
+  .example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+  .example-element-description {
+    padding: 16px;
+  }
+  
+  .example-element-description-attribution {
+    opacity: 0.5;
+  }
+.boton {
+  display: table-cell;
+  max-width: 600px;
+}
+
+/* Estilo para hacer la tabla responsive */
+.responsive-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+}
+
+/* Estilos para hacer la tabla de investigadores responsive */
+@media (max-width: 600px) {
+  .tabs {
+    width: 100%; /* Ajustar el ancho al 100% */
+    margin-top: 40px; /* Agregar margen superior */
+    left: 20px; /* Mover el elemento 20px a la derecha */
+}
+
+  .mat-elevation-z8{
+    overflow-x: auto; /* Agregar scroll horizontal si es necesario */
+    overflow-y: auto; /* Agregar scroll vertical si es necesario */
+    max-height: 500px; /* Establecer la altura máxima del contenedor */
+
+  }
+
+  .responsive-table {
+    overflow-x: auto;
+    width: 100%;
+    margin-left: 0;
+    position: fixed;
+    top: 280px; /* Ajustar la posición superior según sea necesario */
+  }
+
+  .responsive-table tr {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+  }
+
+  .responsive-table th,
+  .responsive-table td {
+    padding: 10px;
+    text-align: left;
+    width: 100%;
+  }
+
+  .responsive-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+
+  .responsive-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+
+  .responsive-table th,
+  .responsive-table td {
+    white-space: nowrap;
+  }
+
+  .responsive-table tr {
+    display: block;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .responsive-table th,
+  .responsive-table td {
+    display: block;
+    text-align: left;
+    padding: 8px;
+  }
+}
+
