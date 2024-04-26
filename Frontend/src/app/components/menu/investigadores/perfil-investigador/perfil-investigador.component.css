@@ -1,0 +1,48 @@
+.circular-image {
+  width: 10%; /* Ajusta el tamaño*/
+  height: auto; /* Mantiene la relación de aspecto */
+  border-radius: 50%;
+  overflow: hidden;
+  position: absolute;
+  top: 20%; /*  alinearlo verticalmente */
+  left: 10%; /* alinearlo horizontalmente */
+  border: 2px solid #ccc;
+}
+
+.rounded-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.example-form {
+  min-width: 20%; /* Ajusta el ancho mínimo */
+  max-width: 40%; /* Ajusta el ancho máximo */
+  width: 90%; /* Ajusta el ancho */
+  position: absolute;
+  top: 20%; /* Ajustado para alinearlo verticalmente  */
+  left: 24%; /* Ajustado para alinearlo horizontalmente */
+  height: 50vh; /* Ajusta la altura en relación con el viewport */
+  max-width: 50%; /* Ajusta el ancho máximo */
+} 
+
+input {
+  width: 100%;
+}
+
+.boton-estilizado {
+  background-color: #6AABA0; /* Color de fondo */
+  color: white; /* Color del texto */
+  padding: 10px 14px; /* Espaciado interno (vertical horizontal) */
+  border: none; /* Borde */
+  border-radius: 20px; /* Radio del borde */
+  cursor: pointer; /* Cursor al pasar por encima */
+  font-size: 14px; /* Tamaño de fuente */
+}
+
+/* Estilo al pasar el cursor */
+.boton-estilizado:hover {
+  background-color: dimgrey;
+}
+
+

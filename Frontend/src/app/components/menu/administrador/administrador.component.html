@@ -1,0 +1,50 @@
+<div class="dashboard">
+    <mat-form-field appearance="outline" class="custom-mat-field">
+        <mat-label>Buscar</mat-label>
+        <input matInput (input)="onSearchInputChange($event)">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    
+    <div class="menu">
+        <ul>
+            <li><a href="administrador/perfil" mat-icon-button color="primary"  aria-label="Perfil" class="tooltip">
+                <mat-icon>person</mat-icon>
+            </a></li>           
+            <li><a href="administrador/control" mat-icon-button color="primary"  aria-label="Permisos" class="tooltip">
+                <mat-icon>check</mat-icon>
+            </a></li>
+            <li><a href="administrador/consulta" mat-icon-button color="primary"  aria-label="Informes" class="tooltip">
+                <mat-icon>cloud_download</mat-icon>
+            </a></li>
+            <li><a href="administrador/estados" mat-icon-button color="primary"  aria-label="Estado" class="tooltip">
+                <mat-icon>grading</mat-icon>
+            </a></li>
+            <li *ngIf="notificaciones.length > 0">
+                <span mat-icon-button color="primary" >
+                    <span *ngIf="notificaciones.length > 0; else elseBlock">
+                        <mat-icon [matMenuTriggerFor]="beforeMenu" matBadge="{{notificaciones.length}}" matBadgeColor="warn">notifications_outline</mat-icon>
+                    </span>
+                    <ng-template #elseBlock>
+                        <mat-icon [matMenuTriggerFor]="beforeMenu" >notifications_outline</mat-icon>
+                    </ng-template>
+                    <mat-menu #beforeMenu="matMenu" xPosition="before">
+                        <button mat-menu-item (click)="openDialogoNotificaciones()">
+                            <span>Ver historial</span>
+                        </button>
+                        <button mat-menu-item *ngFor="let item of notificaciones" (click)="limpiarNotificacion(item)">
+                            <mat-icon>delete</mat-icon>
+                            <span style="font-size: 10px;"><strong>{{item.asunto}}</strong></span><br>
+                            <span style="font-size: 10px;">{{item.created_at | date:'medium'}}</span>
+                        </button>
+                    </mat-menu>
+                </span>
+            </li>
+            <li>
+                <a href="#" mat-icon-button color="primary" aria-label="Cerrar Sesion" class="tooltip">
+                    <mat-icon>exit_to_app</mat-icon>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <router-outlet></router-outlet>
+</div>

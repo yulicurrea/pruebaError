@@ -1,0 +1,145 @@
+.dashboard {
+  display: flex;
+  justify-content: flex-end; /* Alinea los elementos hacia la derecha */
+  align-items: flex-start; /* Alinea los elementos en la parte superior */
+  width: 100vw;
+  height: 100vh; 
+}
+
+.custom-mat-field {
+  width: 350px; /* Ancho del campo de búsqueda */
+  position: absolute;
+  top: 20px; /* Ajusta la posición vertical */
+  right: 25px; /* Ajusta la posición horizontal */
+}
+
+:root {
+  --menu-height: 60vh; /* Altura mínima del menú */
+}
+
+.menu {
+  border-right: 1px solid #ccc;
+  width: 58px;
+  min-height: var(--menu-height); /* Utiliza la variable para la altura mínima del menú */
+  background-color: #6AABA0;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  position: fixed;
+  top: 100px;
+  margin-right: 30px;
+}
+
+.menu ul {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+  margin: 0;
+}
+
+.menu ul li {
+  margin-bottom: 10px;
+}
+
+.menu ul li a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+  transition: color 0.3s;
+}
+
+.menu ul li a:hover {
+  color: #000;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .mat-icon {
+  font-size: 24px; /* Tamaño de icono predeterminado */
+}
+
+.tooltip:hover::after {
+  content: attr(aria-label);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  position: absolute;
+  top: -35px; /* Ajusta la posición vertical del tooltip */
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.tooltip:hover::before {
+  content: '';
+  position: absolute;
+  top: -10px; /* Ajusta la posición vertical del triángulo del tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent rgba(0, 0, 0, 0.8) transparent;
+}
+
+/* Estilo para hacer el menú responsive */
+.menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.menu li {
+  margin: 10px;
+}
+
+.menu a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+
+/* Estilos para dispositivos móviles y tablets */
+@media (max-width: 880px) {
+  .custom-mat-field {
+    width: 200px; /* Ancho más pequeño para dispositivos móviles y tablets */
+  }
+  .menu {
+    left: 0; /* Alinea el menú a la izquierda */
+    width: 100%; /* Ocupa todo el ancho */
+    height: 50px; /* Altura del menú */
+    position: fixed;
+    top: 580px; /* Ajusta la posición vertical para dispositivos móviles y tablets */
+  }
+
+  /* Resto de los estilos para el menú en dispositivos móviles y tablets */
+  .menu ul {
+    list-style: none; /* Elimina las viñetas de la lista */
+    padding: 0; /* Elimina el espacio interior */
+    margin: 0; /* Elimina el margen exterior */
+    display: flex; /* Utiliza flexbox para alinear los elementos */
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Centra los elementos verticalmente */
+  }
+
+  .menu li {
+    margin: 0; /* Elimina el margen entre elementos */
+  }
+
+  .menu a {
+    text-decoration: none; /* Elimina la subrayado de los enlaces */
+    color: #000000; /* Color del texto */
+    font-size: 14px; /* Tamaño de fuente */
+    padding: 10px; /* Añade espacio alrededor del texto */
+  }
+}

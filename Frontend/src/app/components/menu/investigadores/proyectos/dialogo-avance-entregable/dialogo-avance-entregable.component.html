@@ -1,0 +1,99 @@
+<h2 mat-dialog-title>{{title}}</h2>
+<mat-dialog-content class="mat-typography">
+    <mat-list>
+        <mat-list-item>
+            <span matListItemTitle>{{data.estadoProceso}}</span>
+            <span matListItemLine><i matTooltip="{{data.observacion}}" matTooltipPosition="above">{{data.observacion.length > 0 ? data.observacion : 'Sin calificación' }}</i><br><span class="example-element-description-attribution" style="font-size: 10px;">-- {{data.updated_at | date:'medium' }}</span></span>
+            <span matListItemLine></span>
+        </mat-list-item>
+    </mat-list>
+    <mat-tab-group [(selectedIndex)]="demo1TabIndex">
+        <mat-tab label="{{admin ? 'Calificar' : 'Nuevo'}}">
+            <div class="example-container">
+                <div *ngIf="admin; else elseInvestigador">
+                    <form [formGroup]="registroForm">
+                        <div class="example-form-fields" style="margin-top: 12px;">
+                            <mat-form-field>
+                                <mat-label>Estado</mat-label>
+                                <mat-select placeholder="Seleccione" #origenValue [(value)]="estadoProcesoSelected" formControlName="estadoProceso">
+                                    <mat-option  *ngFor="let data of estadosProceso" [value]="data.value">
+                                        {{data.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="example-form-fields">
+                            <mat-form-field class="form-field-spacing" appearance="fill">
+                                <mat-label>Observación</mat-label>
+                                <textarea matInput formControlName="observacion"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="registroForm.get('estadoProceso').value == 'Aprobado'">
+                            <mat-slide-toggle style="margin-bottom: 12px;" formControlName="estado">{{registroForm.get('estado').value ? 'Habilitar Entregable' : 'Deshabilitar Entregable'}}</mat-slide-toggle>
+                        </div>
+                    </form>
+                </div>
+                <ng-template #elseInvestigador>
+                    <mat-radio-group layout-align="center center"
+                        aria-labelledby="example-radio-group-label"
+                        class="example-radio-group">
+                        <mat-radio-button (change)="radioChange($event)" [checked]="opcion == tipoAvance ? 'true' : 'false'" class="example-radio-button" *ngFor="let opcion of opcionAvance" [value]="opcion">
+                            {{opcion}}
+                        </mat-radio-button>
+                    </mat-radio-group>
+                    <div *ngIf="tipoAvance=='Url'; else elseFile">
+                        <form [formGroup]="registroForm">
+                            <div class="example-form-fields">
+                                <mat-form-field class="form-field-spacing" style="margin-top: 12px" appearance="fill">
+                                    <mat-label>URL</mat-label>
+                                    <input matInput type="url" autocomplete="off" formControlName="url">
+                                </mat-form-field>
+                            </div>
+                        </form>
+                    </div>
+                    <ng-template #elseFile>
+                        <input type="file" [disabled]="!data.estado" (change)="onFileSelected($event)" />
+                    </ng-template>
+                </ng-template>
+            </div>
+        </mat-tab>
+        <mat-tab label="Historial">
+            <div *ngIf="type=='Proyecto'; else elseBlock">
+                <ul class="timeline">
+                    <li *ngFor="let item of proyectosData; index as i;" >
+                        <div class="timeline-badge done" [ngClass]="{'done': i === 0, 'fail' : i !== 0 }"><i class="glyphicon glyphicon-hand-left"></i></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-body">
+                                <a href="{{item.url !== '' ? item.url : item.soporte}}" target="_blank">Avance #{{item.id}} Proyecto</a><br>
+                                {{item.fecha | date }}
+                            </div>
+                        </div>
+                        <span style="float: right; font-size: 9px;">{{item.created_at | date:'medium'}}</span>
+                    </li>
+                </ul>
+            </div>
+            <ng-template #elseBlock>
+                <ul class="timeline">
+                    <li *ngFor="let item of productosData; index as i;" >
+                        <div class="timeline-badge done" [ngClass]="{'done': i === 0, 'fail' : i !== 0 }"><i class="glyphicon glyphicon-hand-left"></i></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-body">
+                                <a href="{{item.url !== '' ? item.url : item.soporte}}" target="_blank">Avance #{{item.id}} Producto</a><br>
+                                {{item.fecha | date }}
+                            </div>
+                        </div>
+                        <span style="float: right; font-size: 9px;">{{item.created_at | date:'medium'}}</span>
+                    </li>
+                </ul>
+            </ng-template>
+        </mat-tab>
+    </mat-tab-group>
+    <div *ngIf="data.estado">
+        <span class="example-element-description-attribution" style="font-size: 10px;">{{data.diferenciaDias}} días de plazo ({{data.fecha | date }})</span>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-button (click)="guardarTramite()" [disabled]="registroForm.invalid" >{{buttonTitle}}</button>
+</mat-dialog-actions>
+

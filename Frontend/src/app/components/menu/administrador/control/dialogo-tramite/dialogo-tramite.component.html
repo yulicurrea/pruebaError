@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>{{title}}</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="example-container">
+        <form [formGroup]="registroForm">
+            <div class="example-form-fields">
+                <mat-form-field appearance="fill">
+                    <mat-label>Estado proceso</mat-label>
+                    <mat-select [(value)]="estadoProcesoData" panelClass="matRole" formControlName="estadoProceso">
+                        <mat-option *ngFor="let data of estadosProceso" [value]="data">
+                             {{data}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="example-form-fields">
+                <mat-form-field appearance="fill">
+                    <mat-label>Observacion</mat-label>
+                    <input matInput autocomplete="off" formControlName="observacion">
+                </mat-form-field>
+            </div>
+            <p style="float: right; font-size: 9px;"><i>Fecha trámite: {{data?.updated_at | date:'medium' }}</i></p>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-button (click)="guardarTramite()" [disabled]="registroForm.invalid" >Crear</button>
+</mat-dialog-actions>
+
