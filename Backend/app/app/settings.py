@@ -78,7 +78,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'pruebaError.wsgi.application'
+WSGI_APPLICATION = 'app.wsgi.application'
 
 
 # Database
