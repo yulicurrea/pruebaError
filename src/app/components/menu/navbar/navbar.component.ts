@@ -57,7 +57,7 @@ export class NavbarComponent {
           if (rolInvestigador === 'Investigador') {
             if (estado) {
               // Si el investigador está activo, redirigir a la URL del perfil del investigador
-              window.location.href = 'https://app-frontendprueba-f346984aaa03.herokuapp.com/investigadores/perfil';
+              window.location.href = 'https://osirisybioaxis-31ea9bf3d8f8.herokuapp.com/investigadores/perfil';
             } else {
               // Si el investigador está inactivo
               console.log('El investigador no está activo');
@@ -71,7 +71,7 @@ export class NavbarComponent {
             }
           } else if (rolInvestigador === 'Administrador') {
             // Si es un administrador, redirigir a la URL del perfil del administrador
-            window.location.href = 'https://app-frontendprueba-f346984aaa03.herokuapp.com/administrador/perfil';
+            window.location.href = 'https://osirisybioaxis-31ea9bf3d8f8.herokuapp.com/administrador/perfil';
           } else {
             // Manejar otros roles si es necesario
             console.log("Rol estudiante")

@@ -12,7 +12,7 @@ export class EstudiantesService {
   constructor(private http: HttpClient) { }
   
 
-  private apiEstudiantes = 'https://app-proyecto-119c428c75f0.herokuapp.com/estudiantes';
+  private apiEstudiantes = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/estudiantes';
   
 
     getEstudiantes(): Observable<Estudiante[]> {

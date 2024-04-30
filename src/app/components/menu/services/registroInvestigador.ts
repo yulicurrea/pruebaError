@@ -7,10 +7,10 @@ import { Investigador } from '../modelo/investigador';
   providedIn: 'root' // Asegúrate de tener este providedIn en tu servicio
 })
 export class InvestigadorService {
-  private apiUrl = 'https://app-proyecto-119c428c75f0.herokuapp.com/investigador'; 
-  private apiUrl2 = 'https://app-proyecto-119c428c75f0.herokuapp.com/grupoinvestigacion'; 
-  private apiUrl3 = 'https://app-proyecto-119c428c75f0.herokuapp.com/mostrarInvestigador'; 
-  private apiNotificaciones = 'https://app-proyecto-119c428c75f0.herokuapp.com/notificaciones'; 
+  private apiUrl = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/investigador'; 
+  private apiUrl2 = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/grupoinvestigacion'; 
+  private apiUrl3 = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/mostrarInvestigador'; 
+  private apiNotificaciones = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/notificaciones'; 
 
   constructor(private http: HttpClient) { }
 
