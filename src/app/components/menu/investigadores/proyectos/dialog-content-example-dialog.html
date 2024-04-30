@@ -1,0 +1,86 @@
+<h2 mat-dialog-title>{{ data.id }}</h2>
+<mat-dialog-content class="mat-typography">
+  <p><strong>Titulo:</strong> {{ data.tituloProducto }}</p>
+  <p><strong>Fecha:</strong> {{ data.fecha }}</p>
+  <p><strong>Estado:</strong> {{ data.estadoProducto }}</p>
+  <p><strong>Etapa:</strong> {{ data.etapa }}</p>
+  
+  <p><strong>Estudiante:</strong> {{ data.estudiantes.nombres }} {{ data.estudiantes.apellidos }}</p>
+  <p><strong>estadoProdIniSemestre:</strong> {{ data.estadoProdIniSemestre }}</p>
+  <p><strong>estadoProducto:</strong> {{ data.estadoProducto }}</p>
+  <p><strong>porcentanjeAvanFinSemestre:</strong> {{ data.porcentanjeAvanFinSemestre }}% <strong>porcentajeComSemestral:</strong> {{ data.porcentaje_com_semestral }}% <strong>porcentajeRealMensual:</strong> {{ data.porcentaje_real_mensual }}%</p>
+  <p><strong>Soporte:</strong> {{ data.Soporte }}</p>
+  <p><strong>origen:</strong> {{ data.origen }}</p>
+  <strong>Publicacion:</strong>
+  <p>{{ data.publicacion }}</p>
+  <p><strong>observaciones:</strong> {{ data.observaciones }}</p>
+  <p><strong>Lista Producto:</strong></p>
+  
+  <strong>Articulo:</strong>
+  <p> <span style="font-weight: normal;">Fuente: </span> {{ data.lista_producto.articulo.fuente }}</p>
+  
+  <strong> Apropiación:</strong>
+  <p><span style="font-weight: normal;">Fecha inicio: </span>{{ data.lista_producto.apropiacion.fechainicio}}</p>
+  <p><span style="font-weight: normal;">Fecha fin: </span>{{ data.lista_producto.apropiacion.fecha_fin}}</p>
+  <p><span style="font-weight: normal;">Formato: </span>{{ data.lista_producto.apropiacion.formato}}</p>
+  <p><span style="font-weight: normal;">Nombre entidad: </span>{{ data.lista_producto.apropiacion.nombre_entidad}}</p>
+  <p><span style="font-weight: normal;">Medio: </span>{{ data.lista_producto.apropiacion.medio}}</p>
+  <strong style="margin-left: 10px;">Licencia:</strong>
+  <p><span style="font-weight: normal;margin-left: 10px;">Nombre quien otorga: </span>{{ data.lista_producto.apropiacion.licencia.nombre}}</p>
+
+  <strong> Capitulo:</strong>
+  <p><span style="font-weight: normal;">Nombre de la publicación: </span>{{ data.lista_producto.capitulo.nombre_publicacion}}</p>
+  <p><span style="font-weight: normal;">Fecha: </span>{{ data.lista_producto.capitulo.fecha}}</p>
+  <p><span style="font-weight: normal;">Editorial: </span>{{ data.lista_producto.capitulo.editorial}}</p>
+  <p><span style="font-weight: normal;">ISBN: </span>{{ data.lista_producto.capitulo.isbn}}</p>
+
+  <strong> Consultoria:</strong>
+  <p><span style="font-weight: normal;">Nombre de la entidad: </span>{{ data.lista_producto.consultoria.nombre_entidad}}</p>
+  <p><span style="font-weight: normal;">Año: </span>{{ data.lista_producto.consultoria.ano}}</p>
+  <strong style="margin-left: 10px;">Contrato:</strong>
+  <p><span style="font-weight: normal;margin-left: 10px;">Nombre: </span>{{ data.lista_producto.consultoria.contrato.nombre}}</p>
+  <p><span style="font-weight: normal;margin-left: 10px;">Numero: </span>{{ data.lista_producto.consultoria.contrato.numero}}</p>
+
+  <strong> Contenido:</strong>
+  <p><span style="font-weight: normal;">Nombre de la entidad: </span>{{ data.lista_producto.contenido.nombre_entidad}}</p>
+  <p><span style="font-weight: normal;">Pagina web: </span>{{ data.lista_producto.contenido.pagina_web}}</p>
+
+  <strong> Evento:</strong>
+  <p><span style="font-weight: normal;">Tipo de evento: </span>{{ data.lista_producto.evento.tipoevento}}</p>
+  <p><span style="font-weight: normal;">Fecha inicio: </span>{{ data.lista_producto.evento.fechainicio}}</p>
+  <p><span style="font-weight: normal;">Fecha fin: </span>{{ data.lista_producto.evento.fechafin}}</p>
+  <p><span style="font-weight: normal;">Numero de participantes externos: </span>{{ data.lista_producto.evento.numparticexterno}}</p>
+  <p><span style="font-weight: normal;">Numero de participantes internos: </span>{{ data.lista_producto.evento.numparticinerno}}</p>
+
+  <strong> Libro:</strong>
+  <p><span style="font-weight: normal;">Editorial: </span>{{ data.lista_producto.libro.editorial}}</p>
+  <p><span style="font-weight: normal;">Lugar de la publicación: </span>{{ data.lista_producto.libro.luegarpublicacion}}</p>
+  <p><span style="font-weight: normal;">Fecha: </span>{{ data.lista_producto.libro.fecha}}</p>
+  <p><span style="font-weight: normal;">ISBN: </span>{{ data.lista_producto.libro.isbn}}</p>
+
+  <strong> Maestria:</strong>
+  <p><span style="font-weight: normal;">Institución: </span>{{ data.lista_producto.maestria.institucion}}</p>
+  <p><span style="font-weight: normal;">Fecha: </span>{{ data.lista_producto.maestria.fecha_inicio}}</p>
+
+  <strong> Industrial:</strong>
+  <p><span style="font-weight: normal;">Insituto financiador: </span>{{ data.lista_producto.prototipo_industrial.insitutofinanciador}}</p>
+  <p><span style="font-weight: normal;">Pais: </span>{{ data.lista_producto.prototipo_industrial.pais}}</p>
+  <p><span style="font-weight: normal;">Fecha: </span>{{ data.lista_producto.prototipo_industrial.fecha}}</p>
+
+  <strong> pregrado finalizado ó en curso:</strong>
+  <p><span style="font-weight: normal;">Reconocimientos: </span>{{ data.lista_producto.preg_finalizado_curso.reconocimientos}}</p>
+  <p><span style="font-weight: normal;">Numero de paginas: </span>{{ data.lista_producto.preg_finalizado_curso.numero_paginas}}</p>
+  <p><span style="font-weight: normal;">Fecha: </span>{{ data.lista_producto.preg_finalizado_curso.fecha_inicio}}</p>
+
+  
+  <p><strong> Proyecto curso producto:</strong>{{ data.lista_producto.proyectoCursoProducto}}</p>
+
+  <p><strong> Proyecto formulado producto:</strong>{{ data.lista_producto.proyectoFormuladoProducto}}</p>
+
+  <p><strong> Proyecto RSUP producto:</strong>{{ data.lista_producto.proyectoRSUProducto }}</p>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Salir</button>
+</mat-dialog-actions>
+

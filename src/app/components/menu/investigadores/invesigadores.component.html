@@ -1,0 +1,72 @@
+<mat-toolbar color="primary">
+    <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" [overlapTrigger]="false">
+        <span (mouseleave)="menuTrigger.closeMenu()">
+            <button mat-menu-item (click)="navigateSection('investigadores/perfil')">
+                <mat-icon>person</mat-icon>
+                <span>Perfil</span>
+            </button>
+            <button mat-menu-item (click)="navigateSection('investigadores/participacion')">
+                <mat-icon>group</mat-icon>
+                <span>Participacion</span>
+            </button>
+            <button mat-menu-item (click)="navigateSection('investigadores/consultas')">
+                <mat-icon>description</mat-icon>
+                <span>Consultas</span>
+            </button>
+            <button mat-menu-item (click)="navigateSection('investigadores/proyectos')">
+                <mat-icon>folder</mat-icon>
+                <span>Proyectos y Productos</span>
+            </button>
+            <button mat-menu-item (click)="logout()">
+                <mat-icon>power_settings_new</mat-icon>
+                <span>Cerrar Sesión</span>
+            </button>
+        </span>
+    </mat-menu>
+    <span class="fill-remaining-space">Osiris & Bioaxis&nbsp;&nbsp;</span>
+    <span class="example-spacer"></span>
+    <mat-form-field appearance="outline" class="custom-mat-field" style="top: 200px">
+        <mat-label>Buscar</mat-label>
+        <input matInput (input)="onSearchInputChange($event)">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <!--<button (click)="navigateSection('investigadores/perfil')" matTooltip="Perfil" matTooltipPosition="below" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+        <mat-icon>person</mat-icon>
+    </button>
+    <button (click)="navigateSection('investigadores/participacion')" matTooltip="Participacion" matTooltipPosition="below" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+        <mat-icon>group</mat-icon>
+    </button>
+    <button (click)="navigateSection('investigadores/consultas')" matTooltip="Consultas" matTooltipPosition="below" mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+        <mat-icon>description</mat-icon>
+    </button>
+    <button (click)="navigateSection('investigadores/proyectos')" matTooltip="Proyectos y Productos" matTooltipPosition="below" mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+        <mat-icon>folder</mat-icon>
+    </button>-->
+    <button style="background-color: hsla(0, 100%, 50%, 0); color: white; border-color: hsla(0, 100%, 50%, 0);">
+        <span mat-icon-button >
+            <span *ngIf="notificaciones.length > 0; else elseBlock">
+                <mat-icon [matMenuTriggerFor]="beforeMenu" matBadge="{{notificaciones.length}}" matBadgeColor="warn">notifications_outline</mat-icon>
+            </span>
+            <ng-template #elseBlock>
+                <mat-icon [matMenuTriggerFor]="beforeMenu" >notifications_outline</mat-icon>
+            </ng-template>
+            <mat-menu #beforeMenu="matMenu" xPosition="before">
+                <button mat-menu-item (click)="openDialogoNotificaciones()">
+                    <span>Ver historial</span>
+                </button>
+                <button mat-menu-item *ngFor="let item of notificaciones" (click)="limpiarNotificacion(item)">
+                    <mat-icon>delete</mat-icon>
+                    <span style="font-size: 10px;"><strong>{{item.asunto}}</strong></span><br>
+                    <span style="font-size: 10px;">{{item.created_at | date:'medium'}}</span>
+                </button>
+            </mat-menu>
+        </span>
+    </button>
+    <button (click)="logout()" matTooltip="Cerrar Sesion" matTooltipPosition="below" mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+        <mat-icon>power_settings_new</mat-icon>
+    </button>
+</mat-toolbar>
+<router-outlet></router-outlet>

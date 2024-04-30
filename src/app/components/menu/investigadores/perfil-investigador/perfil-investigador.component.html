@@ -1,0 +1,145 @@
+<div class="circular-image">
+    <img [src]="urlDeLaImagen" alt="Imagen" class="rounded-image" />
+</div>
+
+
+<form class="example-form"  *ngIf="ngOnInit">
+    <mat-form-field class="example-full-width">
+      <mat-label>Nombre y Apellidos</mat-label>
+      <input matInput disabled [value]="userData ? userData.nombre + ' ' + userData.apellidos : ''">
+    </mat-form-field>
+    
+    
+    <mat-form-field class="">
+        <mat-label>Tipo de docuemnto</mat-label>
+        <input matInput disabled [value]="userData.tipodocumento" [disabled]="inputDeshabilitado">
+    </mat-form-field>
+    
+    <mat-form-field class="">
+        <mat-label>Numero de documento</mat-label>
+        <input matInput disabled [value]="userData.numerodocumento" [disabled]="inputDeshabilitado">
+    </mat-form-field>
+    
+    <mat-form-field class="">
+        <mat-label>Correo</mat-label>
+        <input matInput disabled [value]="userData.correo" [disabled]="inputDeshabilitado">
+    </mat-form-field>
+    
+    <mat-form-field class="" *ngIf="mostrarInput">
+        <mat-label>Contraseña</mat-label>
+        <input matInput disabled value="ingresar Contraseña" [disabled]="inputDeshabilitado">
+    </mat-form-field>
+    
+    <h2>INFORMACIÓN</h2>
+    
+    <mat-form-field class="">
+        <mat-label>Linea de investigación</mat-label>
+        <input matInput disabled [value]="userData.lineainvestigacion" [disabled]="inputDeshabilitado">
+    </mat-form-field>
+    <mat-form-field class="">
+        <mat-label>escalofono docente</mat-label>
+        <input matInput disabled [value]="userData.escalofonodocente" [disabled]="inputDeshabilitado">
+    </mat-form-field>
+    <mat-form-field class="">
+        <mat-label>Unidad academica</mat-label>
+        <input matInput disabled [value]="userData.unidadacademica"  [disabled]="inputDeshabilitado">
+    </mat-form-field>
+    <mat-form-field class="">
+        <mat-label>Horarios de formación</mat-label>
+        <input matInput disabled [value]="userData.horariosformacion"  [disabled]="inputDeshabilitado">
+    </mat-form-field>
+    <mat-form-field class="">
+        <mat-label>Horarios estrictos</mat-label>
+        <input matInput disabled [value]="userData.horariosestrictos" [disabled]="inputDeshabilitado">
+    </mat-form-field>
+    
+    
+    
+    <h4>Posgrados</h4>
+    <mat-form-field class="">
+        <mat-label>Tipo de posgrado</mat-label>
+        <input matInput disabled value="Laura Daniela Chiquillo Leon" [disabled]="inputDeshabilitado">
+    </mat-form-field>
+    <mat-form-field class="">
+        <mat-label>Titulo</mat-label>
+        <input matInput disabled value="Laura Daniela Chiquillo Leon" [disabled]="inputDeshabilitado">
+    </mat-form-field>
+    <mat-form-field class="">
+        <mat-label>Fecha</mat-label>
+        <input matInput disabled value="Laura Daniela Chiquillo Leon" [disabled]="inputDeshabilitado">
+    </mat-form-field>
+    
+    <mat-form-field class="">
+        <mat-label>Lugar</mat-label>
+        <input matInput disabled value="Laura Daniela Chiquillo Leon" [disabled]="inputDeshabilitado">
+    </mat-form-field>
+
+    <div>
+        <button *ngIf="!mostrarNuevo && !inputDeshabilitado" (click)="agregarInput()">Agregar Posgrado</button>
+        <!-- Iterar sobre la lista de inputs y mostrarlos -->
+        <div *ngFor="let input of inputs; let i = index">
+            <mat-form-field class="">
+                <mat-label>Tipo</mat-label>
+                <input matInput [disabled]="inputDeshabilitado" [(ngModel)]="inputs[i].tipo" placeholder="Input {{ i + 1 }}" />
+            </mat-form-field>
+            <mat-form-field class="">
+                <mat-label>Titulo</mat-label>
+                <input matInput [disabled]="inputDeshabilitado" [(ngModel)]="inputs[i].titulo" placeholder="Input {{ i + 1 }}" />
+            </mat-form-field>
+            <mat-form-field class="">
+                <mat-label>Fecha</mat-label>
+                <input matInput [disabled]="inputDeshabilitado" [(ngModel)]="inputs[i].fecha" placeholder="Input {{ i + 1 }}" />
+            </mat-form-field>
+            <mat-form-field class="">
+                <mat-label>Lugar</mat-label>
+                <input matInput [disabled]="inputDeshabilitado" [(ngModel)]="inputs[i].lugar" placeholder="Input {{ i + 1 }}" />
+            </mat-form-field>
+        </div>
+    </div>
+    <h4>Pregrados</h4>
+    <mat-form-field class="">
+        <mat-label>Tipo de pregrado</mat-label>
+        <input matInput disabled value="Laura Daniela Chiquillo Leon" [disabled]="inputDeshabilitado">
+    </mat-form-field>
+    <mat-form-field class="">
+        <mat-label>Titulo</mat-label>
+        <input matInput disabled value="Laura Daniela Chiquillo Leon" [disabled]="inputDeshabilitado">
+    </mat-form-field>
+    <mat-form-field class="">
+        <mat-label>Fecha</mat-label>
+        <input matInput disabled value="Laura Daniela Chiquillo Leon" [disabled]="inputDeshabilitado">
+    </mat-form-field>
+
+    <mat-form-field class="">
+        <mat-label>Lugar</mat-label>
+        <input matInput disabled value="Laura Daniela Chiquillo Leon" [disabled]="inputDeshabilitado">
+    </mat-form-field>
+
+    <div>
+        <button *ngIf="!mostrarNuevo && !inputDeshabilitado" (click)="agregarInputPre()">Agregar pregrado</button>
+        <!-- Iterar sobre la lista de inputs y mostrarlos -->
+        <div *ngFor="let input of inputsP; let i = index">
+            <mat-form-field class="">
+                <mat-label>Tipo</mat-label>
+                <input matInput [disabled]="inputDeshabilitado || deshabilitarNuevosInputs" [(ngModel)]="inputsP[i].tipo" placeholder="Input {{ i + 1 }}" />            </mat-form-field>
+            <mat-form-field class="">
+                <mat-label>Titulo</mat-label>
+                <input matInput [disabled]="inputDeshabilitado" [(ngModel)]="inputsP[i].titulo" placeholder="Input {{ i + 1 }}" />
+            </mat-form-field>
+            <mat-form-field class="">
+                <mat-label>Fecha</mat-label>
+                <input matInput [disabled]="inputDeshabilitado" [(ngModel)]="inputsP[i].fecha" placeholder="Input {{ i + 1 }}" />
+            </mat-form-field>
+            <mat-form-field class="">
+                <mat-label>Lugar</mat-label>
+                <input matInput [disabled]="inputDeshabilitado" [(ngModel)]="inputsP[i].lugar" placeholder="Input {{ i + 1 }}" />
+            </mat-form-field>
+        </div>
+    </div>
+    
+    <div class="activarInput">
+        <button class="boton-estilizado" *ngIf="inputDeshabilitado" (click)="activarInput()">Editar</button>
+        <button class="boton-estilizado" *ngIf="!inputDeshabilitado" (click)="desactivarInput()">Guardar</button>
+        <button class="boton-estilizado" *ngIf="!inputDeshabilitado" (click)="cancelarInput()">Cancelar</button>
+    </div>
+</form>

@@ -1,0 +1,3 @@
+web: npm start
+web: gunicorn frontend.wsgi
+web-angular: cd Frontend && ng serve --port $PORT       

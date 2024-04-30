@@ -1,0 +1,13 @@
+.example-spacer {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.custom-mat-field {
+  margin-top: 19px;
+}
+
+.mat-toolbar.mat-primary {
+  --mat-toolbar-container-background-color: #6AABA0;
+  --mat-toolbar-container-text-color: white;
+}

@@ -1,0 +1,54 @@
+<div class="tabs">
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+      <mat-tab label="Participación">
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource">
+
+            <!-- Columnas de la tabla -->
+            <ng-container matColumnDef="tipo">
+              <th mat-header-cell *matHeaderCellDef> Tipo</th>
+              <td mat-cell *matCellDef="let element"> {{element.tipo}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="titulo">
+              <th mat-header-cell *matHeaderCellDef> Titulo </th>
+              <td mat-cell *matCellDef="let element"> {{element.tituloProducto}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fecha">
+              <th mat-header-cell *matHeaderCellDef> Fecha </th>
+              <td mat-cell *matCellDef="let element"> {{element.fecha | date}} </td>
+            </ng-container>
+            <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef> Estado </th>
+              <td mat-cell *matCellDef="let element"> {{element.estadoProceso}} </td>
+            </ng-container>
+            <ng-container matColumnDef="updated_at">
+              <th mat-header-cell *matHeaderCellDef> Fecha Actualización </th>
+              <td mat-cell *matCellDef="let element"> {{element.updated_at | date:'medium'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="created_at">
+              <th mat-header-cell *matHeaderCellDef> Fecha Creación </th>
+              <td mat-cell *matCellDef="let element"> {{element.created_at | date:'medium'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="acciones">
+              <th mat-header-cell *matHeaderCellDef> Acciones </th>
+              <td mat-cell *matCellDef="let element">
+                <!-- Botones de acción -->
+                <button  matTooltip="Detalle" matTooltipPosition="above" mat-icon-button color="accent" (click)="openDialogoDetalle(element, element.tipo)">
+                  <mat-icon>info</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+          
+            <!-- Filas de la tabla -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          
+          </table> <!-- Esta etiqueta debe estar aquí -->
+          
+          <mat-paginator [pageSizeOptions]="[5, 10]" showFirstLastButtons aria-label="Select page of periodic elements">
+          </mat-paginator>
+        </div>
+      </mat-tab>
+  </mat-tab-group>
+</div> 
