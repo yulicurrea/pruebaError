@@ -7,16 +7,38 @@ import { Investigador } from '../modelo/investigador';
   providedIn: 'root' // Asegúrate de tener este providedIn en tu servicio
 })
 export class InvestigadorService {
-  private apiUrl = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/investigador'; 
-  private apiUrl2 = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/grupoinvestigacion'; 
-  private apiUrl3 = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/mostrarInvestigador'; 
-  private apiNotificaciones = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/notificaciones'; 
+  private apiUrl = 'https://app-proyecto-119c428c75f0.herokuapp.com/investigador'; 
+  private apiUrl2 = 'https://app-proyecto-119c428c75f0.herokuapp.com/grupoinvestigacion'; 
+  private apiUrl3 = 'https://app-proyecto-119c428c75f0.herokuapp.com/mostrarInvestigador'; 
+  private apiNotificaciones = 'https://app-proyecto-119c428c75f0.herokuapp.com/notificaciones'; 
 
   constructor(private http: HttpClient) { }
 
   // mostrar la informacion de todos los investigadores
   getUsuarios(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}`);
+  }
+
+  getUsuarioDetail(documento:string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${documento}`);
+  }
+
+  //Crear pregrado
+  private apiPregrado = 'https://app-proyecto-119c428c75f0.herokuapp.com/pregrado';
+  crearPregrado(data: any): Observable<any> {
+    return this.http.post<any>(this.apiPregrado, data);
+  }
+  obtenerPregrado(): Observable<any> {
+    return this.http.get<any[]>(this.apiPregrado);
+  }
+
+  //Crear posgrado
+  private apiPosgrado = 'https://app-proyecto-119c428c75f0.herokuapp.com/posgrado';
+  crearPosgrado(data: any): Observable<any> {
+    return this.http.post<any>(this.apiPosgrado, data);
+  }
+  obtenerPosgrado(): Observable<any> {
+    return this.http.get<any[]>(this.apiPosgrado);
   }
 
   getNotifications(): Observable<any[]> {

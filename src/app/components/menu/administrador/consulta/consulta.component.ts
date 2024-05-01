@@ -101,7 +101,7 @@ export class ConsultaComponent {
         this.proyectosData = dataSort.map(data => {
           return {
             codigo: data.codigo,
-            fecha: data.lider,
+            fecha: data.fecha,
             titulo: data.estadoProceso,
             investigador: data.investigador,
             coinvestigador: data.coinvestigador.join(),

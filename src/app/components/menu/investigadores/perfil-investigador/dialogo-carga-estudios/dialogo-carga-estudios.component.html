@@ -1,0 +1,76 @@
+
+<h2 mat-dialog-title>{{title}}</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="example-container">
+        <div *ngIf="type === 'Pregrado'; else elseBlock">
+            <form [formGroup]="firstFormGroup">
+                <div class="example-form-fields">
+                    <mat-form-field class="form-field-spacing" appearance="fill">
+                        <mat-label>Título</mat-label>
+                        <input matInput autocomplete="off" formControlName="titulo">
+                    </mat-form-field>
+                </div>
+                <div class="example-form-fields">
+                    <mat-form-field class="form-field-spacing" appearance="fill">
+                        <mat-label>Fecha</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="fecha">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="example-form-fields">
+                    <mat-form-field class="form-field-spacing" appearance="fill">
+                        <mat-label>Institución</mat-label>
+                        <input type="text" matInput autocomplete="off" formControlName="institucion">
+                    </mat-form-field>
+                </div>
+            </form>
+        </div>
+        <ng-template #elseBlock>
+            <form [formGroup]="secondFormGroup">
+                <div class="example-form-fields">
+                    <mat-form-field class="form-field-spacing" appearance="fill">
+                        <mat-label>Título</mat-label>
+                        <input matInput autocomplete="off" formControlName="titulo2">
+                    </mat-form-field>
+                </div>
+                <div class="example-form-fields">
+                    <mat-form-field class="form-field-spacing" appearance="fill">
+                        <mat-label>Fecha</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="fecha2">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="example-form-fields">
+                    <mat-form-field class="form-field-spacing" appearance="fill">
+                        <mat-label>Institución</mat-label>
+                        <input type="text" matInput autocomplete="off" formControlName="institucion2">
+                    </mat-form-field>
+                </div>
+                <div class="example-form-fields">
+                    <mat-form-field class="form-field-spacing2">
+                        <mat-label>Tipo</mat-label>
+                        <mat-select formControlName="tipo2">
+                            <mat-option *ngFor="let data of tipoPosgrado" [value]="data">
+                                {{data}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </form>
+        </ng-template>
+    </div>
+</mat-dialog-content>
+<div *ngIf="type === 'Pregrado'; else elseSend">
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancelar</button>
+        <button mat-button (click)="guardarTramitePregrado()" [disabled]="firstFormGroup.invalid" >Crear</button>
+    </mat-dialog-actions>
+</div>
+<ng-template #elseSend>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancelar</button>
+        <button mat-button (click)="guardarTramitePostgrado()" [disabled]="secondFormGroup.invalid" >Crear</button>
+    </mat-dialog-actions>
+</ng-template>

@@ -68,8 +68,8 @@ export class DialogoEstadisticaComponent implements OnInit {
         break; 
       } 
       default: {        
-        this.data.forEach((element: { estado: any; }) => {
-          labelData.push(element.estado);
+        this.data.forEach((element: { rolinvestigador: any; }) => {
+          labelData.push(element.rolinvestigador);
         });
         break; 
       } 
