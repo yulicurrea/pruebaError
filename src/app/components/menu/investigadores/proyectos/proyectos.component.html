@@ -426,7 +426,6 @@
                     <div class="titulo">
                       <p>Código producto</p>
                       <p>Título</p>
-                      <p>Rol de producto</p>
                     </div>
                     <div class="reg">
                       <mat-form-field class="form-field-spacing" appearance="fill">
@@ -435,22 +434,15 @@
                       <mat-form-field class="form-field-spacing" appearance="fill">
                           <input  type="text" formControlName="tituloProducto" matInput autocomplete="off" placeholder="Título del producto">
                       </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input  type="text" formControlName="rolProducto" matInput autocomplete="off" placeholder="Rol del producto">
-                      </mat-form-field>
                     </div>
                     <div class="titulo">
                       <p>Publicación</p>
-                      <p>Investigador</p>
-                      <p>Nombre estudiantes</p>
+                      <p>Estado inicio semestre</p>
                       <p>Porcentaje avance fin de semestre</p>
                     </div>
                     <div class="reg">
                       <mat-form-field class="form-field-spacing" appearance="fill">
                           <input type="text" formControlName="publicacion" matInput autocomplete="off" placeholder="Publicación">
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input type="text" formControlName="estudiantes" matInput autocomplete="off" placeholder="Nombre estudiantes">
                       </mat-form-field>
                       <mat-form-field class="form-field-spacing" appearance="fill">
                         <input formControlName="estadoProdIniSemestre"  type="email" matInput autocomplete="off">
@@ -906,25 +898,16 @@
                     </div>
                     <div>
                       <button mat-button matStepperPrevious>Back</button>
-                      <button mat-button matStepperNext>Next</button>
+                      <button mat-button (click)="guardarProyecto()">Guardar</button>
                     </div>
                   </div>
                   <div *ngIf="!mostrarInputs">
                     <div>
                       <button mat-button matStepperPrevious>Back</button>
-                      <button mat-button matStepperNext>Next</button>
+                      <button mat-button (click)="guardarProyecto()">Guardar</button>
                     </div>
                   </div>
                 </form>
-              </mat-step>
-              <mat-step>
-                <!----------------FINALIZAR REGISTRO-->
-                <ng-template matStepLabel>Registrar proyecto</ng-template>
-                <p>SE MUESTRAN TODOS LOS DATOS GUARDADOS</p>
-                <div>
-                  <button mat-button matStepperPrevious>Back</button>
-                  <button mat-button (click)="guardarProyecto()">Guardar</button>
-                </div>
               </mat-step>
             </mat-stepper>
           </div>
@@ -932,13 +915,9 @@
         <!----------------------------- PRODUCTOS-->
         <mat-tab label="Producto">
           <form [formGroup]="productoFormGroup">
-            <div>
-              <p>Codigo proyecto</p>
-            </div>
             <div class="titulo">
               <p>Codigo producto</p>
               <p>Titulo</p>
-              <p>Rol de producto</p>
             </div>
             <div class="reg">
               <mat-form-field class="form-field-spacing" appearance="fill">
@@ -947,22 +926,15 @@
               <mat-form-field class="form-field-spacing" appearance="fill">
                 <input formControlName="tituloProducto" type="email" matInput autocomplete="off">
               </mat-form-field>
-              <mat-form-field class="form-field-spacing" appearance="fill">
-                <input formControlName="rolProducto" type="email" matInput autocomplete="off">
-              </mat-form-field>
             </div>
             <div class="titulo">
               <p>publicación</p>
-              <p>Nombre estudiantes</p>
               <p>Estado inicio semestre</p>
               <p>porcentaje avance fin de semestre</p>
             </div>
             <div class="reg">
               <mat-form-field class="form-field-spacing" appearance="fill">
                 <input formControlName="publicacion" matInput autocomplete="off">
-              </mat-form-field>
-              <mat-form-field class="form-field-spacing" appearance="fill">
-                <input formControlName="estudiantes" type="text" matInput autocomplete="off">
               </mat-form-field>
               <mat-form-field class="form-field-spacing" appearance="fill">
                 <input formControlName="estadoProdIniSemestre"  type="email" matInput autocomplete="off">
