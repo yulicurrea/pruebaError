@@ -15,11 +15,11 @@ export class NavbarComponent {
   constructor(private router: Router, private InvestigadorService: InvestigadorService, private formBuilder: FormBuilder,
     private autenticacionService: AutenticacionService) {
     this.registroForm = this.formBuilder.group({
-      nombre: ['', [Validators.required]],
-      apellidos: ['', [Validators.required]],
-      correo: ['', [Validators.required, Validators.email]],
+      nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
+      apellidos: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
+      correo: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@unbosque\.edu\.c$/)]],
       tipodocumento: ['', [Validators.required]],
-      numerodocumento: ['', [Validators.required]],
+      numerodocumento: ['', [Validators.pattern(/^[0-9]+$/)]],
       contrasena: ['', [Validators.required, Validators.minLength(8)]],
       confirmarContrasena: ['', [Validators.required]],
     });
@@ -28,6 +28,7 @@ export class NavbarComponent {
       contrasena: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
+
 
   // login
   loginForm: FormGroup;
@@ -79,7 +80,12 @@ export class NavbarComponent {
         },
         (error) => {
           console.error('Error al iniciar sesión:', error);
-          // Manejar el error de inicio de sesión, por ejemplo, mostrar un mensaje al usuario
+          Swal.fire({
+            title: 'ERROR!!!',
+            text: 'Credenciales invalidas',
+            icon: 'warning',
+            confirmButtonText: 'Aceptar'
+          });
         }
       );
     }
@@ -134,7 +140,6 @@ export class NavbarComponent {
 
   public registroForm: FormGroup;
   
-  private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   typedocument: string[] = ['CC', 'TI', 'CE', 'RC', 'PA'];
 
   
