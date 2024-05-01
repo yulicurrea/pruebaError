@@ -117,8 +117,11 @@
                 </mat-form-field>
                 <mat-form-field class="form-field-spacing2" appearance="fill">
                   <mat-label>Numero de documento</mat-label>
-                  <input type="number" matInput autocomplete="off" formControlName="numerodocumento">
-                </mat-form-field>
+                  <input  matInput autocomplete="off" formControlName="numerodocumento">
+                  <mat-error *ngIf="registroForm.get('numerodocumento')?.hasError('minlength')"> 
+                    Por favor, introduce un número de documento válido, debe tener al menos 8 dígitos
+                  </mat-error>
+                </mat-form-field>                
               </div>
               <div class="titulo">
                 <p>Contraseña</p>
@@ -128,6 +131,9 @@
                 <mat-form-field class="form-field-spacing2" appearance="fill">
                   <mat-label>Contraseña</mat-label>
                   <input matInput [type]="hide ? 'password' : 'text'" formControlName="contrasena">
+                  <mat-error *ngIf="registroForm.get('contrasena')?.hasError('minlength')"> 
+                    Por favor introducir una contraseña con al menos 8 dígitos
+                  </mat-error>
                   <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                     <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                   </button>
