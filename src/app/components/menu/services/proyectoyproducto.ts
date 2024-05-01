@@ -15,14 +15,14 @@ export class ProyectoyproductoService {
   
   //Mostrar proyectos y productos
 
-  private apiUrl3 = 'https://app-proyecto-119c428c75f0.herokuapp.com/proyecto';
-  private apiEstadoProyecto = 'https://app-proyecto-119c428c75f0.herokuapp.com/estadoproyecto';
+  private apiUrl3 = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/proyecto';
+  private apiEstadoProyecto = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/estadoproyecto';
 
   getProyectos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl3}`);
   }
   
-  private apiUrl4 = 'https://app-proyecto-119c428c75f0.herokuapp.com/producto';
+  private apiUrl4 = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/producto';
   getProductos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl4}`);
   }
@@ -34,7 +34,7 @@ export class ProyectoyproductoService {
   );
   }
 
-  private apiUrl5 = 'https://app-proyecto-119c428c75f0.herokuapp.com/mostrarProductos';
+  private apiUrl5 = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/mostrarProductos';
 
   getProductosDelUsuario(): Observable<any[]> {
     const numeroDocumento = this.AutenticacionService.obtenerDatosUsuario().numerodocumento;
@@ -47,7 +47,7 @@ export class ProyectoyproductoService {
 
 
   //Crear proyectos y productos
-    private apiUrl = 'https://app-proyecto-119c428c75f0.herokuapp.com/CrearProyecto';
+    private apiUrl = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/CrearProyecto';
     crearProyecto(proyecto: Proyecto): Observable<Proyecto> {
       return this.http.post<Proyecto>(this.apiUrl, this.convertirObjetoProyectoAFormData(proyecto));
   }
@@ -69,7 +69,7 @@ export class ProyectoyproductoService {
     
     
     
-  private apiUrl2 = 'https://app-proyecto-119c428c75f0.herokuapp.com/CrearProducto';
+  private apiUrl2 = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/CrearProducto';
   crearProducto(producto: Producto): Observable<Producto> {
     return this.http.post<Producto>(this.apiUrl2, this.convertirObjetoProductoAFormData(producto));
   }
@@ -88,12 +88,12 @@ export class ProyectoyproductoService {
     return this.http.get<any[]>(`${this.apiEstadoProyecto}`);
   }
 
-  private apiEventos = 'https://app-proyecto-119c428c75f0.herokuapp.com/tipoEventos';
+  private apiEventos = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/tipoEventos';
   getEventos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiEventos}`);
   }
 
-  private apiProyecto = 'https://app-proyecto-119c428c75f0.herokuapp.com/proyecto'; 
+  private apiProyecto = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/proyecto'; 
   actualizarProyecto(proyecto: Proyecto) {
     const url = `${this.apiProyecto}/${proyecto.codigo}`;
     return this.http.put(url, proyecto).pipe(
@@ -115,7 +115,7 @@ export class ProyectoyproductoService {
     );
   }
 
-  private apiProducto = 'https://app-proyecto-119c428c75f0.herokuapp.com/producto'; 
+  private apiProducto = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/producto'; 
   actualizarProducto(proyecto: any) {
     const url = `${this.apiProducto}/${proyecto.id}`;
     return this.http.put(url, proyecto).pipe(
@@ -141,12 +141,12 @@ export class ProyectoyproductoService {
     return this.http.get<any[]>(this.apiEstadoProyecto);
   }
 
-  private apiEstadoProducto = 'https://app-proyecto-119c428c75f0.herokuapp.com/estadoproducto'; 
+  private apiEstadoProducto = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/estadoproducto'; 
   obtenerEstadosProducto(): Observable<any[]> {
     return this.http.get<any[]>(this.apiEstadoProducto);
   }
 
-  private apiConfiguracionEntregableProducto = 'https://app-proyecto-119c428c75f0.herokuapp.com/configuracionEntregableProducto'; 
+  private apiConfiguracionEntregableProducto = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/configuracionEntregableProducto'; 
 
   configurarEntregablesProducto(registro: any) {
     return this.http.post<any>(this.apiConfiguracionEntregableProducto, registro);
@@ -177,7 +177,7 @@ export class ProyectoyproductoService {
     );
   }
 
-  private apiConfiguracionEntregableProyecto = 'https://app-proyecto-119c428c75f0.herokuapp.com/configuracionEntregableProyecto'; 
+  private apiConfiguracionEntregableProyecto = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/configuracionEntregableProyecto'; 
 
   configurarEntregablesProyecto(registro: any) {
     return this.http.post<any>(this.apiConfiguracionEntregableProyecto, registro);
@@ -209,7 +209,7 @@ export class ProyectoyproductoService {
   }
 
 
-  private apiAvanceEntregableProyecto = 'http://127.0.0.1:8000/avanceEntregableProyecto'; 
+  private apiAvanceEntregableProyecto = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/avanceEntregableProyecto'; 
 
   avanceEntregablesProyecto(registro: any) {
     return this.http.post<any>(this.apiAvanceEntregableProyecto, this.convertirObjetoAvanceAFormData(registro));
@@ -219,7 +219,7 @@ export class ProyectoyproductoService {
     return this.http.get<any[]>(`${this.apiAvanceEntregableProyecto}`);
   }
 
-  private apiAvanceEntregableProducto = 'http://127.0.0.1:8000/avanceEntregableProducto'; 
+  private apiAvanceEntregableProducto = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/avanceEntregableProducto'; 
 
   avanceEntregablesProducto(registro: any) {
     return this.http.post<any>(this.apiAvanceEntregableProducto, this.convertirObjetoAvanceAFormData(registro));
@@ -239,13 +239,13 @@ export class ProyectoyproductoService {
   }
 
   //Crear notificacion
-  private apiNotificacion = 'https://app-proyecto-119c428c75f0.herokuapp.com/notificaciones';
+  private apiNotificacion = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/notificaciones';
   notificar(notificacion: any): Observable<Proyecto> {
     return this.http.post<any>(this.apiNotificacion, notificacion);
   }
 
   //cuartil esperado
-  private apiCuartilEsperado = 'https://app-proyecto-119c428c75f0.herokuapp.com/cuartilEsperado';
+  private apiCuartilEsperado = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/cuartilEsperado';
 
   getCuartilEsperado() {
     return this.http.get<any[]>(`${this.apiCuartilEsperado}`);
