@@ -17,7 +17,7 @@ export class NavbarComponent {
     this.registroForm = this.formBuilder.group({
       nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
       apellidos: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
-      correo: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@unbosque\.edu\.c$/)]],
+      correo: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@unbosque\.edu\.co$/)]],
       tipodocumento: ['', [Validators.required]],
       numerodocumento: ['', [Validators.pattern(/^[0-9]+$/)]],
       contrasena: ['', [Validators.required, Validators.minLength(8)]],
