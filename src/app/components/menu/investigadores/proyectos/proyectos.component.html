@@ -102,84 +102,77 @@
     <!-- nuevo -->
     <mat-tab label="Nuevo">
       <mat-tab-group class="nuevo vertical-tabs" mat-stretch-tabs="false" mat-align-tabs="end">
-        <!---------------------------PROYECTOS-->
+        <!-- Proyectos -->
         <mat-tab label="Proyecto">
           <div>
-            <mat-stepper linear #stepper >
-              <!-------------DATOS PROYECTOS-->
+            <mat-stepper linear #stepper>
+              <!-- Datos del Proyecto -->
               <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
                 <form [formGroup]="firstFormGroup">
                   <ng-template matStepLabel>Ingresar datos proyecto</ng-template>
                   <div>
                     <div class="titulo">
-                      <p>Código del proyecto
+                      <p>
+                        Código del proyecto
                         <mat-form-field>
-                          <input matInput  placeholder="" required formControlName="codigo">
+                          <input matInput placeholder="" required formControlName="codigo">
                         </mat-form-field>
                       </p>
-                      <p>Titulo
+                      <p>
+                        Titulo
                         <mat-form-field>
                           <input matInput placeholder="" required formControlName="titulo">
                         </mat-form-field>
                       </p>
-                      <p>Fecha
+                      <p>
+                        Fecha
                         <mat-form-field>
-                            <mat-label>Seleccione</mat-label>
-                            <input matInput [matDatepicker]="picker" formControlName="fecha">
-                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
+                          <mat-label>Seleccione</mat-label>
+                          <input matInput [matDatepicker]="picker" formControlName="fecha">
+                          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
                       </p>
                     </div>
                     <div class="titulo2">
-                      <!--<p>Investigador
-                        <mat-form-field>
-                          <input matInput placeholder="" required formControlName="investigador">
+                      <p>
+                        Coinvestigador
+                        <mat-form-field class="example-chip-list">
+                          <mat-chip-grid formControlName="coinvestigadores" #chipGrid aria-label="Active Investigators">
+                            <mat-chip-row formControlName="coinvestigadores" *ngFor="let investigator of activeInvestigators; let i = index; trackBy: trackByFn" (removed)="remove(investigator)">
+                              {{ investigator.correo }}
+                              <button matChipRemove [attr.aria-label]="'remove ' + investigator.correo" (click)="removeCoinvestigador(investigator)">
+                                <mat-icon>cancel</mat-icon>
+                              </button>
+                            </mat-chip-row>
+                          </mat-chip-grid>
+                          <input placeholder="" #investigatorInput [formControl]="investigatorCtrl" [matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
+                          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                            <mat-option *ngFor="let investigator of filteredInvestigators | async; trackBy: trackByFn" [value]="investigator">
+                              {{ displayInvestigator(investigator) }}
+                            </mat-option>
+                          </mat-autocomplete>
                         </mat-form-field>
-                      </p>-->
-
-                      <p>Coinvestigador
-                      <mat-form-field class="example-chip-list">
-                        <mat-chip-grid  formControlName="coinvestigadores" #chipGrid aria-label="Active Investigators">
-                          <mat-chip-row formControlName="coinvestigadores"
-                            *ngFor="let investigator of activeInvestigators; let i = index; trackBy: trackByFn"
-                            (removed)="remove(investigator)">
-                            {{ investigator.correo }}
-                            <button matChipRemove
-                              [attr.aria-label]="'remove ' + investigator.correo"
-                              (click)="removeCoinvestigador(investigator)">
-                              <mat-icon>cancel</mat-icon>
-                            </button>
-                          </mat-chip-row>
-                        </mat-chip-grid>
-                        <input placeholder="" #investigatorInput [formControl]="investigatorCtrl"
-                          [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
-                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
-                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                          <mat-option *ngFor="let investigator of filteredInvestigators | async; trackBy: trackByFn"
-                            [value]="investigator">
-                            {{ displayInvestigator(investigator) }}
-                          </mat-option>
-                        </mat-autocomplete>
-                      </mat-form-field>
-                    </p>
-
-                      <p>Unidad academica
+                      </p>
+                      <p>
+                        Unidad academica
                         <mat-form-field>
-                          <input matInput  placeholder="" required formControlName="unidadAcademica">
+                          <input matInput placeholder="" required formControlName="unidadAcademica">
                         </mat-form-field>
                       </p>
                     </div>
                     <div class="titulo2">
-                      <p>Área
+                      <p>
+                        Área
                         <mat-form-field>
-                          <input matInput  placeholder="" required formControlName="area">
+                          <input matInput placeholder="" required formControlName="area">
                         </mat-form-field>
                       </p>
-                      <p>Origen
+                      <p>
+                        Origen
                         <mat-form-field>
                           <mat-select placeholder="Origen" #origenValue formControlName="origen">
-                            <mat-option  *ngFor="let data of origenData" [value]="data.value">
+                            <mat-option *ngFor="let data of origenData" [value]="data.value">
                               {{data.viewValue}}
                             </mat-option>
                           </mat-select>
@@ -187,24 +180,17 @@
                       </p>
                     </div>
                     <div class="titulo2">
-                      <p>Convocatoria
+                      <p>
+                        Convocatoria
                         <mat-form-field>
-                          <input matInput  placeholder="" required formControlName="convocatoria">
+                          <input matInput placeholder="" required formControlName="convocatoria">
                         </mat-form-field>
                       </p>
-                      <!--<p>Estado
-                        <mat-form-field>
-                          <mat-select placeholder="Seleccione" #origenValue formControlName="estadoProyecto">
-                            <mat-option  *ngFor="let data of estadoProcesoData" [value]="data.value">
-                              {{data.viewValue}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </p>-->
-                      <p>Modalidad
+                      <p>
+                        Modalidad
                         <mat-form-field>
                           <mat-select placeholder="Seleccione" #origenValue formControlName="modalidadProyecto">
-                            <mat-option  *ngFor="let data of modalidadData" [value]="data.value">
+                            <mat-option *ngFor="let data of modalidadData" [value]="data.value">
                               {{data.viewValue}}
                             </mat-option>
                           </mat-select>
@@ -212,28 +198,30 @@
                       </p>
                     </div>
                     <div class="titulo2">
-
-                      <p>Nivel de riesgo
+                      <p>
+                        Nivel de riesgo
                         <mat-form-field>
                           <mat-select placeholder="Seleccione" #origenValue formControlName="nivelRiesgoEtico">
-                            <mat-option  *ngFor="let data of nivelRiesgoEticoData" [value]="data.value">
+                            <mat-option *ngFor="let data of nivelRiesgoEticoData" [value]="data.value">
                               {{data.viewValue}}
                             </mat-option>
                           </mat-select>
                         </mat-form-field>
                       </p>
-                      <p>Línea de investigación
+                      <p>
+                        Línea de investigación
                         <mat-form-field>
-                          <input matInput  placeholder="" required formControlName="lineaInvestigacion">
+                          <input matInput placeholder="" required formControlName="lineaInvestigacion">
                         </mat-form-field>
                       </p>
-                      <p>Grupo de investigación
+                      <p>
+                        Grupo de investigación
                         <mat-form-field>
                           <input matInput placeholder="" required formControlName="grupoInvestigacionPro">
                         </mat-form-field>
                       </p>
                     </div>
-                    <!----Porcentajes-->
+                    <!-- Porcentajes -->
                     <div class="titulo2">
                       <div class="percentage-container">
                         <p>Porcentaje de ejecución en el corte</p>
@@ -241,9 +229,7 @@
                           <label id="example-name-label" class="example-name-label">Valor:</label>
                           <label class="example-value-label">{{value}}</label>
                         </div>
-                        <mat-slider class="example-margin" [disabled]="disabled" [max]="max" [min]="min" [step]="step"
-                          [discrete]="thumbLabel" [showTickMarks]="showTicks"
-                          (input)="onValueChange($event)">
+                        <mat-slider class="example-margin" [disabled]="disabled" [max]="max" [min]="min" [step]="step" [discrete]="thumbLabel" [showTickMarks]="showTicks" (input)="onValueChange($event)">
                           <input matSliderThumb>
                         </mat-slider>
                       </div>
@@ -253,9 +239,7 @@
                           <label id="example-name-label2" class="example-name-label">Valor:</label>
                           <label class="example-value-label">{{value2}}</label>
                         </div>
-                        <mat-slider class="example-margin" [disabled]="disabled2" [max]="max2" [min]="min2"
-                          [step]="step2" [discrete]="thumbLabel2" [showTickMarks]="showTicks2"
-                          (input)="onValue2Change($event)">
+                        <mat-slider class="example-margin" [disabled]="disabled2" [max]="max2" [min]="min2" [step]="step2" [discrete]="thumbLabel2" [showTickMarks]="showTicks2" (input)="onValue2Change($event)">
                           <input matSliderThumb>
                         </mat-slider>
                       </div>
