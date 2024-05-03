@@ -86,14 +86,16 @@ export class ConsultaComponent {
   obtenerProyectos() {
     this.proyectoyproductoService.getProyectos().subscribe(
       (proyecto) => {
-        const dataSort = proyecto.sort((a, b) => (a.codigo < b.codigo ? -1 : 1))
+        const dataSort = proyecto.sort((a, b) => (a.codigo < b.codigo ? -1 : 1));
         this.dataSourceProyecto.data = dataSort.map(data => {
+          const estadoProyectoObj = this.estadosProyectos.find(x => x.id == data.estado);
+          const estadoProyecto = estadoProyectoObj ? estadoProyectoObj.estado : 'Estado no encontrado';
           return {
             codigo: data.codigo,
             investigador: data.investigador,
             observacion: data.observacion,
             estadoProceso: data.estadoProceso,
-            estadoProyecto: this.estadosProyectos.filter(x => x.id == data.estado)[0].estado,
+            estadoProyecto: estadoProyecto,
             created_at: data.created_at,
             updated_at: data.updated_at,
           }
@@ -121,7 +123,7 @@ export class ConsultaComponent {
             nivelRiesgoEtico: data.nivelRiesgoEtico,
             lineaInvestigacion: data.lineaInvestigacion,
             estadoProceso: data.estadoProceso,
-            estadoProyecto: this.estadosProyectos.filter(x => x.id == data.estado)[0].estado,
+            estadoProyecto: data.estadoProyecto,
             producto: data.producto,
             created_at: data.created_at,
             updated_at: data.updated_at
@@ -137,13 +139,15 @@ export class ConsultaComponent {
   obtenerProductos() {
     this.proyectoyproductoService.getProductos().subscribe(
       (producto) => {        
-        const dataSort = producto.sort((a, b) => (a.id < b.id ? -1 : 1))
+        const dataSort = producto.sort((a, b) => (a.id < b.id ? -1 : 1));
         this.dataSourceProducto.data = dataSort.map(data => {
+          const estadoProductoObj = this.estadosProductos.find(x => x.id == data.estadoProducto);
+          const estadoProducto = estadoProductoObj ? estadoProductoObj.estado : 'Estado no encontrado';
           return {
             id: data.id,
             investigador: data.investigador,
             estadoProceso: data.estadoProceso,
-            estadoProducto: this.estadosProductos.filter(x => x.id == data.estadoProducto)[0].estado,
+            estadoProducto: estadoProducto,
             created_at: data.created_at,
             updated_at: data.updated_at,
           }
@@ -166,7 +170,7 @@ export class ConsultaComponent {
             origen: data.origen,
             observacion: data.observacion,
             estadoProceso: data.estadoProceso,
-            estadoProducto: this.estadosProductos.filter(x => x.id == data.estadoProducto)[0].estado,
+            estadoProducto: data.estadoProducto,
             created_at: data.created_at,
             updated_at: data.updated_at,
           }
