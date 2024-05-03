@@ -74,6 +74,28 @@
         &nbsp;<button *ngIf="!inputDeshabilitado" class="boton-estilizado" (click)="desactivarInput()">Cancelar</button>
     </div>
     <br>
-    
-</form>
+    <h2>Información Profesional</h2>
+    <div class="academic-info">
+        <div *ngIf="pregradoData.length">
+            <h3><mat-icon style="margin: 0px 0px -6px 0px; color:burlywood">star</mat-icon> Pregados</h3>
+            <ul>
+                <li *ngFor="let data of pregradoData">
+                    <strong>{{data.titulo}}</strong> en {{data.institucion}} - {{data.fecha}}
+                </li>
+            </ul>
+        </div>
+        <div *ngIf="posgradoData.length">
+            <h3><mat-icon style="margin: 0px 0px -6px 0px; color:coral">grade</mat-icon> Posgrados</h3>
+            <ul>
+                <li *ngFor="let data of posgradoData">
+                    <strong>{{data.titulo}}</strong> en {{data.institucion}} ({{data.tipo}}) - {{data.fecha}}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <br>&nbsp;
+    <button class="boton-estilizado" (click)="openDialogoDetalle('Pregrado')">Cargar Pregrado</button>&nbsp;
+    <button class="boton-estilizado" (click)="openDialogoDetalle('Posgrado')">Cargar Posgrado</button>
+    <div class="academic-info"><br><br></div>
 
+</form>

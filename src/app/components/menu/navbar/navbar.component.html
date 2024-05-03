@@ -43,20 +43,10 @@
           
               <p>
                 <mat-icon>fingerprint</mat-icon>
-                Objetivos: Desarrollar proyectos de investigación y desarrollo tecnológico interdisciplinarios en las áreas de ingeniería de los sistemas de información, del desarrollo sostenible y del uso de medios técnico-tecnológicos, con el objetivo de aportar al mejoramiento de la salud y calidad de vida de las comunidades involucradas, en procesos educativos, organizacionales y de salud, desde la perspectiva multicausal dada por el modelo biopsicosocial y cultural.
               </p>
           
               <p>
                 <mat-icon>menu_book</mat-icon>
-                Líneas de Investigación:
-
-                Ingeniería de software y sociedad.
-
-                Ingeniería para la salud y el desarrollo biológico
-
-                Ingeniería y educación
-
-                Ingeniería para la sostenibilidad de sistemas naturales
               </p>
             </div>
           </div>
@@ -72,82 +62,82 @@
                 </mat-expansion-panel-header>
           
                 <div>
-                  
+                  <img [src]="user.imagen_url" alt="Imagen del investigador">
                 </div>
           
                 <p>{{ user.correo }}</p>
-
+                <p>{{ user.grupoinvestigacion }}</p>
               </mat-expansion-panel>
             </mat-accordion>
           </mat-tab>
           
-          <!-- REGISTRO-->
-          <mat-tab label="Registro">
-            <form [formGroup]="registroForm">
-              <div class="titulo">
-                <p>Nombres</p>
-                <p>Apellidos</p>
-                <p>Correo</p>
-              </div>
-              <div class="reg">
-                <mat-form-field class="form-field-spacing" appearance="fill">
-                  <input matInput autocomplete="off" formControlName="nombre">
-                </mat-form-field>
-                <mat-form-field class="form-field-spacing" appearance="fill">
-                  <input type="text" matInput autocomplete="off" formControlName="apellidos">
-                </mat-form-field>
-                  <mat-form-field class="form-field-spacing" appearance="fill">
-                    <input type="email" matInput autocomplete="off" formControlName="correo">
-                    <mat-error *ngIf="registroForm.get('correo')?.hasError('pattern')"> 
-                      Por favor, introduce un correo electrónico válido de &#64;unbosque.edu.co
-                    </mat-error>
-                  </mat-form-field>
-                               
-              </div>
-              <div class="titulo">
-                <p>Tipo de documento</p>
-                <p>Numero de documento</p>
-              </div>
-              <div class="reg2">
-                <mat-form-field class="form-field-spacing2">
-                  <mat-label>Seleccione</mat-label>
-                  <mat-select formControlName="tipodocumento">
-                    <mat-option *ngFor="let tipo of typedocument" [value]="tipo">{{ tipo }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field class="form-field-spacing2" appearance="fill">
-                  <mat-label>Numero de documento</mat-label>
-                  <input  matInput autocomplete="off" formControlName="numerodocumento">
-                  <mat-error *ngIf="registroForm.get('numerodocumento')?.hasError('minlength')"> 
-                    Por favor, introduce un número de documento válido, debe tener al menos 8 dígitos
-                  </mat-error>
-                </mat-form-field>                
-              </div>
-              <div class="titulo">
-                <p>Contraseña</p>
-                <p>Confirmar contraseña</p>
-              </div>
-              <div class="reg2">
-                <mat-form-field class="form-field-spacing2" appearance="fill">
-                  <mat-label>Contraseña</mat-label>
-                  <input matInput [type]="hide ? 'password' : 'text'" formControlName="contrasena">
-                  <mat-error *ngIf="registroForm.get('contrasena')?.hasError('minlength')"> 
-                    Por favor introducir una contraseña con al menos 8 dígitos
-                  </mat-error>
-                  <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                  </button>
-                </mat-form-field>
-                <mat-form-field class="form-field-spacing2" appearance="fill">
-                  <mat-label>Confirmar contraseña</mat-label>
-                  <input matInput [type]="hide ? 'password' : 'text'" formControlName="confirmarContrasena">
-                  <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                  </button>
-                </mat-form-field>
-              </div>
-              <button type="button" class="anchoGuardar" mat-raised-button style="background-color: #6AABA0;" (click)="guardarUsuario()">Guardar</button>
-            </form>
-          </mat-tab>
-    </mat-tab-group>
+ <!-- REGISTRO-->
+ <mat-tab label="Registro">
+  <form [formGroup]="registroForm">
+    <div class="titulo">
+      <p>Nombres</p>
+      <p>Apellidos</p>
+      <p>Correo</p>
+    </div>
+    <div class="reg">
+      <mat-form-field class="form-field-spacing" appearance="fill">
+        <input matInput autocomplete="off" formControlName="nombre">
+      </mat-form-field>
+      <mat-form-field class="form-field-spacing" appearance="fill">
+        <input type="text" matInput autocomplete="off" formControlName="apellidos">
+      </mat-form-field>
+        <mat-form-field class="form-field-spacing" appearance="fill">
+          <input type="email" matInput autocomplete="off" formControlName="correo">
+          <mat-error *ngIf="registroForm.get('correo')?.hasError('pattern')"> 
+            Por favor, introduce un correo electrónico válido de &#64;unbosque.edu.co
+          </mat-error>
+        </mat-form-field>
+                     
+    </div>
+    <div class="titulo">
+      <p>Tipo de documento</p>
+      <p>Numero de documento</p>
+    </div>
+    <div class="reg2">
+      <mat-form-field class="form-field-spacing2">
+        <mat-label>Seleccione</mat-label>
+        <mat-select formControlName="tipodocumento">
+          <mat-option *ngFor="let tipo of typedocument" [value]="tipo">{{ tipo }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-spacing2" appearance="fill">
+        <mat-label>Numero de documento</mat-label>
+        <input  matInput autocomplete="off" formControlName="numerodocumento">
+        <mat-error *ngIf="registroForm.get('numerodocumento')?.hasError('minlength')"> 
+          Por favor, introduce un número de documento válido, debe tener al menos 8 dígitos
+        </mat-error>
+      </mat-form-field>                
+    </div>
+    <div class="titulo">
+      <p>Contraseña</p>
+      <p>Confirmar contraseña</p>
+    </div>
+    <div class="reg2">
+      <mat-form-field class="form-field-spacing2" appearance="fill">
+        <mat-label>Contraseña</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="contrasena">
+        <mat-error *ngIf="registroForm.get('contrasena')?.hasError('minlength')"> 
+          Por favor introducir una contraseña con al menos 8 dígitos
+        </mat-error>
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field class="form-field-spacing2" appearance="fill">
+        <mat-label>Confirmar contraseña</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="confirmarContrasena">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <button type="button" class="anchoGuardar" mat-raised-button style="background-color: #6AABA0;" (click)="guardarUsuario()">Guardar</button>
+  </form>
+</mat-tab>
+</mat-tab-group>
 </mat-card>

@@ -1574,7 +1574,7 @@ thumbLabel6 = false;
       const proyectosAjustados = proyectos.reverse().map(proyecto => ({
         ...proyecto,
         tituloProducto: proyecto.titulo,
-        etapa: this.estadosProductos.find(p => p.id === proyecto.estado).estado,
+        etapa: this.estadosProyectos.find(p => p.id === proyecto.estado).estado,
         id: proyecto.codigo,
         fecha: proyecto.fecha,
         estadoProceso: proyecto.estadoProceso,

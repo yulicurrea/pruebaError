@@ -12,8 +12,6 @@ export interface Investigador {
     rolinvestigador?: string;
     lineainvestigacion?: string;
     ies?: string;
-    tipPosgrado?: number;
-    tipPregrado?: number;
     grupoinvestigacion?: number;
     ubicacion?: number;
     imagen?: number;

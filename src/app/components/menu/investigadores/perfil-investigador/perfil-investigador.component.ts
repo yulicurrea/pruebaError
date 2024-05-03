@@ -1,20 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { AutenticacionService } from '../../services/autenticacion';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import Swal from 'sweetalert2';
+import { MatNativeDateModule } from '@angular/material/core';
 import { UsuarioSesion } from '../../modelo/usuario';
-import { AutenticacionService } from '../../services/autenticacion';
 import { InvestigadorService } from '../../services/registroInvestigador';
+import Swal from 'sweetalert2';
 import { DialogoCargaEstudiosComponent } from './dialogo-carga-estudios/dialogo-carga-estudios.component';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-perfil-investigador',
   templateUrl: './perfil-investigador.component.html',
@@ -59,6 +59,8 @@ export class PerfilInvestigadorComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerDatosUsuarioSesion();
+    this.obtenerPregrado();
+    this.obtenerPosgrado();
     this.investigadorService.getUsuarioDetail(this.usuarioSesion.numerodocumento).subscribe(
       (data) => {
         this.userData = data;
@@ -83,6 +85,29 @@ export class PerfilInvestigadorComponent implements OnInit {
 
   obtenerDatosUsuarioSesion(){
     this.usuarioSesion = this.autenticacionService.obtenerDatosUsuario();
+  }
+
+  pregradoData!: any;
+  posgradoData!: any;
+  obtenerPregrado(){
+    this.investigadorService.obtenerPregrado().subscribe(
+      (data) => {
+        this.pregradoData = data.filter((x: { Investigador_id: string; }) => x.Investigador_id == this.usuarioSesion.numerodocumento);
+      },
+      (error) => {
+        console.error('Error al obtener usuarios:', error);
+      }
+    );
+  }
+  obtenerPosgrado(){
+    this.investigadorService.obtenerPosgrado().subscribe(
+      (data) => {
+        this.posgradoData = data.filter((x: { Investigador_id: string; }) => x.Investigador_id == this.usuarioSesion.numerodocumento);
+      },
+      (error) => {
+        console.error('Error al obtener usuarios:', error);
+      }
+    );
   }
 
   get numerodocumento() {
@@ -126,55 +151,6 @@ export class PerfilInvestigadorComponent implements OnInit {
     this.ngOnInit();
   }
 
-  guardarDatos() {
-    if (this.firstFormGroup.valid) {
-      const tramiteGeneral = this.firstFormGroup.value;
-      tramiteGeneral.numerodocumento = this.usuarioSesion.numerodocumento;
-      console.log(' guardarDatos => ',tramiteGeneral);
-      this.investigadorService.actualizarInvestigador(tramiteGeneral).subscribe(
-        (resp) => {
-          Swal.fire({
-            title: 'Registro Exitoso !!!',
-            text: 'Se ha editado el perfil',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-          });
-          this.inputDeshabilitado = true;
-          this.ngOnInit();
-        },
-        (error) => {
-          console.error('Error al notificar:', error);
-        }
-      );
-    }
-  }
-
-
-  pregradoData!: any;
-  posgradoData!: any;
-  obtenerPregrado(){
-    this.investigadorService.obtenerPregrado().subscribe(
-      (data) => {
-        this.pregradoData = data.filter((x: { Investigador_id: string; }) => x.Investigador_id == this.usuarioSesion.numerodocumento);
-      },
-      (error) => {
-        console.error('Error al obtener usuarios:', error);
-      }
-    );
-  }
-  obtenerPosgrado(){
-    this.investigadorService.obtenerPosgrado().subscribe(
-      (data) => {
-        this.posgradoData = data.filter((x: { Investigador_id: string; }) => x.Investigador_id == this.usuarioSesion.numerodocumento);
-      },
-      (error) => {
-        console.error('Error al obtener usuarios:', error);
-      }
-    );
-  }
-
-
-
   openDialogoDetalle(tipo:string): void {
     const dialogRef = this.dialog.open(DialogoCargaEstudiosComponent, {
       data: {
@@ -197,5 +173,26 @@ export class PerfilInvestigadorComponent implements OnInit {
     });
   }
 
- 
+  guardarDatos() {
+    if (this.firstFormGroup.valid) {
+      const tramiteGeneral = this.firstFormGroup.value;
+      tramiteGeneral.numerodocumento = this.usuarioSesion.numerodocumento;
+      console.log(' guardarDatos => ',tramiteGeneral);
+      this.investigadorService.actualizarInvestigador(tramiteGeneral).subscribe(
+        (resp) => {
+          Swal.fire({
+            title: 'Registro Exitoso !!!',
+            text: 'Se ha editado el perfil',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          });
+          this.inputDeshabilitado = true;
+          this.ngOnInit();
+        },
+        (error) => {
+          console.error('Error al notificar:', error);
+        }
+      );
+    }
+  }
 }

@@ -1,18 +1,18 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import Swal from 'sweetalert2';
-import { UsuarioSesion } from '../../modelo/usuario';
+import { CommonModule } from '@angular/common';
 import { AutenticacionService } from '../../services/autenticacion';
-import { InvestigadorService } from "../../services/registroInvestigador";
+import { InvestigadorService} from "../../services/registroInvestigador";
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { UsuarioSesion } from '../../modelo/usuario';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-perfil-administrador',
@@ -59,8 +59,18 @@ export class PerfilAdministradorComponent  implements OnInit {
     this.investigadorService.getUsuarioDetail(this.usuarioSesion.numerodocumento).subscribe(
       (data) => {
         this.userData = data;
-        console.log('Datos del usuario:', this.userData);
-        this.initializeFormGroup();
+        this.firstFormGroup = this.formBuilder.group({
+          numerodocumento: [{value: this.userData?.numerodocumento, disabled: true }, [Validators.required]],
+          nombre: [{value: this.userData.nombre, disabled: this.inputDeshabilitado}, [Validators.required]],
+          apellidos: [{value: this.userData.apellidos, disabled: this.inputDeshabilitado },[Validators.required]],
+          correo: [{value: this.userData?.correo, disabled: this.inputDeshabilitado },[Validators.required]],
+          tipodocumento: [{value: this.userData?.tipodocumento, disabled: this.inputDeshabilitado }, [Validators.required]],
+          escalofonodocente: [{value: this.userData?.escalofonodocente, disabled: this.inputDeshabilitado },[Validators.required]],
+          horariosestrictos: [{value: this.userData?.horasestricto, disabled: this.inputDeshabilitado},[Validators.required]],
+          horariosformacion: [{value: this.userData?.horasformacion, disabled: this.inputDeshabilitado},[Validators.required]],
+          lineainvestigacion: [{value: this.userData?.lineainvestigacion, disabled: this.inputDeshabilitado},[Validators.required]],
+          unidadacademica: [{value: this.userData?.unidadAcademica, disabled: this.inputDeshabilitado},[Validators.required]],
+        });
       },
       (error) => {
         console.error('Error al obtener usuarios:', error);
@@ -68,21 +78,6 @@ export class PerfilAdministradorComponent  implements OnInit {
     );
   }
 
-  initializeFormGroup() {
-    this.firstFormGroup = this.formBuilder.group({
-      numerodocumento: [{value: this.userData?.numerodocumento, disabled: true }, [Validators.required]],
-      nombre: [{value: this.userData.nombre, disabled: this.inputDeshabilitado}, [Validators.required]],
-      apellidos: [{value: this.userData.apellidos, disabled: this.inputDeshabilitado },[Validators.required]],
-      correo: [{value: this.userData?.correo, disabled: this.inputDeshabilitado },[Validators.required]],
-      tipodocumento: [{value: this.userData?.tipodocumento, disabled: this.inputDeshabilitado }, [Validators.required]],
-      escalofonodocente: [{value: this.userData?.escalofonodocente, disabled: this.inputDeshabilitado },[Validators.required]],
-      horariosestrictos: [{value: this.userData?.horasestricto, disabled: this.inputDeshabilitado},[Validators.required]],
-      horariosformacion: [{value: this.userData?.horasformacion, disabled: this.inputDeshabilitado},[Validators.required]],
-      lineainvestigacion: [{value: this.userData?.lineainvestigacion, disabled: this.inputDeshabilitado},[Validators.required]],
-      unidadacademica: [{value: this.userData?.unidadAcademica, disabled: this.inputDeshabilitado},[Validators.required]],
-    });
-    console.log('Formulario inicializado:', this.firstFormGroup);
-  }
   obtenerDatosUsuarioSesion(){
     this.usuarioSesion = this.autenticacionService.obtenerDatosUsuario();
   }
