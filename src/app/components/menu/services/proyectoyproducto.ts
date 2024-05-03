@@ -16,7 +16,7 @@ export class ProyectoyproductoService {
   //Mostrar proyectos y productos
 
   private apiUrl3 = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/proyecto';
-  private apiEstadoProyecto = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/estadoproyecto';
+  private apiEstadoProyecto = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/estadoproyecto';
 
   getProyectos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl3}`);
