@@ -112,7 +112,7 @@
                   <ng-template matStepLabel>Ingresar datos proyecto</ng-template>
                   <div>
                     <div class="titulo">
-                      <p>Codigo del proyecto
+                      <p>Código del proyecto
                         <mat-form-field>
                           <input matInput  placeholder="" required formControlName="codigo">
                         </mat-form-field>
@@ -132,12 +132,6 @@
                       </p>
                     </div>
                     <div class="titulo2">
-                      <!--<p>Investigador
-                        <mat-form-field>
-                          <input matInput placeholder="" required formControlName="investigador">
-                        </mat-form-field>
-                      </p>-->
-
                       <p>Coinvestigador
                       <mat-form-field class="example-chip-list">
                         <mat-chip-grid  formControlName="coinvestigadores" #chipGrid aria-label="Active Investigators">
@@ -171,7 +165,7 @@
                       </p>
                     </div>
                     <div class="titulo2">
-                      <p>Area
+                      <p>Área
                         <mat-form-field>
                           <input matInput  placeholder="" required formControlName="area">
                         </mat-form-field>
@@ -192,15 +186,6 @@
                           <input matInput  placeholder="" required formControlName="convocatoria">
                         </mat-form-field>
                       </p>
-                      <!--<p>Estado
-                        <mat-form-field>
-                          <mat-select placeholder="Seleccione" #origenValue formControlName="estadoProyecto">
-                            <mat-option  *ngFor="let data of estadoProcesoData" [value]="data.value">
-                              {{data.viewValue}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </p>-->
                       <p>Modalidad
                         <mat-form-field>
                           <mat-select placeholder="Seleccione" #origenValue formControlName="modalidadProyecto">
@@ -222,7 +207,7 @@
                           </mat-select>
                         </mat-form-field>
                       </p>
-                      <p>Linea de investigación
+                      <p>Línea de investigación
                         <mat-form-field>
                           <input matInput  placeholder="" required formControlName="lineaInvestigacion">
                         </mat-form-field>
@@ -236,7 +221,7 @@
                     <!----Porcentajes-->
                     <div class="titulo2">
                       <div class="percentage-container">
-                        <p>Porcentaje de ejecucion en el corte</p>
+                        <p>Porcentaje de ejecución en el corte</p>
                         <div class="example-label-container">
                           <label id="example-name-label" class="example-name-label">Valor:</label>
                           <label class="example-value-label">{{value}}</label>
@@ -299,8 +284,8 @@
                     </div>
                     <div formGroupName="financiacion">
                       <div class="titulo2">
-                        <p>valor Propuesto</p>
-                        <p>valor ejecutado</p>
+                        <p>Valor Propuesto</p>
+                        <p>Valor ejecutado</p>
                       </div>
                       <div class="reg">
                         <mat-form-field class="form-field-spacing" appearance="fill">
@@ -316,9 +301,9 @@
                     </div>
                     <div formGroupName="transacciones">
                       <div class="titulo2">
-                        <p>fecha</p>
-                        <p>acta</p>
-                        <p>descripcion</p>
+                        <p>Fecha</p>
+                        <p>Acta</p>
+                        <p>Descripción</p>
                       </div>
                       <div class="reg">
                         <mat-form-field class="form-field-spacing" appearance="fill">                        
@@ -336,12 +321,12 @@
                       </div>
                     </div>
                     <div class="titulo2">
-                      <p>ubicación del proyecto</p>
+                      <p>Ubicación del proyecto</p>
                     </div>
                     <div formGroupName="ubicacionProyecto">
                       <div class="titulo2">
-                        <p>instalacion</p>
-                        <p>municipio</p>
+                        <p>Instalacion</p>
+                        <p>Municipio</p>
                       </div>
                       <div class="reg">
                         <mat-form-field class="form-field-spacing" appearance="fill">
@@ -352,8 +337,8 @@
                         </mat-form-field>
                       </div>
                       <div class="titulo2">
-                        <p>pais</p>
-                        <p>departamento</p>
+                        <p>País</p>
+                        <p>Departamento</p>
                       </div>
                       <div class="reg">
                         <mat-form-field class="form-field-spacing" appearance="fill">
@@ -426,7 +411,6 @@
                     <div class="titulo">
                       <p>Código producto</p>
                       <p>Título</p>
-                      <p>Rol de producto</p>
                     </div>
                     <div class="reg">
                       <mat-form-field class="form-field-spacing" appearance="fill">
@@ -435,22 +419,15 @@
                       <mat-form-field class="form-field-spacing" appearance="fill">
                           <input  type="text" formControlName="tituloProducto" matInput autocomplete="off" placeholder="Título del producto">
                       </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input  type="text" formControlName="rolProducto" matInput autocomplete="off" placeholder="Rol del producto">
-                      </mat-form-field>
                     </div>
                     <div class="titulo">
                       <p>Publicación</p>
-                      <p>Investigador</p>
-                      <p>Nombre estudiantes</p>
+                      <p>Estado inicio semestre</p>
                       <p>Porcentaje avance fin de semestre</p>
                     </div>
                     <div class="reg">
                       <mat-form-field class="form-field-spacing" appearance="fill">
                           <input type="text" formControlName="publicacion" matInput autocomplete="off" placeholder="Publicación">
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input type="text" formControlName="estudiantes" matInput autocomplete="off" placeholder="Nombre estudiantes">
                       </mat-form-field>
                       <mat-form-field class="form-field-spacing" appearance="fill">
                         <input formControlName="estadoProdIniSemestre"  type="email" matInput autocomplete="off">
@@ -605,7 +582,7 @@
                         <mat-tab label="articulo">
                           <div formGroupName="articulo">
                             <div class="titulo">
-                              <p>Funente</p>
+                              <p>Fuente</p>
                             </div>
                             <div class="reg">
                               <mat-form-field class="form-field-spacing" appearance="fill">
@@ -699,7 +676,7 @@
                         <mat-tab label="Eventos">
                           <div formGroupName="evento">
                             <div class="titulo">
-                              <p>Fecha inico</p>
+                              <p>Fecha inicio</p>
                               <p>Fecha fin</p>
                             </div>
                             <div class="reg">
@@ -756,7 +733,7 @@
                         <mat-tab label="Apropiación">
                           <div formGroupName="apropiacion">
                             <div class="titulo">
-                              <p>Fecha inico</p>
+                              <p>Fecha inicio</p>
                               <p>Fecha fin</p>
                               <p>Licencia</p>
                             </div>
@@ -906,25 +883,16 @@
                     </div>
                     <div>
                       <button mat-button matStepperPrevious>Back</button>
-                      <button mat-button matStepperNext>Next</button>
+                      <button mat-button (click)="guardarProyecto()">Guardar</button>
                     </div>
                   </div>
                   <div *ngIf="!mostrarInputs">
                     <div>
                       <button mat-button matStepperPrevious>Back</button>
-                      <button mat-button matStepperNext>Next</button>
+                      <button mat-button (click)="guardarProyecto()">Guardar</button>
                     </div>
                   </div>
                 </form>
-              </mat-step>
-              <mat-step>
-                <!----------------FINALIZAR REGISTRO-->
-                <ng-template matStepLabel>Registrar proyecto</ng-template>
-                <p>SE MUESTRAN TODOS LOS DATOS GUARDADOS</p>
-                <div>
-                  <button mat-button matStepperPrevious>Back</button>
-                  <button mat-button (click)="guardarProyecto()">Guardar</button>
-                </div>
               </mat-step>
             </mat-stepper>
           </div>
@@ -932,13 +900,9 @@
         <!----------------------------- PRODUCTOS-->
         <mat-tab label="Producto">
           <form [formGroup]="productoFormGroup">
-            <div>
-              <p>Codigo proyecto</p>
-            </div>
             <div class="titulo">
               <p>Codigo producto</p>
               <p>Titulo</p>
-              <p>Rol de producto</p>
             </div>
             <div class="reg">
               <mat-form-field class="form-field-spacing" appearance="fill">
@@ -947,22 +911,15 @@
               <mat-form-field class="form-field-spacing" appearance="fill">
                 <input formControlName="tituloProducto" type="email" matInput autocomplete="off">
               </mat-form-field>
-              <mat-form-field class="form-field-spacing" appearance="fill">
-                <input formControlName="rolProducto" type="email" matInput autocomplete="off">
-              </mat-form-field>
             </div>
             <div class="titulo">
               <p>publicación</p>
-              <p>Nombre estudiantes</p>
               <p>Estado inicio semestre</p>
               <p>porcentaje avance fin de semestre</p>
             </div>
             <div class="reg">
               <mat-form-field class="form-field-spacing" appearance="fill">
                 <input formControlName="publicacion" matInput autocomplete="off">
-              </mat-form-field>
-              <mat-form-field class="form-field-spacing" appearance="fill">
-                <input formControlName="estudiantes" type="text" matInput autocomplete="off">
               </mat-form-field>
               <mat-form-field class="form-field-spacing" appearance="fill">
                 <input formControlName="estadoProdIniSemestre"  type="email" matInput autocomplete="off">
@@ -1119,7 +1076,7 @@
                 <mat-tab label="articulo"> 
                   <div formGroupName="articulo">
                     <div class="titulo">
-                      <p>Funente</p>
+                      <p>Fuente</p>
                     </div>
                     <div class="reg">
                       <mat-form-field class="form-field-spacing" appearance="fill">
@@ -1213,7 +1170,7 @@
                 <mat-tab label="Eventos">
                   <div formGroupName="evento">
                     <div class="titulo">
-                      <p>Fecha inico</p>
+                      <p>Fecha inicio</p>
                       <p>Fecha fin</p>
                     </div>
                     <div class="reg">
@@ -1270,7 +1227,7 @@
                 <mat-tab label="Apropiación">
                  <div formGroupName="apropiacion">
                   <div class="titulo">
-                    <p>Fecha inico</p>
+                    <p>Fecha inicio</p>
                     <p>Fecha fin</p>
                     <p>Licencia</p>
                   </div>
@@ -1417,7 +1374,7 @@
               </mat-tab-group>
             </div>
             
-            <button class="anchoGuardar" mat-raised-button style="background-color: #6AABA0;" (click)="guardarProducto()">Guardar2</button>
+            <button class="anchoGuardar" mat-raised-button style="background-color: #6AABA0;" (click)="guardarProducto()">Guardar</button>
           </form>
         </mat-tab>
       </mat-tab-group>
