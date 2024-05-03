@@ -63,18 +63,18 @@ export class ConsultaComponent {
   @ViewChild('paginatorProyecto') paginator2!: MatPaginator;
   @ViewChild('paginatorProducto') paginator3!: MatPaginator;
 
-  ngOnInit() {
-    this.obtenerUsuarios();
-    this.obtenerProyectos();
-    this.obtenerProductos();
-    this.obtenerEstadosProyecto();
-    this.obtenerEstadosProducto();
+  async ngOnInit() {
+    await this.obtenerUsuarios();
+    await this.obtenerProyectos();
+    await this.obtenerProductos();
+    await this.obtenerEstadosProyecto();
+    await this.obtenerEstadosProducto();
     this.searchService.getSearchQuery().subscribe(query => {
       this.dataSourceInvestigador.filter = query.trim().toLowerCase();
       this.dataSourceProyecto.filter = query.trim().toLowerCase();
       this.dataSourceProducto.filter = query.trim().toLowerCase();
     });
-  }
+}
 
   ngAfterViewInit() {
     this.dataSourceInvestigador.paginator = this.paginator;
