@@ -1,19 +1,18 @@
+import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTabsModule } from '@angular/material/tabs';
-import { InvestigadorService } from '../../services/registroInvestigador';
-import { CommonModule } from '@angular/common';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
-import { SearchService } from '../../services/search.service';
-import { ProyectoyproductoService } from '../../services/proyectoyproducto';
-import { MatSelectModule } from '@angular/material/select';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
-import * as XLSX from 'xlsx'
-import { DialogoEstadisticaComponent } from './dialogo-estadistica/dialogo-estadistica.component';
+import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import * as XLSX from 'xlsx';
+import { ProyectoyproductoService } from '../../services/proyectoyproducto';
+import { InvestigadorService } from '../../services/registroInvestigador';
+import { SearchService } from '../../services/search.service';
+import { DialogoEstadisticaComponent } from './dialogo-estadistica/dialogo-estadistica.component';
 
 @Component({
   selector: 'app-consulta',
@@ -84,103 +83,123 @@ export class ConsultaComponent {
 
   
   obtenerProyectos() {
-    this.proyectoyproductoService.getProyectos().subscribe(
-      (proyecto) => {
-        const dataSort = proyecto.sort((a, b) => (a.codigo < b.codigo ? -1 : 1));
-        this.dataSourceProyecto.data = dataSort.map(data => {
-          const estadoProyectoObj = this.estadosProyectos.find(x => x.id == data.estado);
-          const estadoProyecto = estadoProyectoObj ? estadoProyectoObj.estado : 'Estado no encontrado';
-          return {
-            codigo: data.codigo,
-            investigador: data.investigador,
-            observacion: data.observacion,
-            estadoProceso: data.estadoProceso,
-            estadoProyecto: estadoProyecto,
-            created_at: data.created_at,
-            updated_at: data.updated_at,
+    this.proyectoyproductoService.obtenerEstadosProyecto().subscribe(
+      (estados) => {
+        this.estadosProyectos = estados;
+        // Después de obtener los estados de proyectos, obtener los proyectos
+        this.proyectoyproductoService.getProyectos().subscribe(
+          (proyecto) => {
+            const dataSort = proyecto.sort((a, b) => (a.codigo < b.codigo ? -1 : 1));
+            this.dataSourceProyecto.data = dataSort.map(data => {
+              const estadoProyectoObj = this.estadosProyectos.find(x => x.id == data.estado);
+              const estadoProyecto = estadoProyectoObj ? estadoProyectoObj.estado : 'Estado no encontrado';
+              return {
+                codigo: data.codigo,
+                investigador: data.investigador,
+                observacion: data.observacion,
+                estadoProceso: data.estadoProceso,
+                estadoProyecto: estadoProyecto,
+                created_at: data.created_at,
+                updated_at: data.updated_at,
+              }
+            });
+            this.proyectosData = dataSort.map(data => {
+              return {
+                codigo: data.codigo,
+                fecha: data.fecha,
+                titulo: data.estadoProceso,
+                investigador: data.investigador,
+                coinvestigador: data.coinvestigador.join(),
+                estudiantes: data.estudiantes.join(),
+                participantesExternos: data.participantesExternos.join(),
+                unidadAcademica: data.unidadAcademica,
+                area: data.area,
+                porcentajeEjecucionCorte: data.porcentajeEjecucionCorte,
+                grupoInvestigacionPro: data.grupoInvestigacionPro,
+                porcentajeEjecucionFinCorte: data.porcentajeEjecucionFinCorte,
+                porcentajeAvance: data.porcentajeAvance,
+                observacion: data.observacion,
+                Soporte: data.Soporte,
+                origen: data.origen,
+                convocatoria: data.convocatoria,
+                modalidad: data.modalidad,
+                nivelRiesgoEtico: data.nivelRiesgoEtico,
+                lineaInvestigacion: data.lineaInvestigacion,
+                estadoProceso: data.estadoProceso,
+                estadoProyecto: data.estadoProyecto,
+                producto: data.producto,
+                created_at: data.created_at,
+                updated_at: data.updated_at
+              }
+            });
+          },
+          (error) => {
+            console.error('Error al obtener proyectos:', error);
           }
-        });
-        this.proyectosData = dataSort.map(data => {
-          return {
-            codigo: data.codigo,
-            fecha: data.fecha,
-            titulo: data.estadoProceso,
-            investigador: data.investigador,
-            coinvestigador: data.coinvestigador.join(),
-            estudiantes: data.estudiantes.join(),
-            participantesExternos: data.participantesExternos.join(),
-            unidadAcademica: data.unidadAcademica,
-            area: data.area,
-            porcentajeEjecucionCorte: data.porcentajeEjecucionCorte,
-            grupoInvestigacionPro: data.grupoInvestigacionPro,
-            porcentajeEjecucionFinCorte: data.porcentajeEjecucionFinCorte,
-            porcentajeAvance: data.porcentajeAvance,
-            observacion: data.observacion,
-            Soporte: data.Soporte,
-            origen: data.origen,
-            convocatoria: data.convocatoria,
-            modalidad: data.modalidad,
-            nivelRiesgoEtico: data.nivelRiesgoEtico,
-            lineaInvestigacion: data.lineaInvestigacion,
-            estadoProceso: data.estadoProceso,
-            estadoProyecto: data.estadoProyecto,
-            producto: data.producto,
-            created_at: data.created_at,
-            updated_at: data.updated_at
-          }
-        });
+        );
       },
       (error) => {
-        console.error('Error al obtener proyectos:', error);
+        console.error('Error al obtener estados de proyectos:', error);
       }
     );
   }
-
+  
   obtenerProductos() {
-    this.proyectoyproductoService.getProductos().subscribe(
-      (producto) => {        
-        const dataSort = producto.sort((a, b) => (a.id < b.id ? -1 : 1));
-        this.dataSourceProducto.data = dataSort.map(data => {
-          const estadoProductoObj = this.estadosProductos.find(x => x.id == data.estadoProducto);
-          const estadoProducto = estadoProductoObj ? estadoProductoObj.estado : 'Estado no encontrado';
-          return {
-            id: data.id,
-            investigador: data.investigador,
-            estadoProceso: data.estadoProceso,
-            estadoProducto: estadoProducto,
-            created_at: data.created_at,
-            updated_at: data.updated_at,
+    this.proyectoyproductoService.obtenerEstadosProducto().subscribe(
+      (estados) => {
+        this.estadosProductos = estados;
+        // Después de obtener los estados de productos, obtener los productos
+        this.proyectoyproductoService.getProductos().subscribe(
+          (producto) => {
+            const dataSort = producto.sort((a, b) => (a.id < b.id ? -1 : 1));
+            this.dataSourceProducto.data = dataSort.map(data => {
+              const estadoProductoObj = this.estadosProductos.find(x => x.id == data.estadoProducto);
+              const estadoProducto = estadoProductoObj ? estadoProductoObj.estado : 'Estado no encontrado';
+              return {
+                id: data.id,
+                investigador: data.investigador,
+                estadoProceso: data.estadoProceso,
+                estadoProducto: estadoProducto,
+                created_at: data.created_at,
+                updated_at: data.updated_at,
+              }
+            });
+            this.productosData = dataSort.map(data => {
+              return {
+                id: data.id,
+                Soporte: data.Soporte,
+                tituloProducto: data.tituloProducto,
+                investigador: data.investigador,
+                coinvestigador: data.coinvestigador.join(),
+                estudiantes: data.estudiantes.join(),
+                participantesExternos: data.participantesExternos.join(),
+                publicacion: data.publicacion,
+                porcentanjeAvanFinSemestre: data.porcentanjeAvanFinSemestre,
+                observaciones: data.observaciones,
+                porcentajeComSemestral: data.porcentajeComSemestral,
+                porcentajeRealMensual: data.porcentajeRealMensual,
+                fecha: data.fecha,
+                origen: data.origen,
+                observacion: data.observacion,
+                estadoProceso: data.estadoProceso,
+                estadoProducto: data.estadoProducto,
+                created_at: data.created_at,
+                updated_at: data.updated_at,
+              }
+            });
+          },
+          (error) => {
+            console.error('Error al obtener productos:', error);
           }
-        });
-        this.productosData = dataSort.map(data => {
-          return {
-            id: data.id,
-            Soporte: data.Soporte,
-            tituloProducto: data.tituloProducto,
-            investigador: data.investigador,
-            coinvestigador: data.coinvestigador.join(),
-            estudiantes: data.estudiantes.join(),
-            participantesExternos: data.participantesExternos.join(),
-            publicacion: data.publicacion,
-            porcentanjeAvanFinSemestre: data.porcentanjeAvanFinSemestre,
-            observaciones: data.observaciones,
-            porcentajeComSemestral: data.porcentajeComSemestral,
-            porcentajeRealMensual: data.porcentajeRealMensual,
-            fecha: data.fecha,
-            origen: data.origen,
-            observacion: data.observacion,
-            estadoProceso: data.estadoProceso,
-            estadoProducto: data.estadoProducto,
-            created_at: data.created_at,
-            updated_at: data.updated_at,
-          }
-        });
+        );
       },
       (error) => {
-        console.error('Error al obtener productos:', error);
+        console.error('Error al obtener estados de productos:', error);
       }
     );
   }
+  
+
 
   obtenerUsuarios() {
     this.investigadorService.getUsuarios().subscribe(
