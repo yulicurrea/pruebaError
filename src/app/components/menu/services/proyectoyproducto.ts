@@ -15,14 +15,14 @@ export class ProyectoyproductoService {
   
   //Mostrar proyectos y productos
 
-  private apiUrl3 = 'http://localhost:8000/proyecto';
-  private apiEstadoProyecto = 'http://localhost:8000/estadoproyecto';
+  private apiUrl3 = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/proyecto';
+  private apiEstadoProyecto = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/estadoproyecto';
 
   getProyectos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl3}`);
   }
   
-  private apiUrl4 = 'http://localhost:8000/producto';
+  private apiUrl4 = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/producto';
   getProductos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl4}`);
   }
@@ -34,7 +34,7 @@ export class ProyectoyproductoService {
   );
   }
 
-  private apiUrl5 = 'http://localhost:8000/mostrarProductos';
+  private apiUrl5 = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/mostrarProductos';
 
   getProductosDelUsuario(): Observable<any[]> {
     const numeroDocumento = this.AutenticacionService.obtenerDatosUsuario().numerodocumento;
@@ -47,7 +47,7 @@ export class ProyectoyproductoService {
 
 
   //Crear proyectos y productos
-    private apiUrl = 'http://localhost:8000/CrearProyecto';
+    private apiUrl = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/CrearProyecto';
     crearProyecto(proyecto: Proyecto): Observable<Proyecto> {
       return this.http.post<Proyecto>(this.apiUrl, this.convertirObjetoProyectoAFormData(proyecto));
   }
@@ -69,7 +69,7 @@ export class ProyectoyproductoService {
     
     
     
-  private apiUrl2 = 'http://localhost:8000/CrearProducto';
+  private apiUrl2 = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/CrearProducto';
   crearProducto(producto: Producto): Observable<Producto> {
     return this.http.post<Producto>(this.apiUrl2, this.convertirObjetoProductoAFormData(producto));
   }
@@ -88,12 +88,12 @@ export class ProyectoyproductoService {
     return this.http.get<any[]>(`${this.apiEstadoProyecto}`);
   }
 
-  private apiEventos = 'http://localhost:8000/tipoEventos';
+  private apiEventos = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/tipoEventos';
   getEventos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiEventos}`);
   }
 
-  private apiProyecto = 'http://localhost:8000/proyecto'; 
+  private apiProyecto = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/proyecto'; 
   actualizarProyecto(proyecto: Proyecto) {
     const url = `${this.apiProyecto}/${proyecto.codigo}`;
     return this.http.put(url, proyecto).pipe(
@@ -115,7 +115,7 @@ export class ProyectoyproductoService {
     );
   }
 
-  private apiProducto = 'http://localhost:8000/producto'; 
+  private apiProducto = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/producto'; 
   actualizarProducto(proyecto: any) {
     const url = `${this.apiProducto}/${proyecto.id}`;
     return this.http.put(url, proyecto).pipe(
@@ -141,12 +141,12 @@ export class ProyectoyproductoService {
     return this.http.get<any[]>(this.apiEstadoProyecto);
   }
 
-  private apiEstadoProducto = 'http://localhost:8000/estadoproducto'; 
+  private apiEstadoProducto = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/estadoproducto'; 
   obtenerEstadosProducto(): Observable<any[]> {
     return this.http.get<any[]>(this.apiEstadoProducto);
   }
 
-  private apiConfiguracionEntregableProducto = 'http://localhost:8000/configuracionEntregableProducto'; 
+  private apiConfiguracionEntregableProducto = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/configuracionEntregableProducto'; 
 
   configurarEntregablesProducto(registro: any) {
     return this.http.post<any>(this.apiConfiguracionEntregableProducto, registro);
@@ -177,7 +177,7 @@ export class ProyectoyproductoService {
     );
   }
 
-  private apiConfiguracionEntregableProyecto = 'http://localhost:8000/configuracionEntregableProyecto'; 
+  private apiConfiguracionEntregableProyecto = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/configuracionEntregableProyecto'; 
 
   configurarEntregablesProyecto(registro: any) {
     return this.http.post<any>(this.apiConfiguracionEntregableProyecto, registro);
@@ -209,7 +209,7 @@ export class ProyectoyproductoService {
   }
 
 
-  private apiAvanceEntregableProyecto = 'http://127.0.0.1:8000/avanceEntregableProyecto'; 
+  private apiAvanceEntregableProyecto = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/avanceEntregableProyecto'; 
 
   avanceEntregablesProyecto(registro: any) {
     return this.http.post<any>(this.apiAvanceEntregableProyecto, this.convertirObjetoAvanceAFormData(registro));
@@ -219,7 +219,7 @@ export class ProyectoyproductoService {
     return this.http.get<any[]>(`${this.apiAvanceEntregableProyecto}`);
   }
 
-  private apiAvanceEntregableProducto = 'http://127.0.0.1:8000/avanceEntregableProducto'; 
+  private apiAvanceEntregableProducto = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/avanceEntregableProducto'; 
 
   avanceEntregablesProducto(registro: any) {
     return this.http.post<any>(this.apiAvanceEntregableProducto, this.convertirObjetoAvanceAFormData(registro));
@@ -239,13 +239,13 @@ export class ProyectoyproductoService {
   }
 
   //Crear notificacion
-  private apiNotificacion = 'http://localhost:8000/notificaciones';
+  private apiNotificacion = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/notificaciones';
   notificar(notificacion: any): Observable<Proyecto> {
     return this.http.post<any>(this.apiNotificacion, notificacion);
   }
 
   //cuartil esperado
-  private apiCuartilEsperado = 'http://localhost:8000/cuartilEsperado';
+  private apiCuartilEsperado = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/cuartilEsperado';
 
   getCuartilEsperado() {
     return this.http.get<any[]>(`${this.apiCuartilEsperado}`);

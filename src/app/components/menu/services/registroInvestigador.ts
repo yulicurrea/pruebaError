@@ -7,10 +7,10 @@ import { Investigador } from '../modelo/investigador';
   providedIn: 'root' // Asegúrate de tener este providedIn en tu servicio
 })
 export class InvestigadorService {
-  private apiUrl = 'http://localhost:8000/investigador'; 
-  private apiUrl2 = 'http://localhost:8000/grupoinvestigacion'; 
-  private apiUrl3 = 'http://localhost:8000/mostrarInvestigador'; 
-  private apiNotificaciones = 'http://localhost:8000/notificaciones'; 
+  private apiUrl = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/investigador'; 
+  private apiUrl2 = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/grupoinvestigacion'; 
+  private apiUrl3 = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/mostrarInvestigador'; 
+  private apiNotificaciones = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/notificaciones'; 
 
   constructor(private http: HttpClient) { }
 
@@ -24,7 +24,7 @@ export class InvestigadorService {
   }
 
   //Crear pregrado
-  private apiPregrado = 'http://localhost:8000/pregrado';
+  private apiPregrado = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/pregrado';
   crearPregrado(data: any): Observable<any> {
     return this.http.post<any>(this.apiPregrado, data);
   }
@@ -33,7 +33,7 @@ export class InvestigadorService {
   }
 
   //Crear posgrado
-  private apiPosgrado = 'http://localhost:8000/posgrado';
+  private apiPosgrado = 'http://pruebabackend-86ba2adf9f62.herokuapp.com/posgrado';
   crearPosgrado(data: any): Observable<any> {
     return this.http.post<any>(this.apiPosgrado, data);
   }
