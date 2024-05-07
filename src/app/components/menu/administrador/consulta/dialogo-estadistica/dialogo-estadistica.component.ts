@@ -56,14 +56,14 @@ export class DialogoEstadisticaComponent implements OnInit {
     let labelData: string[] = [];
     switch(this.type) { 
       case 'Proyectos': {
-        this.data.forEach((element: { estadoProyecto: any; }) => {
-          labelData.push(element.estadoProyecto);
+        this.data.forEach((element: { estadoProyectoObj: any; }) => {
+          labelData.push(element.estadoProyectoObj);
         });
         break; 
       } 
       case 'Productos': {
-        this.data.forEach((element: { estadoProducto: any; }) => {
-          labelData.push(element.estadoProducto);
+        this.data.forEach((element: { estadoProductoObj: any; }) => {
+          labelData.push(element.estadoProductoObj);
         });
         break; 
       } 
