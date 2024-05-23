@@ -5,6 +5,7 @@ import { Investigador } from '../modelo/investigador';
 import { AutenticacionService } from '../services/autenticacion';
 import { InvestigadorService } from '../services/registroInvestigador';
 import Swal from 'sweetalert2'
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-navbar',
@@ -12,7 +13,7 @@ import Swal from 'sweetalert2'
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  constructor(private router: Router, private InvestigadorService: InvestigadorService, private formBuilder: FormBuilder,
+  constructor(private router: Router, private InvestigadorService: InvestigadorService, private formBuilder: FormBuilder, private snackBar: MatSnackBar,
     private autenticacionService: AutenticacionService) {
     this.registroForm = this.formBuilder.group({
         nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
@@ -250,6 +251,11 @@ export class NavbarComponent {
       });
     }
   }
+  }
+  showSuccessMessage() {
+    this.snackBar.open('Registro exitoso. Espera a que se active tu cuenta.', 'Cerrar', {
+      duration: 5000,
+    });
   }
 }
 
