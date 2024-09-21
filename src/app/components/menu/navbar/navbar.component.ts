@@ -65,7 +65,7 @@ export class NavbarComponent {
           if (rolInvestigador === 'Investigador') {
             if (estado) {
               // Si el investigador está activo, redirigir a la URL del perfil del investigador
-              window.location.href = 'https://prueba-error-back1.vercel.app/investigadores/perfil';
+              window.location.href = 'https://prueba-error.vercel.app/investigadores/perfil';
             } else {
               // Si el investigador está inactivo
               console.log('El investigador no está activo');
