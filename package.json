@@ -36,7 +36,7 @@
     "zone.js": "~0.14.10"
   },
   "engines": {
-    "node": "2O.x",
+    "node": "20.x",
     "npm": "7.x"
   },
   "devDependencies": {
