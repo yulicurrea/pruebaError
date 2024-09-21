@@ -65,7 +65,7 @@ export class NavbarComponent {
           if (rolInvestigador === 'Investigador') {
             if (estado) {
               // Si el investigador está activo, redirigir a la URL del perfil del investigador
-              window.location.href = 'http://localhost:4200/investigadores/perfil';
+              window.location.href = 'https://prueba-error-back1.vercel.app/investigadores/perfil';
             } else {
               // Si el investigador está inactivo
               console.log('El investigador no está activo');
@@ -79,7 +79,7 @@ export class NavbarComponent {
             }
           } else if (rolInvestigador === 'Administrador') {
             // Si es un administrador, redirigir a la URL del perfil del administrador
-            window.location.href = 'http://localhost:4200/administrador/perfil';
+            window.location.href = 'https://prueba-error.vercel.app/administrador/perfil';
           } else {
             // Manejar otros roles si es necesario
             console.log("Rol estudiante")

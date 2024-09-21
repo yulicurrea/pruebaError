@@ -12,7 +12,7 @@ export class EstudiantesService {
   constructor(private http: HttpClient) { }
   
 
-  private apiEstudiantes = 'http://localhost:8000/estudiantes';
+  private apiEstudiantes = 'https://prueba-error-back1.vercel.app/estudiantes';
   
 
     getEstudiantes(): Observable<Estudiante[]> {

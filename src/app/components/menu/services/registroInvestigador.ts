@@ -9,11 +9,11 @@ import { AutenticacionService } from './autenticacion';
   providedIn: 'root' // Asegúrate de tener este providedIn en tu servicio
 })
 export class InvestigadorService {
-  private apiUrl = 'http://localhost:8000/investigador'; 
-  private apiUrl2 = 'http://localhost:8000/grupoinvestigacion'; 
-  private apiUrl3 = 'http://localhost:8000/mostrarInvestigador'; 
-  private apiNotificaciones = 'http://localhost:8000/notificaciones'; 
-  private url = 'http://localhost:8000/ActualizarInvestigador';
+  private apiUrl = 'https://prueba-error-back1.vercel.app/investigador'; 
+  private apiUrl2 = 'https://prueba-error-back1.vercel.app/grupoinvestigacion'; 
+  private apiUrl3 = 'https://prueba-error-back1.vercel.app/mostrarInvestigador'; 
+  private apiNotificaciones = 'https://prueba-error-back1.vercel.app/notificaciones'; 
+  private url = 'https://prueba-error-back1.vercel.app/ActualizarInvestigador';
 
   constructor(private http: HttpClient, private AutenticacionService:AutenticacionService) { }
 
@@ -29,7 +29,7 @@ export class InvestigadorService {
     return this.http.get<any[]>(`${this.apiUrl}/${documento}`);
   }
   
-  private mostrarPyP = 'http://localhost:8000/mostrarPyP';
+  private mostrarPyP = 'https://prueba-error-back1.vercel.app/mostrarPyP';
   getmostrarPyP(): Observable<Person[]> {
     return this.http.get<Person[]>(`${this.mostrarPyP}`).pipe(
       catchError(error => {
@@ -41,7 +41,7 @@ export class InvestigadorService {
   
   
   //Crear pregrado
-  private apiPregrado = 'http://localhost:8000/pregrado';
+  private apiPregrado = 'https://prueba-error-back1.vercel.app/pregrado';
   crearPregrado(data: any): Observable<any> {
     return this.http.post<any>(this.apiPregrado, data);
   }
@@ -50,7 +50,7 @@ export class InvestigadorService {
   }
 
   //Crear posgrado
-  private apiPosgrado = 'http://localhost:8000/posgrado';
+  private apiPosgrado = 'https://prueba-error-back1.vercel.app/posgrado';
   crearPosgrado(data: any): Observable<any> {
     return this.http.post<any>(this.apiPosgrado, data);
   }

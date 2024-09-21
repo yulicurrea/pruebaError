@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class AutenticacionService {
 
-    apiUrl = 'http://localhost:8000/custom-token-auth/';
+    apiUrl = 'https://prueba-error-back1.vercel.app/custom-token-auth/';
 
     constructor(private http: HttpClient,private router: Router) { }
 
@@ -47,7 +47,7 @@ export class AutenticacionService {
       //Este método se usa cuando un usuario quiere restablecer su contraseña.
       // Envía el correo electrónico del usuario al servidor para iniciar el proceso de restablecimiento.
       resetPassword(correo: string) {
-        return this.http.post('http://localhost:8000/reset-password/', { correo });
+        return this.http.post('https://prueba-error-back1.vercel.app/reset-password/', { correo });
     }
     //Este método se usa para confirmar el restablecimiento de la contraseña.
     //Envía un código (que el usuario recibió por correo electrónico) y las nuevas contraseñas
@@ -58,7 +58,7 @@ export class AutenticacionService {
           'nueva_contraseña': nuevaContrasena,
           'confirmar_contraseña': confirmarContrasena
       };
-      return this.http.post('http://localhost:8000/reset-password-confirm/', body);
+      return this.http.post('https://prueba-error-back1.vercel.app/reset-password-confirm/', body);
   }
   
 }

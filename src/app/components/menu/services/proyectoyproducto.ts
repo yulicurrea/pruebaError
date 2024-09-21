@@ -17,14 +17,14 @@ export class ProyectoyproductoService {
   
   //Mostrar proyectos y productos
 
-  private apiEstadoProyecto = 'http://localhost:8000/estadoproyecto';
+  private apiEstadoProyecto = 'https://prueba-error-back1.vercel.app/estadoproyecto';
 
-  private apiUrl3 = 'http://localhost:8000/proyecto';
+  private apiUrl3 = 'https://prueba-error-back1.vercel.app/proyecto';
   getProyectos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl3}`);
   }
 
-  private apiUrl4 = 'http://localhost:8000/producto';
+  private apiUrl4 = 'https://prueba-error-back1.vercel.app/producto';
   getProductos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl4}`);
   }
@@ -36,7 +36,7 @@ export class ProyectoyproductoService {
   );
   }
 
-  private apiUrl5 = 'http://localhost:8000/mostrarProductos';
+  private apiUrl5 = 'https://prueba-error-back1.vercel.app/mostrarProductos';
 
   getProductosDelUsuario(): Observable<any[]> {
     const numeroDocumento = this.AutenticacionService.obtenerDatosUsuario().numerodocumento;
@@ -49,7 +49,7 @@ export class ProyectoyproductoService {
 
 
   //Crear proyectos y productos
-    private apiUrl = 'http://localhost:8000/CrearProyecto';
+    private apiUrl = 'https://prueba-error-back1.vercel.app/CrearProyecto';
     crearProyecto(proyecto: Proyecto): Observable<Proyecto> {
       return this.http.post<Proyecto>(this.apiUrl, this.convertirObjetoProyectoAFormData(proyecto));
   }
@@ -71,7 +71,7 @@ export class ProyectoyproductoService {
     
     
     
-  private apiUrl2 = 'http://localhost:8000/CrearProducto';
+  private apiUrl2 = 'https://prueba-error-back1.vercel.app/CrearProducto';
   crearProducto(producto: Producto): Observable<Producto> {
     return this.http.post<Producto>(this.apiUrl2, this.convertirObjetoProductoAFormData(producto));
   }
@@ -90,12 +90,12 @@ export class ProyectoyproductoService {
     return this.http.get<any[]>(`${this.apiEstadoProyecto}`);
   }
 
-  private apiEventos = 'http://localhost:8000/tipoEventos';
+  private apiEventos = 'https://prueba-error-back1.vercel.app/tipoEventos';
   getEventos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiEventos}`);
   }
 
-  private apiProyecto = 'http://localhost:8000/proyecto'; 
+  private apiProyecto = 'https://prueba-error-back1.vercel.app/proyecto'; 
   actualizarProyecto(proyecto: Proyecto) {
     const url = `${this.apiProyecto}/${proyecto.codigo}`;
     return this.http.put(url, proyecto).pipe(
@@ -117,7 +117,7 @@ export class ProyectoyproductoService {
     );
   }
 
-  private apiProducto = 'http://localhost:8000/producto'; 
+  private apiProducto = 'https://prueba-error-back1.vercel.app/producto'; 
   actualizarProducto(proyecto: any) {
     const url = `${this.apiProducto}/${proyecto.id}`;
     return this.http.put(url, proyecto).pipe(
@@ -143,12 +143,12 @@ export class ProyectoyproductoService {
     return this.http.get<any[]>(this.apiEstadoProyecto);
   }
 
-  private apiEstadoProducto = 'http://localhost:8000/estadoproducto'; 
+  private apiEstadoProducto = 'https://prueba-error-back1.vercel.app/estadoproducto'; 
   obtenerEstadosProducto(): Observable<any[]> {
     return this.http.get<any[]>(this.apiEstadoProducto);
   }
 
-  private apiConfiguracionEntregableProducto = 'http://localhost:8000/configuracionEntregableProducto'; 
+  private apiConfiguracionEntregableProducto = 'https://prueba-error-back1.vercel.app/configuracionEntregableProducto'; 
 
   configurarEntregablesProducto(registro: any) {
     return this.http.post<any>(this.apiConfiguracionEntregableProducto, registro);
@@ -179,7 +179,7 @@ export class ProyectoyproductoService {
     );
   }
 
-  private apiConfiguracionEntregableProyecto = 'http://localhost:8000/configuracionEntregableProyecto'; 
+  private apiConfiguracionEntregableProyecto = 'https://prueba-error-back1.vercel.app/configuracionEntregableProyecto'; 
 
   configurarEntregablesProyecto(registro: any) {
     return this.http.post<any>(this.apiConfiguracionEntregableProyecto, registro);
@@ -211,7 +211,7 @@ export class ProyectoyproductoService {
   }
 
 
-  private apiAvanceEntregableProyecto = 'http://127.0.0.1:8000/avanceEntregableProyecto'; 
+  private apiAvanceEntregableProyecto = 'https://prueba-error-back1.vercel.app/avanceEntregableProyecto'; 
 
   avanceEntregablesProyecto(registro: any) {
     return this.http.post<any>(this.apiAvanceEntregableProyecto, this.convertirObjetoAvanceAFormData(registro));
@@ -221,7 +221,7 @@ export class ProyectoyproductoService {
     return this.http.get<any[]>(`${this.apiAvanceEntregableProyecto}`);
   }
 
-  private apiAvanceEntregableProducto = 'http://127.0.0.1:8000/avanceEntregableProducto'; 
+  private apiAvanceEntregableProducto = 'https://prueba-error-back1.vercel.app/avanceEntregableProducto'; 
 
   avanceEntregablesProducto(registro: any) {
     return this.http.post<any>(this.apiAvanceEntregableProducto, this.convertirObjetoAvanceAFormData(registro));
@@ -241,25 +241,25 @@ export class ProyectoyproductoService {
   }
 
   //Crear notificacion
-  private apiNotificacion = 'http://localhost:8000/notificaciones';
+  private apiNotificacion = 'https://prueba-error-back1.vercel.app/notificaciones';
   notificar(notificacion: any): Observable<Proyecto> {
     return this.http.post<any>(this.apiNotificacion, notificacion);
   }
 
   //cuartil esperado
-  private apiCuartilEsperado = 'http://localhost:8000/cuartilEsperado';
+  private apiCuartilEsperado = 'https://prueba-error-back1.vercel.app/cuartilEsperado';
 
   getCuartilEsperado(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiCuartilEsperado}`);
   }
 
   //Categoria minciencias
-  private categoria = 'http://localhost:8000/categoriaMinciencias';
+  private categoria = 'https://prueba-error-back1.vercel.app/categoriaMinciencias';
   getCategoria(): Observable<any[]> {
     return this.http.get<any[]>(`${this.categoria}`);
   }
   //Plan de trabajo
-  private configplanTrabajo = 'http://localhost:8000/ConfiguracionPlanTrabajo';
+  private configplanTrabajo = 'https://prueba-error-back1.vercel.app/ConfiguracionPlanTrabajo';
   
   getconfigplanTrabajo(): Observable<any[]> {
     return this.http.get<any[]>(`${this.configplanTrabajo}`);
@@ -290,7 +290,7 @@ export class ProyectoyproductoService {
     );
   }
   
-  private registrarplanTrabajo = 'http://localhost:8000/planTrabajo';
+  private registrarplanTrabajo = 'https://prueba-error-back1.vercel.app/planTrabajo';
 
   creargetplanTrabajo(registro: any) {
     return this.http.post<any>(this.registrarplanTrabajo, registro);
@@ -300,7 +300,7 @@ export class ProyectoyproductoService {
     return this.http.put(`${this.registrarplanTrabajo}/${planTrabajo.id}`, planTrabajo);
 }
   
-  private planTrabajo = 'http://localhost:8000/mostrar-plan-trabajo';
+  private planTrabajo = 'https://prueba-error-back1.vercel.app/mostrar-plan-trabajo';
 
   getPlanTrabajo(): Observable<MostrarPlan[]> {
     return this.http.get<MostrarPlan[]>(`${this.planTrabajo}`);
@@ -311,7 +311,7 @@ export class ProyectoyproductoService {
   }
 
   //Trazabilidad
-  private trazabilidad = 'http://localhost:8000/trazabilidad';
+  private trazabilidad = 'https://prueba-error-back1.vercel.app/trazabilidad';
   getTrazabilidadData(): Observable<any> {
     return this.http.get<any>(this.trazabilidad);
   }
