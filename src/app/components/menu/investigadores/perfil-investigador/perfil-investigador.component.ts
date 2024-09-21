@@ -263,7 +263,7 @@ export class PerfilInvestigadorComponent implements OnInit {
 
     console.log('guardarDatos =>', tramiteGeneral);
 
-    this.investigadorService.actualizarInvestigador(formData).subscribe(
+    this.investigadorService.actualizarInvestigador(tramiteGeneral).subscribe(
       () => {
         Swal.fire({
           title: 'Registro Exitoso !!!',
