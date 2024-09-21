@@ -13,7 +13,9 @@
 table {
     width: 100%;
 }
-
+.mat-mdc-icon-button{
+  color: #6aaba0;
+}
 .titulo{
     display: flex;
     justify-content: space-evenly; /* Distribuye los elementos a lo largo del contenedor */

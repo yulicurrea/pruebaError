@@ -28,6 +28,7 @@ const routes: Routes = [
   {
     path: 'administrador',
     component: AdministradorComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'perfil', pathMatch: 'full' },
       { path: 'control', component: ControlComponent },

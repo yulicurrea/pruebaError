@@ -4,14 +4,14 @@ import { Observable } from 'rxjs';
 import { Estudiante, ParticipanteExterno } from '../modelo/proyectos';
 
 @Injectable({
-  providedIn: 'root' // Asegúrate de tener este providedIn en tu servicio
+  providedIn: 'root' 
 })
 
 export class ParticipantesExternosService {
   
   constructor(private http: HttpClient) { }
 
-  private apiParticipanteExterno = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/participantesExternos';
+  private apiParticipanteExterno = 'http://localhost:8000/participantesExternos';
 
   getParticipantesExternos(): Observable<ParticipanteExterno[]> {
       return this.http.get<any>(`${this.apiParticipanteExterno}`);

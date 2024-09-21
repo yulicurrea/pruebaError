@@ -1,48 +1,190 @@
+
+/* Estilos globales para el cuerpo del documento */
+body {
+  font-family: 'Roboto', sans-serif;   /* Fuente principal */
+  background-color:  #f0f3f5;   /* Color de fondo */
+  color: #34495e;         /* Color de texto */
+  margin: 0;
+  padding: 20px;
+}
+
+/* Estilos para el contenedor principal */
+.container {
+  max-width: 1000px;               /* Ancho máximo del contenedor */
+  margin: 0 auto;                  /* Centrado horizontal */
+  background-color: white;         /* Color de fondo */
+  border-radius: 10px;             /* Borde redondeado */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);   /* Sombra */
+  padding: 30px;                   /* Relleno interior */
+  display: flex;                   /* Contenido en línea */
+}
+
+/* Estilos para el contenedor de imágenes */
+.image-container {
+  width: 200px;                    /* Ancho fijo */
+  margin-right: 30px;              /* Margen derecho */
+  display: flex;                   /* Contenido en columna */
+  flex-direction: column;
+  align-items: center;             /* Alineación centrada */
+}
+
+/* Estilos para la imagen circular */
 .circular-image {
-  width: 10%; /* Ajusta el tamaño*/
-  height: auto; /* Mantiene la relación de aspecto */
-  border-radius: 50%;
-  overflow: hidden;
-  position: absolute;
-  top: 20%; /*  alinearlo verticalmente */
-  left: 10%; /* alinearlo horizontalmente */
-  border: 2px solid #ccc;
+  width: 150px;                    /* Tamaño de la imagen */
+  height: 150px;
+  border-radius: 50%;              /* Borde circular */
+  overflow: hidden;                /* Ocultar contenido sobrante */
+  margin-bottom: -20px;             /* Margen inferior */
+  border: 3px solid #f0f3f5  /* Borde con color primario */
 }
 
-.rounded-image {
-  width: 100%;
+.circular-image img {
+  width: 100%;                     /* Imagen ocupa todo el espacio */
   height: 100%;
-  object-fit: cover;
+  object-fit: cover;               /* Ajuste para cubrir */
 }
 
+/* Estilos para el botón de carga */
+.upload-button {
+  margin-bottom: 5px;             /* Margen inferior */
+}
+
+.upload-button button {
+  background-color: #6AABA0;       /* Color de fondo del botón */
+  color: white;                    /* Color de texto */
+  border: none;                    /* Sin borde */
+  width: 40px;                     /* Tamaño fijo */
+  height: 40px;
+  border-radius: 50%;              /* Borde circular */
+  font-size: 24px;                 /* Tamaño de fuente */
+  cursor: pointer;                 /* Cursor interactivo */
+  transition: background-color 0.3s ease;   /* Transición suave */
+}
+
+.upload-button button:hover {
+  background-color: #6AABA0;       /* Color de fondo al pasar el cursor */
+}
+
+/* Estilos para el formulario */
 .example-form {
-  min-width: 20%; /* Ajusta el ancho mínimo */
-  max-width: 40%; /* Ajusta el ancho máximo */
-  width: 90%; /* Ajusta el ancho */
-  position: absolute;
-  top: 20%; /* Ajustado para alinearlo verticalmente  */
-  left: 24%; /* Ajustado para alinearlo horizontalmente */
-  height: 50vh; /* Ajusta la altura en relación con el viewport */
-  max-width: 50%; /* Ajusta el ancho máximo */
-} 
-
-input {
-  width: 100%;
+  flex: 1;                         /* Ocupar espacio restante */
 }
 
+/* Estilos para los títulos */
+h2 {
+  color: #673ab7;    /* Color del título */
+  border-bottom: 2px solid #673ab7;   /* Borde inferior */
+  padding-bottom: 10px;            /* Espaciado inferior */
+  margin-top: 0;                   /* Sin margen superior */
+}
+
+/* Estilos para contenedores de entrada personalizados */
+.custom-input-container {
+  margin-bottom: 10px;             /* Margen inferior */
+}
+
+.custom-input-container label {
+  display: block;                  /* Mostrar como bloque */
+  margin-bottom: 5px;              /* Margen inferior */
+  font-weight: lighter;               /* Texto en negrita */
+  color: #34495e;        /* Color de texto */
+}
+
+.custom-input-container input,
+.custom-input-container mat-select {
+  width: 90%;                     /* Ancho completo */
+  padding: 10px;                   /* Relleno */
+  border: 1px solid #bdc3c7;   /* Borde con color de borde */
+  border-radius: 5px;              /* Borde redondeado */
+  font-size: 14px;                 /* Tamaño de fuente */
+}
+
+/* Estilos para los grupos de información personal y académica */
+.personal-info, .academic-info {
+  display: grid;                   /* Mostrar en cuadrícula */
+  grid-template-columns: repeat(2, 1fr);   /* Dos columnas iguales */
+  gap: 20px;                       /* Espaciado entre elementos */
+}
+
+/* Estilos generales para botones estilizados */
 .boton-estilizado {
-  background-color: #6AABA0; /* Color de fondo */
-  color: white; /* Color del texto */
-  padding: 10px 14px; /* Espaciado interno (vertical horizontal) */
-  border: none; /* Borde */
-  border-radius: 20px; /* Radio del borde */
-  cursor: pointer; /* Cursor al pasar por encima */
-  font-size: 14px; /* Tamaño de fuente */
+  padding: 10px 20px;              /* Relleno */
+  border: none;                    /* Sin borde */
+  border-radius: 5px;              /* Borde redondeado */
+  cursor: pointer;                 /* Cursor interactivo */
+  font-weight: bold;               /* Texto en negrita */
+  transition: background-color 0.3s ease;   /* Transición suave */
 }
 
-/* Estilo al pasar el cursor */
-.boton-estilizado:hover {
-  background-color: dimgrey;
+/* Estilos específicos para el botón de editar */
+.boton-estilizado.editar {
+  background-color: #673ab7;       /* Color de fondo */
+  color: white;                    /* Color de texto */
+  width: 100%;                     /* Ancho completo */
+  margin-top: 10px;                /* Margen superior */
 }
 
+.boton-estilizado.editar:hover {
+  background-color: #673ab7;       /* Color de fondo al pasar el cursor */
+}
 
+/* Estilos específicos para el botón de guardar */
+.boton-estilizado.guardar {
+  background-color: #6AABA0;       /* Color de fondo */
+  color: white;                    /* Color de texto */
+}
+
+.boton-estilizado.guardar:hover {
+  background-color: #6AABA0;       /* Color de fondo al pasar el cursor */
+}
+
+/* Estilos específicos para el botón de cancelar */
+.boton-estilizado.cancelar {
+  background-color: #673ab7;       /* Color de fondo */
+  color: white;                    /* Color de texto */
+}
+
+.boton-estilizado.cancelar:hover {
+  background-color: #673ab7;       /* Color de fondo al pasar el cursor */
+}
+
+.boton-estilizado.pregrado {
+  background-color: #6AABA0;       /* Color de fondo */
+  color: white;                    /* Color de texto */
+}
+
+.boton-estilizado.pregrado:hover {
+  background-color: #6AABA0;       /* Color de fondo al pasar el cursor */
+}
+.boton-estilizado.posgrado{
+  background-color: #6AABA0;       /* Color de fondo */
+  color: white;                    /* Color de texto */
+}
+
+.boton-estilizado.posgrado:hover {
+  background-color: #6AABA0;       /* Color de fondo al pasar el cursor */
+}
+/* Estilos para el grupo de botones */
+.button-group {
+  display: flex;                   /* Mostrar en línea */
+  justify-content: flex-end;       /* Alinear a la derecha */
+  gap: 2px;                       /* Espaciado entre botones */
+  margin-top: 10px;                /* Margen superior */
+}
+
+/* Estilos responsivos para dispositivos móviles */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;        /* Cambiar a columna */
+  }
+
+  .image-container {
+    width: 100%;                   /* Ancho completo */
+    margin-right: 0;               /* Sin margen derecho */
+    margin-bottom: 30px;           /* Margen inferior */
+  }
+
+  .personal-info, .academic-info {
+    grid-template-columns: 1fr;    /* Una columna */
+  }
+}

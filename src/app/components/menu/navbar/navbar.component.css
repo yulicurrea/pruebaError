@@ -1,126 +1,258 @@
+body {
+  font-family: 'Roboto', sans-serif; /* Define la fuente Roboto como fuente principal */
+  background-color: #f0f4f8; /* Color de fondo claro */
+  margin: 0; /* Elimina el margen predeterminado */
+  padding: 0; /* Elimina el relleno predeterminado */
+}
+
 .example-card {
-  max-width: 1000px;
-  height: 1500px; /* Cambia el valor según sea necesario */
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  background-color: #fff;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  gap: 20px;
+  max-width: 1200px; /* Ancho máximo de 1200px */
+  margin: 40px auto; /* Centra el elemento horizontalmente y agrega un margen superior e inferior de 40px */
+  background-color: #ffffff; /* Fondo blanco */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Sombra con desenfoque */
+  border-radius: 12px; /* Esquinas redondeadas */
+  overflow: hidden; /* Oculta el contenido que se desborda */
 }
 
-img[mat-card-image] {
-  width: 320px !important;
-  height: 190px !important;
+.checkbox-container {
+  display: flex; /* Usa el modelo de caja flexible */
+  align-items: center; /* Alinea los elementos al centro verticalmente */
+  margin-left: 0; /* Ajusta el margen izquierdo según sea necesario */
+  position: relative; /* Posicionamiento relativo */
+  left: 0; /* Ajusta la posición izquierda */
 }
 
+.mat-tab-group {
+  width: 100%; /* Ancho completo */
+}
 
+.login {
+  width: 100%; /* Ancho completo */
+  max-width: 350px; /* Ancho máximo de 350px */
+  text-align: center; /* Centra el texto */
+  padding: 40px; /* Relleno de 40px */
+  margin: 0 auto; /* Centra el elemento horizontalmente */
+  background-color: #f8f9fa; /* Fondo claro */
+  border-radius: 8px; /* Esquinas redondeadas */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra con desenfoque */
+}
+
+.login h3 {
+  color: #2c3e50; /* Color del texto */
+  font-size: 24px; /* Tamaño de fuente */
+  margin-bottom: 20px; /* Margen inferior */
+}
+
+.ancho {
+  width: 100%; /* Ancho completo */
+}
+
+.button {
+  height: 44px; /* Altura del botón */
+  margin-top: 20px; /* Margen superior */
+  text-transform: uppercase; /* Texto en mayúsculas */
+  font-weight: 500; /* Grosor de la fuente */
+  letter-spacing: 0.5px; /* Espaciado entre letras */
+}
+
+.tab-content {
+  padding: 40px; /* Relleno */
+}
 
 .example-large-box {
-  display: flex;
+  display: flex; /* Usa el modelo de caja flexible */
+  align-items: stretch; /* Estira los elementos alinear */
+  background-color: #f8f9fa; /* Fondo claro */
+  border-radius: 12px; /* Esquinas redondeadas */
+  overflow: hidden; /* Oculta el contenido que se desborda */
+  margin-bottom: 30px; /* Margen inferior */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra con desenfoque */
+}
+
+.example-large-box img {
+  width: 30%; /* Ancho del 30% */
+  object-fit: cover; /* Cubre el área del contenedor */
 }
 
 .example-large-box .content {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  height: 200px; /* Ajusta el valor según sea necesario */
+  padding: 50px; /* Relleno */
+  flex: 1; /* Flexibilidad del contenido */
+  display: flex; /* Usa el modelo de caja flexible */
+  flex-direction: column; /* Dirección de la caja flexible en columna */
+  justify-content: center; /* Centra el contenido verticalmente */
+}
+
+.example-large-box h2 {
+  color: #2c3e50; /* Color del texto */
+  font-size: 24px; /* Tamaño de fuente */
+  margin-bottom: 15px; /* Margen inferior */
 }
 
 .example-large-box .info {
-  font-size: 13.5px;
-  margin-top: 10px; /* Ajusta el valor según sea necesario */
+  font-size: 16px; /* Tamaño de fuente */
+  line-height: 1.6; /* Altura de la línea */
+  color: #34495e; /* Color del texto */
 }
 
 .icons-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  margin-left: 20px; /* Ajusta el valor según sea necesario */
+  display: grid; /* Usa el modelo de cuadrícula */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Plantilla de columnas responsivas */
+  gap: 30px; /* Espacio entre elementos */
+  padding: 20px 0; /* Relleno vertical */
 }
 
-.body{
-  display: flex;
-  justify-content: center;
-  height: 100%;
-  align-items: center;
-  background-color: #6AABA0;
-}
-.login{
-  width: 100%;
-  max-width: 300px;
-  text-align: center;
-  flex: 1;  /*Distribuye el espacio disponible en partes iguales */
-  padding: 10px; /* Añade espacio entre los divs si lo deseas */
-}
-.ancho{
-  width: 80%;
-}
-.button{
-  height: 50px;
-}
-.example-small-box, .example-large-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 16px;
-  padding: 16px;
-  border-radius: 8px;
-}
-.example-small-box {
-  height: 100px;
-  width: 100px;
-}
-.example-large-box {
-  height: 300px;
-  width: 300px;
-}
-.mat-tab{
-  width: 1000px;
-  height: 5000px;
-}
-.titulo{
-  display: flex;
-  justify-content: space-evenly; /* Distribuye los elementos a lo largo del contenedor */
-  margin-top: 60px;
+.icon-item {
+  background-color: #fff; /* Fondo blanco */
+  padding: 25px; /* Relleno */
+  border-radius: 8px; /* Esquinas redondeadas */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra con desenfoque */
+  transition: all 0.3s ease; /* Transición suave */
 }
 
-.titulo2{
-  display: flex;
-  justify-content: space-evenly; /* Distribuye los elementos a lo largo del contenedor */
-  margin-top: 5px;
+.icon-item:hover {
+  transform: translateY(-5px); /* Mueve el elemento hacia arriba al pasar el mouse */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra más intensa */
 }
 
-.mat-form-field input {
-  width: 250px; /* Ajusta este valor según el ancho deseado para los campos de entrada */
+.icon-item .mat-icon {
+  font-size: 25px; /* Tamaño de fuente */
+  color: #6AABA0; /* Color del icono */
+  margin-bottom: 15px; /* Margen inferior */
+}
+
+.icon-item h4 {
+  font-size: 18px; /* Tamaño de fuente */
+  color: #2c3e50; /* Color del texto */
+  margin-bottom: 10px; /* Margen inferior */
+}
+
+.icon-item p {
+  font-size: 14px; /* Tamaño de fuente */
+  color: #7f8c8d; /* Color del texto */
+  line-height: 1.6; /* Altura de la línea */
+}
+
+.mat-accordion {
+  width: 100%; /* Ancho completo */
+}
+
+.mat-expansion-panel {
+  margin-bottom: 15px; /* Margen inferior */
+  border-radius: 8px !important; /* Esquinas redondeadas */
+  overflow: hidden; /* Oculta el contenido que se desborda */
+}
+
+.mat-expansion-panel-header {
+  height: auto !important; /* Altura automática */
+  padding: 16px !important; /* Relleno */
+  background-color: #f8f9fa; /* Fondo claro */
+}
+
+.investigador-header {
+  display: flex; /* Usa el modelo de caja flexible */
+  align-items: center; /* Alinea los elementos al centro verticalmente */
+  width: 100%; /* Ancho completo */
+}
+
+.investigador-img {
+  width: 50px; /* Ancho de la imagen */
+  height: 50px; /* Altura de la imagen */
+  border-radius: 50%; /* Imagen circular */
+  margin-right: 15px; /* Margen derecho */
+  object-fit: cover; /* Cubre el área del contenedor */
+}
+
+.investigador-info {
+  flex: 1; /* Flexibilidad del contenido */
+}
+
+.investigador-nombre {
+  font-weight: 500; /* Grosor de la fuente */
+  color: #2c3e50; /* Color del texto */
+  margin-bottom: 4px; /* Margen inferior */
+}
+
+.investigador-correo {
+  font-size: 14px; /* Tamaño de fuente */
+  color: #7f8c8d; /* Color del texto */
+}
+.educacion {
+  display: flex; /* Utiliza el modelo de caja flexible para la disposición de los elementos hijos */
+  flex-wrap: wrap; /* Permite que los elementos hijos se envuelvan en varias líneas si es necesario */
+  gap: 20px; /* Espacio entre los elementos hijos */
+}
+
+.educacion-column {
+  flex: 1; /* Los elementos hijos se expanden para ocupar el espacio disponible */
+  min-width: 250px; /* Ancho mínimo de los elementos hijos */
+}
+
+.educacion-title {
+  font-size: 1.1em; /* Tamaño de fuente del título */
+  color: #333; /* Color del texto del título */
+  margin-bottom: 10px; /* Margen inferior del título */
+  border-bottom: 1px solid #6AABA0; /* Borde inferior del título */
+  padding-bottom: 5px; /* Relleno inferior del título */
+}
+
+.educacion-list {
+  list-style-type: none; /* Elimina los estilos de lista predeterminados (como los puntos) */
+  padding: 0; /* Elimina el relleno predeterminado */
+}
+
+.educacion-list li {
+  margin-bottom: 15px; /* Margen inferior de los elementos de la lista */
+}
+
+.educacion-list li strong {
+  display: block; /* Muestra el texto en un bloque separado */
+  margin-bottom: 5px; /* Margen inferior */
+}
+
+.educacion-list li div {
+  margin-bottom: 3px; /* Margen inferior */
+  color: #555; /* Color del texto */
+}
+
+.registro-container {
+  background-color: #fff; /* Fondo blanco */
+  border-radius: 12px; /* Esquinas redondeadas */
+  padding: 30px; /* Relleno */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra con desenfoque */
+  max-width: 800px; /* Ancho máximo */
+  margin: 0 auto; /* Centra el elemento horizontalmente */
+}
+
+.registro-container h2 {
+  color: #2c3e50; /* Color del texto */
+  margin-bottom: 20px; /* Margen inferior */
+  text-align: center; /* Centra el texto */
 }
 
 .reg {
-  display: flex;
-  justify-content: center;
-  margin-left: 70px;
+  display: grid; /* Usa el modelo de cuadrícula */
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas de igual tamaño */
+  gap: 20px; /* Espacio entre elementos */
+  margin-bottom: 30px; /* Margen inferior */
 }
-.form-field-spacing {
-  display: inline-block; /* Mantiene los elementos en línea */
-  margin-right: 50px; /* Ajusta este valor según el espacio deseado entre los mat-form-field */
-  font-size: initial; /* Restaura el tamaño de fuente a su valor inicial */
-  width: 200px;
+
+.mat-form-field {
+  width: 100%; /* Ancho completo */
 }
-.reg2 {
-  display: flex;
-  justify-content: center;
-  margin-left: 180px;
+
+.error-message {
+  color: #e74c3c; /* Color del texto */
+  font-size: 12px; /* Tamaño de fuente */
+  margin-top: 5px; /* Margen superior */
 }
-.form-field-spacing2 {
-  display: inline-block; /* Mantiene los elementos en línea */
-  margin-right: 200px; /* Ajusta este valor según el espacio deseado entre los mat-form-field */
-  font-size: initial; /* Restaura el tamaño de fuente a su valor inicial */
-  width: 200px;
-}
-.anchoGuardar{
-  width: 150px;
+
+.anchoGuardar {
+  display: block; /* Muestra como un bloque */
+  width: 200px; /* Ancho */
+  margin: 30px auto 0; /* Centra el elemento horizontalmente y agrega margen superior */
+  padding: 12px; /* Relleno */
+  font-size: 16px; /* Tamaño de fuente */
+  font-weight: 500; /* Grosor de la fuente */
+  text-transform: uppercase; /* Texto en mayúsculas */
+  letter-spacing: 0.5px; /* Espaciado entre letras */
 }

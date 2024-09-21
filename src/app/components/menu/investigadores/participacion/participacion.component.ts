@@ -40,10 +40,10 @@ export class ParticipacionComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  displayedColumns: string[] = ['tipo', 'titulo', 'fecha', 'estado','updated_at','created_at','acciones'];
+  displayedColumns: string[] = ['tipo', 'titulo', 'estado','updated_at','created_at','acciones'];
   dataSource = new MatTableDataSource<any>([]);
   usuarioSesion!: UsuarioSesion;
-
+  tablaVacia: boolean = false;
   proyectosData: any[] =[];
   productosData: any[] =[];
 
@@ -85,7 +85,6 @@ export class ParticipacionComponent {
         ...proyecto,
         tituloProducto: proyecto.titulo,
         etapa: proyecto.etapa,
-        fecha: proyecto.fecha,
         tipo: 'Proyecto',
         updated_at: proyecto.updated_at,
         created_at: proyecto.created_at,
@@ -96,7 +95,6 @@ export class ParticipacionComponent {
         ...producto,
         tipo: 'Producto',
         tituloProducto: producto.tituloProducto || '', // Asegurar que todas las propiedades definidas en la interfaz Producto estén presentes
-        fecha: producto.fecha || '',
         estadoProducto: producto.estado_producto || '',
         tipologiaProducto: producto.tipologiaProducto || '',
         updated_at: producto.updated_at,
@@ -108,6 +106,7 @@ export class ParticipacionComponent {
       
       // Asignar los datos combinados a dataSource
       this.dataSource.data = combinedData;
+      this.tablaVacia = combinedData.length === 0;
       //obj.sort((a, b) => (a > b ? -1 : 1))
     });
   }

@@ -6,14 +6,15 @@ import { CommonModule } from '@angular/common';
 import { AutenticacionService } from '../../services/autenticacion';
 import { InvestigadorService} from "../../services/registroInvestigador";
 import { MatSelectModule } from '@angular/material/select';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialog, } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { UsuarioSesion } from '../../modelo/usuario';
 import Swal from 'sweetalert2';
-
+import { MatIconModule } from '@angular/material/icon';
+import { CargaEstudiosComponent } from './carga-estudios/carga-estudios.component';
 @Component({
   selector: 'app-perfil-administrador',
   templateUrl: './perfil-administrador.component.html',
@@ -30,11 +31,12 @@ import Swal from 'sweetalert2';
     MatButtonModule,
     MatChipsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatIconModule
   ],
 })
 export class PerfilAdministradorComponent  implements OnInit {
-  userData: any;
+  userData: any; 
   firstFormGroup: any;
   tipodpcumento: string[] = [
     'CC',
@@ -43,45 +45,129 @@ export class PerfilAdministradorComponent  implements OnInit {
     'RC',
     'PA'
   ];
+  lineainvestigacion1: string[] = [
+    'Ingeniería de software y sociedad',
+    'Ingeniería para la salud y el desarrollo biológico',
+    'Ingeniería y educación',
+    'Ingeniería para la sostenibilidad de sistemas naturales'
+  ]; 
+    unidadAcademica1: string [] =[
+      'Facultad de Ingeniería',
+      'Facultad de Ciencias',
+      'Facultad de Educación',
+    ];
   inputDeshabilitado: boolean = true;
-  imagenURL: string = 'https://ps.w.org/simple-user-avatar/assets/icon-256x256.png';
-  urlDeLaImagen: string = this.imagenURL;
+  imagenUrl: string | ArrayBuffer | null = null;
+  selectedFile: File | null = null;
   usuarioSesion!: UsuarioSesion;
+  pregradoData: any[] = [];
+  posgradoData: any[] = [];
 
   constructor(
     private autenticacionService: AutenticacionService, 
     private investigadorService: InvestigadorService,
     private formBuilder: FormBuilder,
-  ) { }
-
-  ngOnInit(): void {
-    this.obtenerDatosUsuarioSesion();
-    this.investigadorService.getUsuarioDetail(this.usuarioSesion.numerodocumento).subscribe(
-      (data) => {
-        this.userData = data;
-        this.firstFormGroup = this.formBuilder.group({
-          numerodocumento: [{value: this.userData?.numerodocumento, disabled: true }, [Validators.required]],
-          nombre: [{value: this.userData.nombre, disabled: this.inputDeshabilitado}, [Validators.required]],
-          apellidos: [{value: this.userData.apellidos, disabled: this.inputDeshabilitado },[Validators.required]],
-          correo: [{value: this.userData?.correo, disabled: this.inputDeshabilitado },[Validators.required]],
-          tipodocumento: [{value: this.userData?.tipodocumento, disabled: this.inputDeshabilitado }, [Validators.required]],
-          escalofonodocente: [{value: this.userData?.escalofonodocente, disabled: this.inputDeshabilitado },[Validators.required]],
-          horariosestrictos: [{value: this.userData?.horasestricto, disabled: this.inputDeshabilitado},[Validators.required]],
-          horariosformacion: [{value: this.userData?.horasformacion, disabled: this.inputDeshabilitado},[Validators.required]],
-          lineainvestigacion: [{value: this.userData?.lineainvestigacion, disabled: this.inputDeshabilitado},[Validators.required]],
-          unidadacademica: [{value: this.userData?.unidadAcademica, disabled: this.inputDeshabilitado},[Validators.required]],
+    public dialog: MatDialog,
+  ) { 
+    this.firstFormGroup = this.formBuilder.group({
+      numerodocumento: [{ value: '', disabled: true }, Validators.required],
+      nombre: [{ value: '', disabled: this.inputDeshabilitado }, [Validators.required, Validators.pattern('[A-Za-z ]+')]],
+      apellidos: [{ value: '', disabled: this.inputDeshabilitado }, [Validators.required, Validators.pattern('[A-Za-z ]+')]],
+      correo: [{ value: '', disabled: this.inputDeshabilitado },[ Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@unbosque\.edu\.co')]],
+      tipodocumento: [{ value: '', disabled: this.inputDeshabilitado }, Validators.required],
+      escalofonodocente: [{ value: '', disabled: this.inputDeshabilitado }, [Validators.required, Validators.pattern('[A-Za-z ]+')]],
+      horasestricto: [{ value: '', disabled: this.inputDeshabilitado }, [Validators.required, Validators.pattern('^[0-9]*$')]],
+      horasformacion: [{ value: '', disabled: this.inputDeshabilitado }, [Validators.required, Validators.pattern('^[0-9]*$')]],
+      lineainvestigacion: [{ value: '', disabled: this.inputDeshabilitado },Validators.required],
+      unidadAcademica: [{ value: '', disabled: this.inputDeshabilitado },Validators.required],
+      imagen: [{ value: '', disabled: this.inputDeshabilitado }]
+    });  
+  }
+ ngOnInit(): void {
+  console.log(this.userData);
+  console.log(this.lineainvestigacion1);
+  this.obtenerDatosUsuarioSesion();
+  this.obtenerPregrado();
+  this.obtenerPosgrado();
+  this.investigadorService.getUsuarioDetail(this.usuarioSesion.numerodocumento).subscribe(
+    (data) => {
+      this.userData = data;
+      if (this.userData) {
+        this.firstFormGroup.setValue({
+          numerodocumento: this.userData?.numerodocumento || '',
+          nombre: this.userData.nombre || '',
+          apellidos: this.userData.apellidos || '',
+          correo: this.userData?.correo || '',
+          tipodocumento: this.userData?.tipodocumento || '',
+          escalofonodocente: this.userData?.escalofonodocente || '',
+          horasestricto: this.userData?.horasestricto || '0',
+          horasformacion: this.userData?.horasformacion || '0',
+          lineainvestigacion: this.userData?.lineainvestigacion || '',
+          unidadAcademica: this.userData?.unidadAcademica || '',
+          imagen: this.userData.imagen?.imagen || ''
         });
+        this.imagenUrl = this.userData.imagen?.imagen;
+
+        if (this.inputDeshabilitado) {
+          this.firstFormGroup.disable();
+        } else {
+          this.firstFormGroup.enable();
+          this.firstFormGroup.controls['numerodocumento'].disable();
+        }
+      } else {
+        console.error('userData es undefined o null');
+      }
+    },
+    (error) => {
+      console.error('Error al obtener usuarios:', error);
+    }
+  );
+}
+defaultImageUrl: string = 'assets/img/imagen.jpg';
+
+onFileSelected(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    if (!file.type.startsWith('image')) {
+      alert('Por favor, seleccione un archivo de imagen válido.');
+      return;
+    }
+    this.selectedFile = file; // Asigna el archivo seleccionado a selectedFile
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagenUrl = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+triggerFileInput(): void {
+  const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+  fileInput.click();
+}
+  obtenerDatosUsuarioSesion(){
+    this.usuarioSesion = this.autenticacionService.obtenerDatosUsuario();
+  }
+  obtenerPregrado(){
+    this.investigadorService.obtenerPregrado().subscribe(
+      (data) => {
+        this.pregradoData = data.filter((x: { Investigador_id: string; }) => x.Investigador_id == this.usuarioSesion.numerodocumento);
       },
       (error) => {
         console.error('Error al obtener usuarios:', error);
       }
     );
   }
-
-  obtenerDatosUsuarioSesion(){
-    this.usuarioSesion = this.autenticacionService.obtenerDatosUsuario();
+  obtenerPosgrado(){
+    this.investigadorService.obtenerPosgrado().subscribe(
+      (data) => {
+        this.posgradoData = data.filter((x: { Investigador_id: string; }) => x.Investigador_id == this.usuarioSesion.numerodocumento);
+      },
+      (error) => {
+        console.error('Error al obtener usuarios:', error);
+      }
+    );
   }
-
   get numerodocumento() {
     return this.firstFormGroup.get('numerodocumento');
   }
@@ -100,18 +186,40 @@ export class PerfilAdministradorComponent  implements OnInit {
   get escalofonodocente() {
     return this.firstFormGroup.get('escalofonodocente');
   }
-  get horariosestrictos() {
-    return this.firstFormGroup.get('horariosestrictos');
+  get horasestricto() {
+    return this.firstFormGroup.get('horasestricto');
   }
-  get horariosformacion() {
-    return this.firstFormGroup.get('horariosformacion');
+  get horasformacion() {
+    return this.firstFormGroup.get('horasformacion');
   }
   get lineainvestigacion() {
     return this.firstFormGroup.get('lineainvestigacion');
   }
-  get unidadacademica() {
-    return this.firstFormGroup.get('unidadacademica');
+  get unidadAcademica() {
+    return this.firstFormGroup.get('unidadAcademica');
   }
+  openDialogoDetalle(tipo:string): void {
+    const dialogRef = this.dialog.open(CargaEstudiosComponent, {
+      data: {
+        title: 'Nuevo '+tipo,
+        type:tipo,
+        numerodocumento: this.usuarioSesion.numerodocumento,
+      },
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        Swal.fire({
+          title: 'Registro Exitoso !!!',
+          text: 'Se ha registrado el registro de estudio',
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        });
+        console.log('result',result);
+      } 
+    });
+  }
+
 
   activarInput() {
     this.inputDeshabilitado = false;
@@ -127,9 +235,13 @@ export class PerfilAdministradorComponent  implements OnInit {
     if (this.firstFormGroup.valid) {
       const tramiteGeneral = this.firstFormGroup.value;
       tramiteGeneral.numerodocumento = this.usuarioSesion.numerodocumento;
+  
+      if (this.selectedFile) {
+        tramiteGeneral.imagen = this.selectedFile;
+      }
       console.log(' guardarDatos => ',tramiteGeneral);
       this.investigadorService.actualizarInvestigador(tramiteGeneral).subscribe(
-        (resp) => {
+        () => {
           Swal.fire({
             title: 'Registro Exitoso !!!',
             text: 'Se ha editado el perfil',
@@ -137,10 +249,10 @@ export class PerfilAdministradorComponent  implements OnInit {
             confirmButtonText: 'Aceptar'
           });
           this.inputDeshabilitado = true;
-          this.ngOnInit();
+          this.firstFormGroup.disable();
         },
         (error) => {
-          console.error('Error al notificar:', error);
+          console.error('Error al actualizar el investigador:', error);
         }
       );
     }

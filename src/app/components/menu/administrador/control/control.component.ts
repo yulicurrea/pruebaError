@@ -29,7 +29,7 @@ import { AutenticacionService } from '../../services/autenticacion';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { DialogoDetalleComponent } from './dialogo-detalle/dialogo-detalle.component';
 
-@Component({
+@Component({ 
   selector: 'app-control',
   templateUrl: './control.component.html',
   styleUrls: ['./control.component.css'],
@@ -84,6 +84,7 @@ export class ControlComponent {
 
   proyectosData: any[] = [];
   productosData: any[] = [];
+  
 
   constructor(
     private investigadorService: InvestigadorService, 
@@ -340,6 +341,13 @@ export class ControlComponent {
     );
     
     
+  }
+  getNombreCompleto(id: string | number, lista: any[]): string {
+    const persona = lista.find(u => u.numerodocumento === id || u.id === id);
+    return persona ? `${persona.nombre} ${persona.apellidos}` : String(id);  
+  }
+  getNombreLider(investigadorId: number): string {
+    return this.getNombreCompleto(investigadorId, this.usuarios);
   }
 
   obtenerEntregableProyecto(){

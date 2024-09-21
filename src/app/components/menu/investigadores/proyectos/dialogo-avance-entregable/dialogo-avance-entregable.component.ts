@@ -13,39 +13,33 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ProyectoyproductoService } from '../../../services/proyectoyproducto';
 import * as moment from 'moment';
 import { MatRadioModule } from '@angular/material/radio';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { InvestigadorService } from '../../../services/registroInvestigador';
 import { UsuarioSesion } from '../../../modelo/usuario';
 import { AutenticacionService } from '../../../services/autenticacion';
 
-@Component({
-  selector: 'app-dialogo-avance-entregable',
-  standalone: true,
-  templateUrl: './dialogo-avance-entregable.component.html',
-  styleUrls: ['./dialogo-avance-entregable.component.css'],
-  imports: [
-    MatIconModule,
-    MatButtonModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    NgFor,
-    MatDatepickerModule,
-    CommonModule,
-    MatSlideToggleModule,
-    MatTabsModule,
-    MatRadioModule,
-    FormsModule,
-    AsyncPipe,
-    HttpClientModule,
-    MatListModule,
-    MatTooltipModule
-  ],
-})
+@Component({ selector: 'app-dialogo-avance-entregable',
+    standalone: true,
+    templateUrl: './dialogo-avance-entregable.component.html',
+    styleUrls: ['./dialogo-avance-entregable.component.css'], imports: [MatIconModule,
+        MatButtonModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        NgFor,
+        MatDatepickerModule,
+        CommonModule,
+        MatSlideToggleModule,
+        MatTabsModule,
+        MatRadioModule,
+        FormsModule,
+        AsyncPipe,
+        MatListModule,
+        MatTooltipModule],  }) //providers: [provideHttpClient(withInterceptorsFromDi())]
 export class DialogoAvanceEntregableComponent implements OnInit {
 
   buttonTitle!: string;

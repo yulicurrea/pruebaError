@@ -1,78 +1,97 @@
-<div class="circular-image">
-    <img [src]="urlDeLaImagen" alt="Imagen" class="rounded-image" />
-</div>
+<div class="container">
+    <div class="image-container">
+        <div class="circular-image">
+            <img [src]="imagenUrl || defaultImageUrl" alt="Imagen del Investigador">
+        </div>
+        <div class="upload-button">
+            <input type="file" id="fileInput" (change)="onFileSelected($event)" hidden accept="image/*">
+            <button *ngIf="!inputDeshabilitado" type="button" (click)="triggerFileInput()">+</button>
+        </div>
+        <div class="button-group">
+            <button *ngIf="!inputDeshabilitado" class="boton-estilizado guardar" (click)="guardarDatos()" [disabled]="firstFormGroup.invalid">Guardar</button>
+            <button *ngIf="!inputDeshabilitado" class="boton-estilizado cancelar" (click)="desactivarInput()">Cancelar</button>
+        </div>
+
+        <button *ngIf="inputDeshabilitado" class="boton-estilizado editar" (click)="activarInput()">Editar Perfil</button>
+    </div>
 
 <form class="example-form" [formGroup]="firstFormGroup">
- 
     <!-- Información Personal -->
     <h2>Información Personal</h2>
     <div class="personal-info">
-        <mat-form-field class="">
-            <input matInput [disabled]="true" formControlName="dd">
-        </mat-form-field>
-        <mat-form-field class="">
-            <input matInput [disabled]="true" formControlName="ss">
-        </mat-form-field>
-        <mat-form-field class="">
-            <input matInput [disabled]="true" formControlName="dd">
-        </mat-form-field>
-        <mat-form-field class="">
-            <mat-label>Nombres</mat-label>
-            <input matInput formControlName="nombre">
-        </mat-form-field>
-        <mat-form-field class="">
-            <mat-label>Apellidos</mat-label>
-            <input matInput formControlName="apellidos">
-        </mat-form-field>
-        <mat-form-field >
-            <mat-label>Tipo de documento</mat-label>
-            <mat-select panelClass="matRole" [value]="userData.tipodocumento" formControlName="tipodocumento">
+        <div class="custom-input-container">
+            <label for="tipodocumento">Tipo de documento</label>
+            <mat-select panelClass="matRole" [value]="userData?.tipodocumento" formControlName="tipodocumento">
                 <mat-option *ngFor="let data of tipodpcumento" [value]="data">
                     {{data}}
                 </mat-option>
             </mat-select>
-        </mat-form-field>
-        <mat-form-field class="">
-            <mat-label>Numero de documento</mat-label>
-            <input matInput formControlName="numerodocumento">
-        </mat-form-field>
-        <mat-form-field class="">
-            <mat-label>Correo</mat-label>
-            <input matInput formControlName="correo">
-        </mat-form-field>
+        </div>
+        <div class="custom-input-container"> 
+            <label for="numerodocumento">Número de documento</label>
+            <input matInput formControlName="numerodocumento">        
+        </div>
+        <div class="custom-input-container">
+            <label for="nombre">Nombres</label>
+            <input matInput type="text" id="nombre" placeholder="Ingrese su nombre" formControlName="nombre">
+            <mat-error *ngIf="firstFormGroup.get('nombre').invalid">
+                Por favor ingrese solo letras (sin números ni caracteres especiales).
+            </mat-error>
+        </div>      
+        <div class="custom-input-container">
+            <label for="apellidos">Apellidos</label>
+            <input matInput type="text" id="apellidos" placeholder="Ingrese sus apellidos" formControlName="apellidos">
+            <mat-error *ngIf="firstFormGroup.get('apellidos').hasError('pattern')">
+                Por favor ingrese solo letras y espacios (sin números ni caracteres especiales).
+            </mat-error> 
+        </div>
+        <div class="custom-input-container">
+            <label for="correo">Correo</label>
+            <input matInput type="email" id="correo" placeholder="Ingrese su correo" formControlName="correo">
+            <mat-error *ngIf="firstFormGroup.get('correo').hasError('pattern')">
+                Por favor ingrese un correo electrónico válido que termine en &#64;unbosque.edu.co.
+            </mat-error>
+        </div>               
     </div>
 
     <!-- Información Académica -->
     <h2>Información Académica</h2>
     <div class="academic-info">
-        <mat-form-field class="example-full-width">
-            <mat-label>Escalofon Docente</mat-label>
-            <input matInput formControlName="escalofonodocente">
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-            <mat-label>Horarios Estricto</mat-label>
-            <input matInput formControlName="horariosestrictos">
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-            <mat-label>Horarios Formación</mat-label>
-            <input matInput formControlName="horariosformacion">
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-            <mat-label>Línea Investigación</mat-label>
-            <input matInput formControlName="lineainvestigacion">
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-            <mat-label>Unidad Academica</mat-label>
-            <input matInput formControlName="unidadacademica">
-        </mat-form-field>
+        <div class="custom-input-container">
+            <label for="lineainvestigacion">Línea Investigación</label>
+            <mat-select panelClass="matRole" [value]="userData?.lineainvestigacion" formControlName="lineainvestigacion">
+            <mat-option *ngFor="let data of lineainvestigacion1" [value]="data">
+                {{data}}
+            </mat-option>
+            </mat-select>
+        </div>
+        <div class="custom-input-container">
+            <label for="unidadAcademica">Unidad Académica</label>
+                <mat-select panelClass="matRole" [value]="userData?.unidadAcademica" formControlName="unidadAcademica">
+                <mat-option *ngFor="let data of unidadAcademica1" [value]="data">
+                    {{data}}
+                </mat-option>
+            </mat-select>
+        </div>  
+        <div class="custom-input-container">
+            <label for="escalofonodocente">Escalofon Docente</label>
+            <input matInput type="text" id="escalofonodocente" placeholder="Ingrese su escalafon docente" formControlName="escalofonodocente">
+            <mat-error *ngIf="firstFormGroup.get('escalofonodocente').hasError('pattern')">
+                Por favor ingrese solo letras y espacios (sin números ni caracteres especiales).
+            </mat-error>
+        </div>
+        <div class="custom-input-container">
+            <label for="horasestricto">Horarios Estricto</label>
+            <input matInput type="number" id="horasestricto" placeholder="Ingrese horas estricto" required formControlName="horasestricto" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+        </div>
+        <div class="custom-input-container">
+            <label for="horasformacion">Horarios Formación</label>
+            <input matInput type="number" id="horasformacion" placeholder="Ingrese horas de formación" required formControlName="horasformacion" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+        </div>
+            
     </div>
 
-    <!-- Botones -->
-    <div class="button-group">
-        <button *ngIf="!inputDeshabilitado" class="boton-estilizado" (click)="guardarDatos()" [disabled]="firstFormGroup.invalid">Guardar</button>
-        <button *ngIf="inputDeshabilitado" class="boton-estilizado" (click)="activarInput()">Editar Perfil</button>
-        &nbsp;<button *ngIf="!inputDeshabilitado" class="boton-estilizado" (click)="desactivarInput()">Cancelar</button>
-    </div>
+
     <br>
     <h2>Información Profesional</h2>
     <div class="academic-info">
@@ -94,8 +113,7 @@
         </div>
     </div>
     <br>&nbsp;
-    <button class="boton-estilizado" (click)="openDialogoDetalle('Pregrado')">Cargar Pregrado</button>&nbsp;
-    <button class="boton-estilizado" (click)="openDialogoDetalle('Posgrado')">Cargar Posgrado</button>
+    <button class="boton-estilizado pregrado" (click)="openDialogoDetalle('Pregrado')">Cargar Pregrado</button>&nbsp;
+    <button class="boton-estilizado posgrado" (click)="openDialogoDetalle('Posgrado')">Cargar Posgrado</button>
     <div class="academic-info"><br><br></div>
-
 </form>

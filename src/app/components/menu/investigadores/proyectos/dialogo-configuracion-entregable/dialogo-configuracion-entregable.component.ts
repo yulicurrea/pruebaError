@@ -54,6 +54,7 @@ export class DialogoConfiguracionEntregableComponent implements OnInit {
     'Espera'
   ];
 
+  fechaMinima: Date;
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: {
       title: string,
@@ -65,7 +66,9 @@ export class DialogoConfiguracionEntregableComponent implements OnInit {
     private proyectoyproductoService: ProyectoyproductoService,
     private investigatorService: InvestigadorService,
     private readonly dialogRef: MatDialogRef<DialogoConfiguracionEntregableComponent>
-  ) { }
+  ) { 
+    this.fechaMinima = new Date();
+  }
 
   ngOnInit(): void {
     this.title = this.dialogData.title;

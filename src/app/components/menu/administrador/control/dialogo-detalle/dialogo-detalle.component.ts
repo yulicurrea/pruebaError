@@ -17,6 +17,8 @@ import { EstudiantesService } from '../../../services/estudiantes';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatExpansionModule } from '@angular/material/expansion';
+
 
 @Component({
   selector: 'app-dialogo-detalle',
@@ -26,6 +28,7 @@ import { MatNativeDateModule } from '@angular/material/core';
   imports: [
     MatDialogModule,
     MatButtonModule,
+    MatExpansionModule,
     CommonModule,
     MatChipsModule,
     ReactiveFormsModule,
@@ -65,6 +68,10 @@ export class DialogoDetalleComponent implements OnInit {
   estadoProyectoData: any[] = [];
   estadoProductoData: any[] = [];
   cuartilEsperadoData: any[] = [];
+  entidadPostuloData: any[] = [];
+  ubicacionData: any[] = [];
+  transaccionesData: any[] = [];
+  financiacionData: any[] = [];
 
   estadosProceso: string[] = [
     'Aprobado',
@@ -134,13 +141,12 @@ export class DialogoDetalleComponent implements OnInit {
         estadoProceso: [{value: this.data?.estadoProceso, disabled: this.isEdit ? true : false},[Validators.required]],
         estudiantesProyecto: [this.data?.estudiantes],
         participantesExternos: [this.data?.participantesExternos],
-        fecha: [this.data?.fecha,[Validators.required]], 
         grupoInvestigacionPro: [this.data?.grupoInvestigacionPro,[Validators.required]],
         lineaInvestigacion: [this.data?.lineaInvestigacion,[Validators.required]],
         modalidad: [this.data?.modalidad,[Validators.required]],
         nivelRiesgoEtico: [this.data?.nivelRiesgoEtico,[Validators.required]],
         origen: [this.data?.origen,[Validators.required]],
-
+        unidadAcademica:[this.data?.unidadAcademica,[Validators.required]],
         porcentajeAvance: [this.data?.porcentajeAvance,[Validators.required]],
         porcentajeEjecucionCorte: [this.data?.porcentajeEjecucionCorte,[Validators.required]],
         porcentajeEjecucionFinCorte: [this.data?.porcentajeEjecucionFinCorte,[Validators.required]],
@@ -164,7 +170,6 @@ export class DialogoDetalleComponent implements OnInit {
         estadoProceso: [{value: this.data?.estadoProceso, disabled: this.isEdit ? true : false},[Validators.required]],
         estadoProducto: [{value: this.data?.estadoProducto, disabled: this.isEdit ? true : false},[Validators.required]],
         estudiantes: [this.data?.estudiantes],
-        fechaProducto: [this.data?.fecha,[Validators.required]],
         id: [{value: this.data?.id, disabled: this.isEdit ? true : false},[Validators.required]],
         investigadorProducto: [{value: this.data?.investigador, disabled: this.isEdit ? true : false},[Validators.required]],
         observaciones: [this.data?.observaciones,[Validators.required]],
@@ -186,11 +191,15 @@ export class DialogoDetalleComponent implements OnInit {
 
   }
 
+
   get codigo() {
     return this.firstFormGroup.get('codigo');
   }
   get titulo() {
     return this.firstFormGroup.get('titulo');
+  }
+  get entidadPostulo(){
+    return this.firstFormGroup.get('entidadPostulo ');
   }
   get area() {
     return this.firstFormGroup.get('area');
@@ -213,11 +222,11 @@ export class DialogoDetalleComponent implements OnInit {
   get estudiantesProyecto() {
     return this.firstFormGroup.get('estudiantesProyecto');
   }
+  get unidadAcademica() {
+    return this.firstFormGroup.get('unidadAcademica');
+  }
   get participantesExternos() {
     return this.firstFormGroup.get('participantesExternos');
-  }
-  get fecha() {
-    return this.firstFormGroup.get('fecha');
   }
   get lineaInvestigacion() {
     return this.firstFormGroup.get('lineaInvestigacion');
@@ -251,9 +260,6 @@ export class DialogoDetalleComponent implements OnInit {
   get estudiantes() {
     return this.secondFormGroup.get('estudiantes');
   }
-  get fechaProducto() {
-    return this.secondFormGroup.get('fechaProducto');
-  }
   get id() {
     return this.secondFormGroup.get('id');
   }
@@ -285,7 +291,6 @@ export class DialogoDetalleComponent implements OnInit {
     return this.secondFormGroup.get('tituloProducto');
   }
 
-
   async obtenerEstadosProyecto() {
     this.proyectoyproductoService.obtenerEstadosProyecto().subscribe(
       (proyecto) => {
@@ -296,6 +301,7 @@ export class DialogoDetalleComponent implements OnInit {
       }
     );
   }
+
   obtenerUsuarios(){
     this.activeInvestigators = []; 
     this.selectedInvestigators = [];
@@ -341,7 +347,6 @@ export class DialogoDetalleComponent implements OnInit {
       this.cuartilEsperadoData = data;
     });
   }
-
 
   guardarTramite() {
     if (this.firstFormGroup !== undefined && this.firstFormGroup.valid) {

@@ -52,8 +52,8 @@
                     </ng-container>
                     <!-- Lider Column -->
                     <ng-container matColumnDef="lider">
-                        <th mat-header-cell *matHeaderCellDef> Lider </th>
-                        <td mat-cell *matCellDef="let proyecto"> {{ proyecto.investigador}} </td>
+                        <th mat-header-cell *matHeaderCellDef> Investigador Principal </th>
+                        <td mat-cell *matCellDef="let proyecto"> {{ getNombreLider(proyecto.investigador) }} </td>
                     </ng-container>
                     <!-- Estado Column -->
                     <ng-container matColumnDef="estado">
@@ -63,7 +63,7 @@
                                 <mat-option *ngFor="let data of estadosProyectos" [value]="data.id">
                                     {{data.estado}}
                                 </mat-option>
-                            </mat-select>
+                            </mat-select> 
                         </td>
                     </ng-container>
                     <!-- Estado Column -->
@@ -134,8 +134,8 @@
                     </ng-container>
                     <!-- Lider Column -->
                     <ng-container matColumnDef="lider">
-                        <th mat-header-cell *matHeaderCellDef> Lider </th>
-                        <td mat-cell *matCellDef="let producto"> {{ producto.investigador}} </td>
+                        <th mat-header-cell *matHeaderCellDef> Investigador principal </th>
+                        <td mat-cell *matCellDef="let producto">  {{ getNombreLider(producto.investigador) }} </td>
                     </ng-container>
                     <!-- Estado Column -->
                     <ng-container matColumnDef="estado">

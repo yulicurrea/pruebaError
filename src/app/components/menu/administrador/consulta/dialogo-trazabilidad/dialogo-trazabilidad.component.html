@@ -1,0 +1,53 @@
+<div class="scroll-container">
+  <div class="timeline-container">
+    <ul class="timeline">
+      <li *ngFor="let item of trazabilidadData.data"> 
+        <div class="timeline-icon">
+          <mat-icon *ngIf="item.mensaje.includes('registrado')" class="add_circle">add_circle</mat-icon>
+          <mat-icon *ngIf="item.mensaje.includes('actualizado') && !item.mensaje.includes('Aprobado') && !item.mensaje.includes('Rechazado')" class="edit">edit</mat-icon>
+          <mat-icon *ngIf="item.mensaje.includes('Aprobado')" class="check_circle">check_circle</mat-icon>
+          <mat-icon *ngIf="item.mensaje.includes('Rechazado')" class="cancel">cancel</mat-icon>
+        </div>
+        <div class="timeline-content">
+          <h3>{{item.created_at | date:'short'}}</h3>
+          <p><strong>{{item.asunto}}</strong>: {{item.mensaje}}</p>
+          <small>Remitente: {{item.remitente}} | Destinatario: {{item.destinatario}}</small>
+        </div>
+      </li>
+    </ul>
+  </div>
+  
+  <div class="table-container">
+    <table mat-table [dataSource]="trazabilidadData" class="mat-elevation-z8">
+      <ng-container matColumnDef="fecha">
+        <th mat-header-cell *matHeaderCellDef> Fecha </th>
+        <td mat-cell *matCellDef="let element"> {{element.created_at | date:'short'}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="asunto">
+        <th mat-header-cell *matHeaderCellDef> Asunto </th>
+        <td mat-cell *matCellDef="let element"> {{element.asunto}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="mensaje">
+        <th mat-header-cell *matHeaderCellDef> Mensaje </th>
+        <td mat-cell *matCellDef="let element"> {{element.mensaje}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="remitente">
+        <th mat-header-cell *matHeaderCellDef> Remitente </th>
+        <td mat-cell *matCellDef="let element"> {{element.remitente}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="destinatario">
+        <th mat-header-cell *matHeaderCellDef> Destinatario </th>
+        <td mat-cell *matCellDef="let element"> {{element.destinatario}} </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

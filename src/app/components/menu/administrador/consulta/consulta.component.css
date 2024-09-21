@@ -103,6 +103,12 @@ tr.example-element-row:not(.example-expanded-row):hover {
 tr.example-element-row:not(.example-expanded-row):active {
   background: #efefef;
 }
+.example-container {
+  padding: 16px;
+  background-color: #f5f5f5; /* Fondo ligero para contraste */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
 .example-element-row td {
   border-bottom-width: 0;
@@ -134,4 +140,177 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 .example-element-description-attribution {
   opacity: 0.5;
+}
+
+/* Estilos para la tabla */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+}
+table.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.mat-header-row, .mat-row {
+  height: 48px; /* Aumentar el tamaño de las filas */
+}
+.mat-header-row, .mat-row {
+  height: 48px; /* Aumentar el tamaño de las filas */
+}
+
+.mat-header-cell {
+  background-color: #6AABA0; /* Color de fondo del encabezado */
+  color: white;
+  font-weight: bold;
+  text-align: left;
+  padding: 8px 16px;
+}
+
+.mat-cell {
+  padding: 8px 16px;
+  border-bottom: 1px solid #e0e0e0; /* Añadir línea divisoria entre filas */
+}
+
+.mat-row:nth-child(even) {
+  background-color: #f9f9f9; /* Color de fondo alterno para filas */
+}
+
+.mat-row:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.example-button-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.mat-fab, .mat-mini-fab {
+  margin-right: 10px;
+}
+
+.mat-fab:hover, .mat-mini-fab:hover {
+  background-color: #5b9488; /* Cambiar color en hover */
+  transition: background-color 0.3s;
+}
+
+.mat-paginator {
+  margin-top: 20px;
+}
+
+.mat-paginator-page-size-label {
+  color: #6AABA0; /* Color del texto del paginador */
+}
+
+/* Estilos para las celdas del encabezado */
+.table th {
+  background-color: #6AABA0;
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+/* Estilos para las celdas de datos */
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+/* Estilos alternados para filas */
+.table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Estilos para el enlace de descargar */
+.table td a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+/* Estilos para el enlace de descargar al pasar el ratón */
+.table td a:hover {
+  text-decoration: underline;
+}
+
+/* Contenedor de la pestaña */
+.plan-trabajo-tab {
+  padding: 20px;
+  background-color: #f5f5f5; /* Color de fondo suave */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
+}
+
+/* Tabla específica */
+.plan-trabajo-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 15px; /* Espacio entre filas */
+  margin-top: 20px;
+}
+
+/* Encabezados de la tabla */
+.plan-trabajo-table thead {
+  background-color: #6AABA0; /* Color de fondo de los encabezados */
+  color: white; /* Color del texto */
+  text-align: left;
+}
+
+.plan-trabajo-table th {
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px 8px 0 0; /* Bordes redondeados en la parte superior */
+  
+}
+
+/* Celdas de la tabla */
+.plan-trabajo-table td {
+  padding: 14px;
+  font-size: 14px;
+  border-bottom: 1px solid #e0e0e0; /* Línea de separación */
+  transition: background-color 0.3s ease; /* Transición suave para hover */
+}
+
+/* Fondo alternante en filas */
+.plan-trabajo-table tbody tr:nth-child(even) {
+  background-color: #ffffff; /* Fondo de las filas pares */
+}
+
+.plan-trabajo-table tbody tr:nth-child(odd) {
+  background-color: #fafafa; /* Fondo de las filas impares */
+}
+
+/* Color de fondo en hover */
+.plan-trabajo-table tbody tr:hover {
+  background-color: #e0f2f1; /* Color más suave para hover */
+}
+
+/* Estilo para los botones en la fila */
+.plan-trabajo-table button {
+  margin: 0 6px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  border-radius: 50%; /* Botones circulares */
+}
+
+/* Estilo para el botón de añadir */
+.example-button-row {
+  margin-bottom: 20px;
+}
+
+.example-button-row button {
+  color: white; /* Color del texto del botón */
+  border-radius: 50%; /* Forma circular */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.action-buttons {
+  display: flex;
+  gap: 8px; /* Ajusta el espacio entre los botones si es necesario */
+  justify-content: center; /* Centra los botones dentro de la celda */
+  align-items: center; /* Alinea verticalmente los botones */
 }

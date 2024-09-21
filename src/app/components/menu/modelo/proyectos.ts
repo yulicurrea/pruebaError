@@ -178,7 +178,7 @@ export interface entidadPostulo{
 export interface transacciones{
   id?: string;
   fecha?: Date;
-  acta?: string;
+  acta?: File;
   descripcion?: string;
 }
 export interface ubicacionProyecto{

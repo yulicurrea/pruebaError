@@ -13,13 +13,13 @@
                     <div class="example-form-fields">
                         <mat-form-field class="form-field-spacing" appearance="fill">
                             <mat-label>Fecha Plazo</mat-label>
-                            <input matInput [matDatepicker]="picker"  formControlName="fecha">
+                            <input matInput [matDatepicker]="picker" formControlName="fecha" [min]="fechaMinima">
                             <mat-hint>MM/DD/YYYY</mat-hint>
                             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
-                    </div>
-                    <mat-slide-toggle style="margin-top: 12px" formControlName="estado">Activo</mat-slide-toggle>
+                    </div>                    
+                    
                 </form>
             </div>
         </mat-tab>

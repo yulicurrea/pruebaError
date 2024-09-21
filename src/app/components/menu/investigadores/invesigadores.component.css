@@ -1,13 +1,54 @@
+.mat-toolbar {
+  background-color: #6AABA0; /* Color de fondo */
+  display: flex;
+  align-items: center;
+  position: relative; /* Para que el posicionamiento absoluto funcione en los hijos */
+}
+
+.toolbar-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+}
+
+.right-icons {
+  margin-left: auto; /* Empuja a los elementos hacia la derecha */
+  display: flex;
+  align-items: center;
+}
+
+.user-name {
+  font-family: 'Arial', sans-serif; /* Usa una fuente simple y profesional */
+  font-size: 18px; /* Tamaño de texto ligeramente más grande */
+  font-weight: 400; /* Peso de la fuente normal para un aspecto limpio */
+  color: #ffffff; /* Blanco para que resalte sobre la barra de herramientas */
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3); /* Línea sutil debajo del nombre para un toque moderno */
+  padding-bottom: 2px; /* Espacio para separar la línea del texto */
+  margin-left: 10px; /* Espacio entre 'Osiris & Bioaxis' y el nombre */
+  transition: color 0.3s ease; /* Transición suave para cambios de color */
+}
+
+.user-name:hover {
+  color: #d1e0e0; /* Color ligeramente diferente al pasar el cursor para una interacción sutil */
+}
+
 .example-spacer {
-  margin-left: auto;
-  margin-right: 0;
+  flex: 1 1 auto; /* Ocupa el espacio disponible */
 }
 
 .custom-mat-field {
   margin-top: 19px;
+  
 }
 
 .mat-toolbar.mat-primary {
   --mat-toolbar-container-background-color: #6AABA0;
   --mat-toolbar-container-text-color: white;
+}
+.notification-button {
+  margin-right: 10px; /* Espacio entre el ícono de notificación y el campo de búsqueda */
 }

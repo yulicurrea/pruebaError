@@ -6,6 +6,10 @@ import { AutenticacionService } from '../services/autenticacion';
 import { InvestigadorService } from '../services/registroInvestigador';
 import Swal from 'sweetalert2'
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ResetPasswordDialogComponent } from './reset-password-dialog/reset-password-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ProyectoyproductoService } from '../services/proyectoyproducto'; 
+
 
 @Component({
   selector: 'app-navbar',
@@ -13,22 +17,26 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  constructor(private router: Router, private InvestigadorService: InvestigadorService, private formBuilder: FormBuilder, private snackBar: MatSnackBar,
-    private autenticacionService: AutenticacionService) {
+  pregrados: any[] = [];
+  posgrados: any[] = [];
+  constructor(private router: Router, private InvestigadorService: InvestigadorService, private formBuilder: FormBuilder, private snackBar: MatSnackBar, private proyectoyproductoService:ProyectoyproductoService,
+    public dialog: MatDialog, private autenticacionService: AutenticacionService) {
     this.registroForm = this.formBuilder.group({
-        nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
-        apellidos: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
-        correo: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@unbosque\.edu\.co$/)]],
-        tipodocumento: ['', [Validators.required]],
-        numerodocumento: ['', [Validators.required,Validators.pattern(/^[0-9]+$/),Validators.minLength(8)]],
-        contrasena: ['', [Validators.required, Validators.minLength(8)]],
-        confirmarContrasena: ['', [Validators.required]],
+      nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
+      apellidos: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
+      correo: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@unbosque\.edu\.co$/)]],
+      tipodocumento: ['', [Validators.required]],
+      numerodocumento: ['', [Validators.required,Validators.pattern(/^[0-9]+$/), Validators.minLength(9)]],
+      contrasena: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)]],
+      confirmarContrasena: ['', [Validators.required]],
     });
+    
     this.loginForm = this.formBuilder.group({
       correo: ['', [Validators.required, Validators.email]],
       contrasena: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
+
 
   // login
   loginForm: FormGroup;
@@ -47,7 +55,6 @@ export class NavbarComponent {
           const token = response.token.numerodocumento;
           const rolInvestigador = response.token.rolinvestigador;
           const estado = response.token.estado;
-  
           const userData = response.user_data; // Datos del perfil del usuario
 
           localStorage.setItem('token', token);
@@ -58,7 +65,7 @@ export class NavbarComponent {
           if (rolInvestigador === 'Investigador') {
             if (estado) {
               // Si el investigador está activo, redirigir a la URL del perfil del investigador
-              window.location.href = 'https://osirisybioaxis-31ea9bf3d8f8.herokuapp.com/investigadores/perfil';
+              window.location.href = 'http://localhost:4200/investigadores/perfil';
             } else {
               // Si el investigador está inactivo
               console.log('El investigador no está activo');
@@ -72,7 +79,7 @@ export class NavbarComponent {
             }
           } else if (rolInvestigador === 'Administrador') {
             // Si es un administrador, redirigir a la URL del perfil del administrador
-            window.location.href = 'https://osirisybioaxis-31ea9bf3d8f8.herokuapp.com/administrador/perfil';
+            window.location.href = 'http://localhost:4200/administrador/perfil';
           } else {
             // Manejar otros roles si es necesario
             console.log("Rol estudiante")
@@ -80,12 +87,21 @@ export class NavbarComponent {
         },
         (error) => {
           console.error('Error al iniciar sesión:', error);
-          // Manejar el error de inicio de sesión, por ejemplo, mostrar un mensaje al usuario
+            Swal.fire({
+              title: 'Error de inicio de sesión',
+              text: 'Correo o contraseña incorrectos. Inténtalo de nuevo.',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+          });
         }
       );
     }
   }
   
+   //metodo que abre el digalogo que contiene el formulario de restablecer contraseña
+   openResetPasswordDialog() {
+    const dialogRef = this.dialog.open(ResetPasswordDialogComponent);
+  }
   
   // Método para decodificar el token (ejemplo, utilizando la función base64UrlDecode)
   decodeToken(token: string): any {
@@ -115,10 +131,24 @@ export class NavbarComponent {
   // mostrar informacion de todos los investigadores
   users: any[] = [];
   ngOnInit(): void {
-    this.getUsuarios();
+    
+    this.cargarInvestigadores();
+    this.cargarPregrados();
+    this.cargarPosgrados();
+    this.obtenerUsuarios();
   }
 
-  getUsuarios(): void {
+  usuariosAdmin: any[] = [];
+  obtenerUsuarios(){
+    this.InvestigadorService.getUsuarios().subscribe((data) => {   
+      const usersAdmin = data.filter(u => u.rolinvestigador === 'Administrador');
+      usersAdmin.forEach(element => {
+        this.usuariosAdmin.push(element.numerodocumento);
+      });
+    });
+  }
+
+  cargarInvestigadores() {
     this.InvestigadorService.getUsuarios().subscribe(
       (usuarios: any[]) => {
         this.users = usuarios;
@@ -128,6 +158,46 @@ export class NavbarComponent {
         console.error(error);
       }
     );
+  }
+
+  cargarPregrados() {
+    this.InvestigadorService.obtenerPregrado().subscribe(
+      (data: any[]) => {
+        this.pregrados = data;
+      },
+      error => {
+        console.error('Error al cargar los pregrados', error);
+      }
+    );
+  }
+
+  cargarPosgrados() {
+    this.InvestigadorService.obtenerPosgrado().subscribe(
+      (data: any[]) => {
+        this.posgrados = data;
+      },
+      error => {
+        console.error('Error al cargar los posgrados', error);
+      }
+    );
+  }
+
+  getPregradosDeInvestigador(investigadorId: string | undefined): any[] {
+    if (!investigadorId) return [];
+    return this.pregrados.filter(pregrado => pregrado.Investigador_id === investigadorId);
+  }
+
+  getPosgradosDeInvestigador(investigadorId: string | undefined): any[] {
+    if (!investigadorId) return [];
+    return this.posgrados.filter(posgrado => posgrado.Investigador_id === investigadorId);
+  }
+
+
+
+  //ver contraseña
+  hidePassword = true;
+  togglePasswordVisibility(checked: boolean) {
+    this.hidePassword = !checked;
   }
 
   // registro
@@ -209,16 +279,16 @@ export class NavbarComponent {
         tipodocumento: this.tipodocumento?.value,
         contrasena: this.contrasena?.value,
         numerodocumento: this.numerodocumento?.value,
-        horasestricto: 0, // Valor predeterminado o deja en blanco según necesites
-        horasformacion: 0, // Valor predeterminado o deja en blanco según necesites
-        unidadAcademica: "NA", // Valor predeterminado o deja en blanco según necesites
-        escalofonodocente: "NA", // Valor predeterminado o deja en blanco según necesites
-        rolinvestigador: "Investigador", // Valor predeterminado o deja en blanco según necesites
-        lineainvestigacion: "NA", // Valor predeterminado o deja en blanco según necesites
-        ies: "NA", // Valor predeterminado o deja en blanco según necesites
-        grupoinvestigacion: 1, // Valor predeterminado o deja en blanco según necesites
-        ubicacion: 1, // Valor predeterminado o deja en blanco según necesites
-        imagen: 1, // Valor predeterminado o deja en blanco según necesites
+        horasestricto: 0, 
+        horasformacion: 0, 
+        unidadAcademica: "Facultad de Ingeniería",
+        escalofonodocente: "NA", 
+        rolinvestigador: "Investigador",
+        lineainvestigacion: "Ingeniería de software y sociedad",
+        ies: "NA",
+        grupoinvestigacion: 1,
+        ubicacion: 1,
+        imagen: 1,
       };
       
       this.InvestigadorService.registrarInvestigador(investigador).subscribe(
@@ -229,7 +299,18 @@ export class NavbarComponent {
             text: 'Tu usuario se encuentra preparado para activación',
             icon: 'success',
             confirmButtonText: 'Aceptar'
+          }).then(() => {
+            // Recarga la página después de que el usuario haga clic en 'Aceptar'
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000); // Espera 2 segundos antes de recargar
           });
+          this.notificar(
+            `Nuevo Usuario Registrado`,
+            investigador.correo, // Remitente puede ser un valor estático o dinámico
+            this.usuariosAdmin, // Reemplaza con destinatarios reales
+            `El usuario ${investigador.nombre} ${investigador.apellidos} se ha registrado. Por favor, active su cuenta.`
+          );
           this.registroForm.reset();
         },
         (error) => {
@@ -252,6 +333,25 @@ export class NavbarComponent {
     }
   }
   }
+  notificar(asunto:string,remitente:any,destinatario:string[],mensaje:string):void {
+    destinatario.forEach(admin => {
+      const notificacion = {
+        asunto: asunto,
+        remitente: remitente,
+        destinatario: admin,
+        mensaje: mensaje
+      }
+      this.proyectoyproductoService.notificar(notificacion).subscribe(
+        (resp: any) => {
+          console.log('Se ha registrado el proyecto exitosamente:', resp);
+        },
+        (error: any) => {
+          console.error('Error al registrar el proyecto:', error);
+        }
+      );
+    });
+  }
+   // Muestra un mensaje de éxito usando MatSnackBar
   showSuccessMessage() {
     this.snackBar.open('Registro exitoso. Espera a que se active tu cuenta.', 'Cerrar', {
       duration: 5000,

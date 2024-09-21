@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar style="background-color: #6AABA0; color: white;">
     <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()">
         <mat-icon>menu</mat-icon>
     </button>
@@ -22,28 +22,22 @@
             </button>
         </span>
     </mat-menu>
-    <span class="fill-remaining-space">&nbsp;Osiris & Bioaxis&nbsp;&nbsp;</span>
+    <span class="user-name">{{ getNombreAbreviado() }}</span>
+
+    <!-- Contenedor para centrar "Osiris & Bioaxis" -->
+    <div class="toolbar-title">
+        Osiris & Bioaxis
+    </div>
+
     <span class="example-spacer"></span>
-    <mat-form-field appearance="outline" class="custom-mat-field">
-        <input matInput (input)="onSearchInputChange($event)">
-        <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
-    <!--<button (click)="navigateSection('administrador/perfil')" matTooltip="Perfil" matTooltipPosition="below" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-        <mat-icon>person</mat-icon>
-    </button>
-    <button (click)="navigateSection('administrador/control')" matTooltip="Permisos" matTooltipPosition="below" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-        <mat-icon>check</mat-icon>
-    </button>
-    <button (click)="navigateSection('administrador/consulta')" matTooltip="Descarga general" matTooltipPosition="below" mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-        <mat-icon>cloud_download</mat-icon>
-    </button>-->
-    <button style="background-color: hsla(0, 100%, 50%, 0); color: white; border-color: hsla(0, 100%, 50%, 0);">
-        <span mat-icon-button >
+   
+    <button class="notification-button" style="background-color: hsla(0, 100%, 50%, 0); color: white; border-color: hsla(0, 100%, 50%, 0);">
+        <span mat-icon-button>
             <span *ngIf="notificaciones.length > 0; else elseBlock">
-                <mat-icon [matMenuTriggerFor]="beforeMenu" matBadge="{{notificaciones.length}}" matBadgeColor="warn">notifications_outline</mat-icon>
+                <mat-icon [matMenuTriggerFor]="beforeMenu" matBadge="{{notificaciones.length}}" matBadgeColor="warn" aria-hidden="false">notifications_outline</mat-icon>
             </span>
             <ng-template #elseBlock>
-                <mat-icon [matMenuTriggerFor]="beforeMenu" >notifications_outline</mat-icon>
+                <mat-icon [matMenuTriggerFor]="beforeMenu" aria-hidden="false">notifications_outline</mat-icon>
             </ng-template>
             <mat-menu #beforeMenu="matMenu" xPosition="before">
                 <button mat-menu-item (click)="openDialogoNotificaciones()">
@@ -57,8 +51,9 @@
             </mat-menu>
         </span>
     </button>
-    <button (click)="logout()" matTooltip="Cerrar Sesion" matTooltipPosition="below" mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-        <mat-icon>power_settings_new</mat-icon>
-    </button>
+    <mat-form-field appearance="outline" class="custom-mat-field">
+        <input matInput (input)="onSearchInputChange($event)">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
 </mat-toolbar>
 <router-outlet></router-outlet>

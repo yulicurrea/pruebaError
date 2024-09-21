@@ -3,33 +3,32 @@
       <mat-tab label="Participación">
         <div class="mat-elevation-z8">
           <table mat-table [dataSource]="dataSource">
-
             <!-- Columnas de la tabla -->
             <ng-container matColumnDef="tipo">
               <th mat-header-cell *matHeaderCellDef> Tipo</th>
               <td mat-cell *matCellDef="let element"> {{element.tipo}} </td>
             </ng-container>
-          
+            
             <ng-container matColumnDef="titulo">
               <th mat-header-cell *matHeaderCellDef> Titulo </th>
               <td mat-cell *matCellDef="let element"> {{element.tituloProducto}} </td>
             </ng-container>
-            <ng-container matColumnDef="fecha">
-              <th mat-header-cell *matHeaderCellDef> Fecha </th>
-              <td mat-cell *matCellDef="let element"> {{element.fecha | date}} </td>
-            </ng-container>
+            
             <ng-container matColumnDef="estado">
               <th mat-header-cell *matHeaderCellDef> Estado </th>
               <td mat-cell *matCellDef="let element"> {{element.estadoProceso}} </td>
             </ng-container>
+            
             <ng-container matColumnDef="updated_at">
               <th mat-header-cell *matHeaderCellDef> Fecha Actualización </th>
               <td mat-cell *matCellDef="let element"> {{element.updated_at | date:'medium'}} </td>
             </ng-container>
+            
             <ng-container matColumnDef="created_at">
               <th mat-header-cell *matHeaderCellDef> Fecha Creación </th>
               <td mat-cell *matCellDef="let element"> {{element.created_at | date:'medium'}} </td>
             </ng-container>
+            
             <ng-container matColumnDef="acciones">
               <th mat-header-cell *matHeaderCellDef> Acciones </th>
               <td mat-cell *matCellDef="let element">
@@ -39,16 +38,23 @@
                 </button>
               </td>
             </ng-container>
-          
-            <!-- Filas de la tabla -->
+
+            <!-- Encabezados de la tabla -->
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <!-- Filas de la tabla -->
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          
-          </table> <!-- Esta etiqueta debe estar aquí -->
-          
+          </table>
+
+          <div *ngIf="tablaVacia && dataSource.data.length === 0">
+            <div style="text-align: center;" >
+            <img src="https://static.vecteezy.com/system/resources/previews/003/105/011/non_2x/no-data-and-lose-data-vector.jpg" alt="Imagen de ejemplo" width="250">            
+          </div>
+            <h2 style="text-align: center;" >En este momento no se encuentra participando en ningún proyecto o producto de investigación.</h2>
+          </div>
+
           <mat-paginator [pageSizeOptions]="[5, 10]" showFirstLastButtons aria-label="Select page of periodic elements">
           </mat-paginator>
         </div>
       </mat-tab>
   </mat-tab-group>
-</div> 
+</div>

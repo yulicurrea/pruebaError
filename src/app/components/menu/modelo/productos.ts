@@ -105,6 +105,7 @@ export interface Eventos {
 
 
   export interface Producto {
+    codigo: string;
     id?: string;
     tituloProducto?: string;
     investigador ?: string;

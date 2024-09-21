@@ -13,12 +13,88 @@ table {
     width: 100%;
 }
 
-.titulo{
-    display: flex;
-    justify-content: space-evenly; /* Distribuye los elementos a lo largo del contenedor */
-    margin-top: 60px;
-  }
-  
+.mat-mdc-icon-button.mat-accent {
+  --mdc-icon-button-icon-color: #6aaba0;
+  --mat-icon-button-state-layer-color: #ffd740;
+  --mat-icon-button-ripple-color: rgba(255, 215, 64, 0.1);
+}
+.titulo {
+  display: flex;
+  gap: 1rem; /* Espacio entre cada input-container */
+  align-items: flex-end; /* Alinea los elementos al final para que estén alineados verticalmente */
+  justify-content: center; /* Centra los inputs en el contenedor */
+}
+
+.custom-chip-list {
+  width: 100%; /* Asegura que el contenedor de los chips también ocupe todo el ancho disponible */
+}
+
+/* Ajustes adicionales para la lista de chips */
+mat-chip-row {
+  margin: 5px;
+}
+
+mat-chip-row button mat-icon {
+  font-size: 16px;
+  color: #ff5252; /* Cambia el color del icono de eliminación */
+}
+
+input[matChipInputFor] {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  outline: none;
+  transition: border-color 0.3s;
+  width: 100%; /* Asegura que el input ocupe todo el ancho disponible dentro del contenedor */
+}
+
+input[matChipInputFor]:focus {
+  border-color: #3f51b5; /* Cambia el color del borde al enfocar */
+  background-color: #fff; /* Cambia el color de fondo al enfocar */
+}
+
+.container {
+  display: flex;
+  align-items: center; /* Alinea verticalmente los elementos */
+}
+
+.example-button-container {
+  margin-left: 10px; /* Ajusta según sea necesario */
+  margin-top: -65px;
+}
+
+/* Estilo personalizado para los botones de alternancia */
+::ng-deep .mat-button-toggle {
+  border-radius: 20px; /* Ajusta el radio de borde para hacerlos más redondeados */
+  background-color: #e0e0e0; /* Color de fondo */
+  color: #333; /* Color del texto */
+  margin: 5px; /* Margen entre botones */
+}
+
+/* Estilo para el botón de alternancia activo */
+::ng-deep .mat-button-toggle.mat-button-toggle-checked {
+  background-color: #3f51b5; /* Color de fondo cuando está activo */
+  color: white; /* Color del texto cuando está activo */
+}
+
+/* Estilo para el botón de alternancia hover */
+::ng-deep .mat-button-toggle:hover:not(.mat-button-toggle-checked) {
+  background-color: #cfd8dc; /* Color de fondo cuando se pasa el ratón sobre él */
+  color: #333; /* Color del texto cuando se pasa el ratón sobre él */
+}
+
+/* Estilo para campos de entrada con error */
+input.ng-invalid {
+  border-color: red; /* Cambiar el borde a rojo */
+}
+
+/* Estilo para mensajes de error */
+.error-message {
+  color: red; /* Cambiar el color del texto a rojo */
+}
+
   .titulo2{
     display: flex;
     justify-content: space-evenly; /* Distribuye los elementos a lo largo del contenedor */
@@ -30,18 +106,12 @@ table {
     margin-top: 8px;
   }
   
-  .mat-mdc-form-field {
-    margin-top: 16px;
-  }
   .reg {
     display: flex;
     justify-content: center;
     margin-left: 70px;
   }
   
-  .form-field-spacing {
-    margin-right: 30px; /* Ajusta este valor según el espacio deseado entre los mat-form-field */
-  }
   .example-chip-list {
     width: 100%;
   }
@@ -57,27 +127,206 @@ table {
     margin-left: 200px; /* Ajusta este valor según sea necesario */
   }
   
-  .resumenArt mat-form-field {
-    max-width: 600px; /* Agrega esta línea para establecer el ancho máximo */
-  }
-  
-  .resumenArt mat-form-field input {
-    height: 100px; /* Ajusta la altura según sea necesario */
-    white-space: pre-wrap;
-    overflow-wrap: break-word; /* Utiliza overflow-wrap en lugar de word-wrap */
-    overflow-y: auto; /* Permite desplazamiento vertical cuando sea necesario */
-  }
   
   .anchoGuardar{
     width: 150px;
   }
-  .mat-mdc-radio-button ~ .mat-mdc-radio-button {
-    margin-left: 16px;
+
+  .custom-chip-list-container {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .custom-chip-list-container label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .example-chip-list {
+    width: 100%;
+  }
+  
+  mat-chip-row {
+    margin: 5px;
+  }
+  
+  mat-chip-row button mat-icon {
+    font-size: 16px;
+    color: #ff5252; /* Cambia el color del icono de eliminación */
+  }
+  
+  input[matChipInputFor] {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    outline: none;
+    transition: border-color 0.3s;
+    width: calc(100% - 40px); /* Asegura que el input no ocupe todo el ancho */
+  }
+  
+  input[matChipInputFor]:focus {
+    border-color: #3f51b5; /* Cambia el color del borde al enfocar */
+    background-color: #fff; /* Cambia el color de fondo al enfocar */
+  }
+  
+  .mat-form-field {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
   }
   
 .example-chip-list {
   width: 250px; /* Establece la anchura deseada */
 }
+.custom-input-container mat-select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+.custom-input-container mat-select::ng-deep .mat-select-trigger {
+  padding: 10px;
+}
+
+.custom-input-container mat-option {
+  padding: 10px;
+}
+
+.custom-input-container mat-select:focus,
+.custom-input-container mat-select.mat-select-focused {
+  border-color: #3f51b5; /* Cambia el color del borde al enfocar */
+  background-color: #fff; /* Cambia el color de fondo al enfocar */
+}
+.custom-input-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 300px; /* Permite que los contenedores se reduzcan y crezcan, con un tamaño base de 300px */
+  max-width: 300px; /* Ancho máximo para los contenedores */
+}
+
+.custom-input-container label {
+  margin-bottom: 0.5rem; /* Espacio entre el label y el input */
+}
+
+.custom-input-container input,
+.custom-chip-list input[matInput] {
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%; /* Para que el input ocupe todo el ancho del contenedor */
+  box-sizing: border-box; /* Incluye el padding y border dentro del ancho total del input */
+}
+.custom-input-container input[matInput]:focus,
+.custom-chip-list input[matInput]:focus {
+  border-color: #3f51b5; /* Cambia el color del borde al enfocar */
+  background-color: #fff; /* Cambia el color de fondo al enfocar */
+}
+
+.custom-input-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Para que cada contenedor de entrada ocupe un espacio igual */
+  max-width: 300px; /* Ancho máximo para los contenedores */
+}
+
+.custom-input-container input,
+.custom-input-container mat-select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%; /* Para que el input ocupe todo el ancho del contenedor */
+  box-sizing: border-box; /* Incluye el padding y border dentro del ancho total del input */
+}
+
+.custom-input-container input:focus,
+.custom-input-container mat-select:focus {
+  border-color: #3f51b5; /* Cambia el color del borde al enfocar */
+  background-color: #fff; /* Cambia el color de fondo al enfocar */
+}
+
+.custom-input-container input,
+.custom-input-container mat-datepicker-toggle button {
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%; /* Para que el input ocupe todo el ancho del contenedor */
+  box-sizing: border-box; /* Incluye el padding y border dentro del ancho total del input */
+}
+
+.custom-input-container input:focus,
+.custom-input-container mat-datepicker-toggle button:focus {
+  border-color: #3f51b5; /* Cambia el color del borde al enfocar */
+  background-color: #fff; /* Cambia el color de fondo al enfocar */
+}
+
+.custom-input-container {
+  display: flex;
+  flex-direction: column;
+  position: relative; /* Asegura que los elementos absolutos sean relativos a este contenedor */
+}
+
+.custom-input-container input,
+.custom-input-container mat-datepicker-toggle button {
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.custom-input-container mat-datepicker-toggle {
+  position: absolute;
+  top: 50%;
+  right: 8px; /* Ajusta el espaciado del lado derecho según sea necesario */
+  transform: translateY(-25%);
+}
+.custom-input-container {
+  flex: 1; /* Ocupa todo el espacio disponible */
+}
+.custom-input-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.custom-input-container label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.custom-input-container input[matInput] {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.custom-input-container input[matInput]:focus {
+  border-color: #3f51b5; /* Cambia el color del borde al enfocar */
+  background-color: #fff; /* Cambia el color de fondo al enfocar */
+}
+
+.table-container {
+  margin: 16px;
+}
+
+.mat-header-cell {
+  font-weight: bold;
+}
+
+.expanded-content {
+  padding: 16px;
+  background: #f5f5f5;
+}
+
 
 
 @media (max-width: 1700px) {
@@ -89,6 +338,376 @@ table {
     width: calc(160% + 400px); /* Ajustar el ancho para compensar el margen izquierdo y derecho */
     overflow-x: auto; /* Agregar desplazamiento horizontal si es necesario */
   }
+  .tabs {
+    position: absolute; 
+    top: 100px; 
+    left: 160px;  
+    width: 80%;
+    height: 60%;
+  }
+  .mat-tab-group {
+      background-color: lightblue !important;
+      margin-bottom: 48px;
+  }
+  table {
+      width: 100%;
+  }
+  
+  .mat-mdc-icon-button.mat-accent {
+    --mdc-icon-button-icon-color: #6aaba0;
+    --mat-icon-button-state-layer-color: #ffd740;
+    --mat-icon-button-ripple-color: rgba(255, 215, 64, 0.1);
+  }
+  .titulo {
+    display: flex;
+    gap: 1rem; /* Espacio entre cada input-container */
+    align-items: flex-end; /* Alinea los elementos al final para que estén alineados verticalmente */
+    justify-content: center; /* Centra los inputs en el contenedor */
+  }
+  
+  .custom-input-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 300px; /* Permite que los contenedores se reduzcan y crezcan, con un tamaño base de 300px */
+    max-width: 300px; /* Ancho máximo para los contenedores */
+  }
+  
+  .custom-input-container label {
+    margin-bottom: 0.5rem; /* Espacio entre el label y el input */
+  }
+  
+  .custom-input-container input,
+  .custom-chip-list input[matInput] {
+    padding: 0.5rem;
+    font-size: 1rem;
+    width: 100%; /* Para que el input ocupe todo el ancho del contenedor */
+    box-sizing: border-box; /* Incluye el padding y border dentro del ancho total del input */
+  }
+  
+  .custom-chip-list {
+    width: 100%; /* Asegura que el contenedor de los chips también ocupe todo el ancho disponible */
+  }
+  
+  .custom-input-container input[matInput]:focus,
+  .custom-chip-list input[matInput]:focus {
+    border-color: #3f51b5; /* Cambia el color del borde al enfocar */
+    background-color: #fff; /* Cambia el color de fondo al enfocar */
+  }
+  
+  /* Ajustes adicionales para la lista de chips */
+  mat-chip-row {
+    margin: 5px;
+  }
+  
+  mat-chip-row button mat-icon {
+    font-size: 16px;
+    color: #ff5252; /* Cambia el color del icono de eliminación */
+  }
+  
+  input[matChipInputFor] {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    outline: none;
+    transition: border-color 0.3s;
+    width: 100%; /* Asegura que el input ocupe todo el ancho disponible dentro del contenedor */
+  }
+  
+  input[matChipInputFor]:focus {
+    border-color: #3f51b5; /* Cambia el color del borde al enfocar */
+    background-color: #fff; /* Cambia el color de fondo al enfocar */
+  }
+  .custom-input-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Para que cada contenedor de entrada ocupe un espacio igual */
+    max-width: 300px; /* Ancho máximo para los contenedores */
+  }
+  
+  .custom-input-container label {
+    margin-bottom: 0.5rem; /* Espacio entre el label y el input */
+  }
+  
+  .custom-input-container input,
+  .custom-input-container mat-select {
+    padding: 0.5rem;
+    font-size: 1rem;
+    width: 100%; /* Para que el input ocupe todo el ancho del contenedor */
+    box-sizing: border-box; /* Incluye el padding y border dentro del ancho total del input */
+  }
+  
+  .custom-input-container input:focus,
+  .custom-input-container mat-select:focus {
+    border-color: #3f51b5; /* Cambia el color del borde al enfocar */
+    background-color: #fff; /* Cambia el color de fondo al enfocar */
+  }
+  .custom-input-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Para que cada contenedor de entrada ocupe un espacio igual */
+    max-width: 300px; /* Ancho máximo para los contenedores */
+  }
+  
+  .custom-input-container label {
+    margin-bottom: 0.5rem; /* Espacio entre el label y el input */
+  }
+  
+  .custom-input-container input,
+  .custom-input-container mat-datepicker-toggle button {
+    padding: 0.5rem;
+    font-size: 1rem;
+    width: 100%; /* Para que el input ocupe todo el ancho del contenedor */
+    box-sizing: border-box; /* Incluye el padding y border dentro del ancho total del input */
+  }
+  
+  .custom-input-container input:focus,
+  .custom-input-container mat-datepicker-toggle button:focus {
+    border-color: #3f51b5; /* Cambia el color del borde al enfocar */
+    background-color: #fff; /* Cambia el color de fondo al enfocar */
+  }
+  
+  .custom-input-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Para que cada contenedor de entrada ocupe un espacio igual */
+    max-width: 300px; /* Ancho máximo para los contenedores */
+  }
+  
+  .custom-input-container label {
+    margin-bottom: 0.5rem; /* Espacio entre el label y el input */
+  }
+  
+  .custom-input-container input,
+  .custom-input-container mat-select {
+    padding: 0.5rem;
+    font-size: 1rem;
+    width: 100%; /* Para que el input ocupe todo el ancho del contenedor */
+    box-sizing: border-box; /* Incluye el padding y border dentro del ancho total del input */
+  }
+  
+  .custom-input-container input:focus,
+  .custom-input-container mat-select:focus {
+    border-color: #3f51b5; /* Cambia el color del borde al enfocar */
+    background-color: #fff; /* Cambia el color de fondo al enfocar */
+  }
+  .custom-input-container {
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Asegura que los elementos absolutos sean relativos a este contenedor */
+  }
+  
+  .custom-input-container input,
+  .custom-input-container mat-datepicker-toggle button {
+    padding: 0.5rem;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .custom-input-container mat-datepicker-toggle {
+    position: absolute;
+    top: 50%;
+    right: 8px; /* Ajusta el espaciado del lado derecho según sea necesario */
+    transform: translateY(-25%);
+  }
+  
+  .container {
+    display: flex;
+    align-items: center; /* Alinea verticalmente los elementos */
+  }
+  
+  .custom-input-container {
+    flex: 1; /* Ocupa todo el espacio disponible */
+  }
+  
+  .example-button-container {
+    margin-left: 10px; /* Ajusta según sea necesario */
+    margin-top: -65px;
+  }
+  
+  /* Estilo personalizado para los botones de alternancia */
+  ::ng-deep .mat-button-toggle {
+    border-radius: 20px; /* Ajusta el radio de borde para hacerlos más redondeados */
+    background-color: #e0e0e0; /* Color de fondo */
+    color: #333; /* Color del texto */
+    margin: 5px; /* Margen entre botones */
+  }
+  
+  /* Estilo para el botón de alternancia activo */
+  ::ng-deep .mat-button-toggle.mat-button-toggle-checked {
+    background-color: #3f51b5; /* Color de fondo cuando está activo */
+    color: white; /* Color del texto cuando está activo */
+  }
+  
+  /* Estilo para el botón de alternancia hover */
+  ::ng-deep .mat-button-toggle:hover:not(.mat-button-toggle-checked) {
+    background-color: #cfd8dc; /* Color de fondo cuando se pasa el ratón sobre él */
+    color: #333; /* Color del texto cuando se pasa el ratón sobre él */
+  }
+  
+  /* Estilo para campos de entrada con error */
+  input.ng-invalid {
+    border-color: red; /* Cambiar el borde a rojo */
+  }
+  
+  /* Estilo para mensajes de error */
+  .error-message {
+    color: red; /* Cambiar el color del texto a rojo */
+  }
+  
+    .titulo2{
+      display: flex;
+      justify-content: space-evenly; /* Distribuye los elementos a lo largo del contenedor */
+      margin-top: 5px;
+    }
+      
+    
+    .mat-stepper-horizontal {
+      margin-top: 8px;
+    }
+    
+    .reg {
+      display: flex;
+      justify-content: center;
+      margin-left: 70px;
+    }
+    
+    .example-chip-list {
+      width: 100%;
+    }
+    .titulo3 {
+      display: flex;
+      justify-content: space-evenly;
+      
+    }
+    .resumenArt {
+      display: flex;
+      flex-direction: column; /* Asegúrate de que el contenido fluya verticalmente */
+      margin-top: 5px;
+      margin-left: 200px; /* Ajusta este valor según sea necesario */
+    }
+    
+    
+    .anchoGuardar{
+      width: 150px;
+    }
+  
+    .custom-input-container {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+    
+    .custom-input-container label {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #555;
+    }
+    
+    .custom-input-container input[matInput] {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    
+    .custom-input-container input[matInput]:focus {
+      border-color: #3f51b5; /* Cambia el color del borde al enfocar */
+      background-color: #fff; /* Cambia el color de fondo al enfocar */
+    }
+    .custom-chip-list-container {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .custom-chip-list-container label {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #555;
+    }
+    
+    .example-chip-list {
+      width: 100%;
+    }
+    
+    mat-chip-row {
+      margin: 5px;
+    }
+    
+    mat-chip-row button mat-icon {
+      font-size: 16px;
+      color: #ff5252; /* Cambia el color del icono de eliminación */
+    }
+    
+    input[matChipInputFor] {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      outline: none;
+      transition: border-color 0.3s;
+      width: calc(100% - 40px); /* Asegura que el input no ocupe todo el ancho */
+    }
+    
+    input[matChipInputFor]:focus {
+      border-color: #3f51b5; /* Cambia el color del borde al enfocar */
+      background-color: #fff; /* Cambia el color de fondo al enfocar */
+    }
+    
+    .mat-form-field {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .custom-input-container {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+    
+    .custom-input-container label {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #555;
+    }
+    
+    .custom-input-container mat-select {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+    }
+    
+    .custom-input-container mat-select::ng-deep .mat-select-trigger {
+      padding: 10px;
+    }
+    
+    .custom-input-container mat-option {
+      padding: 10px;
+    }
+    
+    .custom-input-container mat-select:focus,
+    .custom-input-container mat-select.mat-select-focused {
+      border-color: #3f51b5; /* Cambia el color del borde al enfocar */
+      background-color: #fff; /* Cambia el color de fondo al enfocar */
+    }
+        
+    
+  .example-chip-list {
+    width: 250px; /* Establece la anchura deseada */
+  }
+  
 }
 
 
@@ -134,4 +753,119 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 .example-element-description-attribution {
   opacity: 0.5;
+}
+
+
+/*-------------------------------------------+*/
+/* Contenedor principal */
+.work-plan-container {
+  padding: 20px;
+  background-color: #f7f7f7; /* Fondo más claro para destacar el contenido */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave para profundidad */
+}
+
+/* Título del plan de trabajo */
+.work-plan-title {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center; /* Centrar el título */
+  font-weight: bold;
+}
+
+/* Contenedor de la tabla */
+.table-container {
+  overflow-x: auto;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra ligera para destacar la tabla */
+  margin-bottom: 20px;
+}
+
+/* Estilos de las celdas y encabezados de la tabla */
+th.mat-header-cell {
+  background-color: #6AABA0;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+td.mat-cell {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.mat-column-expand {
+  width: 48px;
+  text-align: center;
+}
+
+.expanded-row-detail {
+  overflow: hidden;
+  margin-top: 20px;
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Botones de acción */
+button.mat-icon-button {
+  color: #6AABA0; /* Color de los íconos */
+  margin-left: 8px; /* Espaciado entre botones */
+}
+
+/* Botón "Guardar" */
+.save-button {
+  margin-top: 20px;
+  width: 100%;
+  background-color: #6AABA0;
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.save-button:hover {
+  background-color: #5b9987;
+}
+
+/* Estilo de la fila expandida */
+.example-detail-row {
+  background-color: #f9f9f9;
+}
+
+.example-detail-row.expanded-row {
+  background-color: #efefef;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Añadir margen al botón "Agregar Plan de trabajo" */
+.mat-column-expand button {
+  margin-left: auto; /* Separar botón de agregar hacia la derecha */
+  margin-right: auto; /* Centrar botón en su celda */
+  display: block;
+}
+
+/* Estilo de celda para mejorar visualización */
+td.mat-cell {
+  vertical-align: middle;
+  padding: 10px 15px; /* Ajuste de relleno */
+  font-size: 14px; /* Tamaño de fuente ajustado para mayor legibilidad */
+}
+
+/* Estilo para los botones de editar y agregar plan de trabajo */
+button.mat-icon-button {
+  color: #6AABA0;
+  transition: background-color 0.3s;
+}
+
+button.mat-icon-button:hover {
+  background-color: rgba(106, 171, 160, 0.1);
 }

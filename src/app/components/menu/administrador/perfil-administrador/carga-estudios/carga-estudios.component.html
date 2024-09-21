@@ -1,0 +1,79 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<mat-dialog-content class="mat-typography">
+  <div class="example-container">
+    <div *ngIf="type === 'Pregrado'; else elseBlock">
+      <form [formGroup]="firstFormGroup">
+        <div class="custom-input-container">
+          <label for="titulo">Título</label>
+          <input matInput type="text" id="titulo" placeholder="Ingrese el título" formControlName="titulo">
+          <mat-error *ngIf="firstFormGroup.get('titulo').invalid && firstFormGroup.get('titulo').touched">
+            Por favor ingrese solo letras (sin números ni caracteres especiales).
+          </mat-error>
+        </div>
+
+        <div class="custom-input-container">
+          <label for="fecha">Fecha</label>
+          <input matInput id="fecha" placeholder="Seleccione la fecha" [matDatepicker]="picker" formControlName="fecha">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </div>
+
+        <div class="custom-input-container">
+          <label for="institucion">Institución</label>
+          <input matInput type="text" id="institucion" placeholder="Ingrese la institución" formControlName="institucion">
+          <mat-error *ngIf="firstFormGroup.get('institucion').invalid && firstFormGroup.get('institucion').touched">
+            Por favor ingrese solo letras (sin números ni caracteres especiales).
+          </mat-error>
+        </div>
+      </form>
+    </div>
+    <ng-template #elseBlock>
+      <form [formGroup]="secondFormGroup">
+        <div class="custom-input-container">
+          <label for="titulo2">Título</label>
+          <input matInput type="text" id="titulo2" placeholder="Ingrese el título" formControlName="titulo2">
+          <mat-error *ngIf="secondFormGroup.get('titulo2').invalid && secondFormGroup.get('titulo2').touched">
+            Por favor ingrese solo letras (sin números ni caracteres especiales).
+          </mat-error>
+        </div>
+
+        <div class="custom-input-container">
+          <label for="fecha2">Fecha</label>
+          <input matInput id="fecha2" placeholder="Seleccione la fecha" [matDatepicker]="picker2" formControlName="fecha2">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </div>
+
+        <div class="custom-input-container">
+          <label for="institucion2">Institución</label>
+          <input matInput type="text" id="institucion2" placeholder="Ingrese la institución" formControlName="institucion2">
+          <mat-error *ngIf="secondFormGroup.get('institucion2').invalid && secondFormGroup.get('institucion2').touched">
+            Por favor ingrese solo letras (sin números ni caracteres especiales).
+          </mat-error>
+        </div>
+
+        <div class="custom-input-container">
+          <label for="tipo2">Tipo</label>
+          <mat-select id="tipo2" formControlName="tipo2">
+            <mat-option *ngFor="let data of tipoPosgrado" [value]="data">{{ data }}</mat-option>
+          </mat-select>
+        </div>
+      </form>
+    </ng-template>
+  </div>
+</mat-dialog-content>
+
+<div *ngIf="type === 'Pregrado'; else elseSend">
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-button (click)="guardarTramitePregrado()" [disabled]="firstFormGroup.invalid">Crear</button>
+  </mat-dialog-actions>
+</div>
+
+<ng-template #elseSend>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-button (click)="guardarTramitePostgrado()" [disabled]="secondFormGroup.invalid">Crear</button>
+  </mat-dialog-actions>
+</ng-template>
+

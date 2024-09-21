@@ -1,5 +1,129 @@
 <div class="tabs">
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [(selectedIndex)]="demo1TabIndex">
+    <!--plan de trabajo-->
+    <mat-tab label="Plan de trabajo">
+      <div class="work-plan-container">
+        <div class="table-container mat-elevation-z8">
+          <table mat-table [dataSource]="dataSourceses" multiTemplateDataRows>
+            
+            <!-- Título Column -->
+            <ng-container matColumnDef="titulo">
+              <th mat-header-cell *matHeaderCellDef>Título</th>
+              <td mat-cell *matCellDef="let element">{{element.titulo}}</td>
+            </ng-container>
+            
+            <!-- Fecha Column -->
+            <ng-container matColumnDef="fecha">
+              <th mat-header-cell *matHeaderCellDef>Fecha</th>
+              <td mat-cell *matCellDef="let element">{{element.fecha | date}}</td>
+            </ng-container>
+            
+            <!-- Editar Column -->
+            <ng-container matColumnDef="editar">
+              <th mat-header-cell *matHeaderCellDef>Editar</th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button  style="color: #6AABA0;" (click)="editarElemento(element, 'tipoPorDefecto', false)" *ngIf="element.estado !== false">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+    
+            <!-- Expand Column -->
+            <ng-container matColumnDef="expand">
+              <th mat-header-cell *matHeaderCellDef>Agregar Plan de trabajo</th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button  style="color: #6AABA0;" (click)="toggleRow(element)" *ngIf="element.estado !== false">
+                  <mat-icon>{{expandedElements === element ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            
+            <!-- Row Detail Column -->
+            <ng-container matColumnDef="expandedDetail">
+              <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumn.length">
+                <div class="expanded-row-detail" *ngIf="expandedElements === element">
+                  <div class="inner-table-container mat-elevation-z8">
+                    <table mat-table [dataSource]="data" matSort>
+                      
+                      <!-- Checkbox Column -->
+                      <ng-container matColumnDef="select">
+                        <th mat-header-cell *matHeaderCellDef>
+                          <mat-checkbox
+                            (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+                          </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                          <mat-checkbox
+                            (click)="$event.stopPropagation()"
+                            (change)="toggleSelection(row)"
+                            [checked]="row.isSelected">
+                          </mat-checkbox>
+                        </td>
+                      </ng-container>
+                      
+                      <!-- Título Proyecto Column -->
+                      <ng-container matColumnDef="titulo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Título proyecto</th>
+                        <td mat-cell *matCellDef="let element">{{element.titulo}}</td>
+                      </ng-container>
+    
+                      <!-- Título Producto Column -->
+                      <ng-container matColumnDef="tituloproducto">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Título producto</th>
+                        <td mat-cell *matCellDef="let element">{{element.tituloproducto || ''}}</td>
+                      </ng-container>
+    
+                      <!-- Rol Column -->
+                      <ng-container matColumnDef="rol">
+                        <th mat-header-cell *matHeaderCellDef>Rol en producto</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field appearance="outline">
+                            <mat-select [(value)]="element.rol" [disabled]="!element.isSelected">
+                              <mat-option *ngFor="let rol of typerol" [value]="rol">
+                                {{ rol }}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+    
+                      <!-- HorasEstricto Column -->
+                      <ng-container matColumnDef="horasestricto">
+                        <th mat-header-cell *matHeaderCellDef>Horas Estricto</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field appearance="outline">
+                            <input matInput type="number" [(ngModel)]="element.horasestricto" min="0" step="1" [disabled]="!element.isSelected">
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+    
+                      <!-- Header and Row Definitions -->
+                      <tr mat-header-row *matHeaderRowDef="displayedColumnas"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumnas;"></tr>
+                    </table>
+                    
+                    <!-- Pagination Controls -->
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons>
+                    </mat-paginator>
+                    <button mat-raised-button  style="background-color: #6AABA0; color: white;" class="save-button" (click)="guardar()">Guardar</button>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+            
+            <!-- Table Rows -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumn"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumn;"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+          </table>
+          
+          <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+        </div>
+      </div>
+    </mat-tab>
+    <!--proyectos y productos-->
     <mat-tab label="Proyectos y Productos">
       <!-- tabla -->
       <div class="mat-elevation-z8">
@@ -16,11 +140,6 @@
             <td mat-cell *matCellDef="let element"> {{element.tituloProducto}} </td>
           </ng-container>
         
-          <ng-container matColumnDef="fecha">
-            <th mat-header-cell *matHeaderCellDef> Fecha </th>
-            <td mat-cell *matCellDef="let element"> {{element.fecha | date}} </td>
-          </ng-container>
-        
           <ng-container matColumnDef="estado">
             <th mat-header-cell *matHeaderCellDef> Estado </th>
             <td mat-cell *matCellDef="let element"> {{element.estadoProceso}} </td>
@@ -33,7 +152,7 @@
         
           <ng-container matColumnDef="acciones">
             <th mat-header-cell *matHeaderCellDef> Acciones</th>
-            <td mat-cell *matCellDef="let element">
+            <td mat-cell *matCellDef="let element"> 
               <!-- Botones de acción -->
               <button mat-icon-button color="primary" matTooltip="Editar" matTooltipPosition="above" (click)="openDialogoDetalle(element, element.tipo,true)">
                 <mat-icon>edit</mat-icon>
@@ -95,836 +214,827 @@
           <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
         </table> <!-- Esta etiqueta debe estar aquí -->
         
-        <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10]" showFirstLastButtons aria-label="Select page of periodic elements">
+        <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10]" showFirstLastButtons aria-label="Select page of periodic elements">
         </mat-paginator>
       </div>
     </mat-tab>
     <!-- nuevo -->
     <mat-tab label="Nuevo">
       <mat-tab-group class="nuevo vertical-tabs" mat-stretch-tabs="false" mat-align-tabs="end">
-        <!---------------------------PROYECTOS-->
+        <!--------------PROYECTOS-->
         <mat-tab label="Proyecto">
-          <div>
-            <mat-stepper linear #stepper >
-              <!-------------DATOS PROYECTOS-->
-              <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
-                <form [formGroup]="firstFormGroup">
-                  <ng-template matStepLabel>Ingresar datos proyecto</ng-template>
-                  <div>
-                    <div class="titulo">
-                      <p>Código del proyecto
-                        <mat-form-field>
-                          <input matInput  placeholder="" required formControlName="codigo">
-                        </mat-form-field>
-                      </p>
-                      <p>Titulo
-                        <mat-form-field>
-                          <input matInput placeholder="" required formControlName="titulo">
-                        </mat-form-field>
-                      </p>
-                      <p>Fecha
-                        <mat-form-field>
-                            <mat-label>Seleccione</mat-label>
-                            <input matInput [matDatepicker]="picker" formControlName="fecha">
-                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
-                      </p>
-                    </div>
-                    <div class="titulo2">
-                      <p>Coinvestigador
-                      <mat-form-field class="example-chip-list">
-                        <mat-chip-grid  formControlName="coinvestigadores" #chipGrid aria-label="Active Investigators">
-                          <mat-chip-row formControlName="coinvestigadores"
-                            *ngFor="let investigator of activeInvestigators; let i = index; trackBy: trackByFn"
-                            (removed)="remove(investigator)">
-                            {{ investigator.correo }}
-                            <button matChipRemove
-                              [attr.aria-label]="'remove ' + investigator.correo"
-                              (click)="removeCoinvestigador(investigator)">
-                              <mat-icon>cancel</mat-icon>
-                            </button>
-                          </mat-chip-row>
-                        </mat-chip-grid>
-                        <input placeholder="" #investigatorInput [formControl]="investigatorCtrl"
-                          [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
-                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
-                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                          <mat-option *ngFor="let investigator of filteredInvestigators | async; trackBy: trackByFn"
-                            [value]="investigator">
-                            {{ displayInvestigator(investigator) }}
-                          </mat-option>
-                        </mat-autocomplete>
-                      </mat-form-field>
-                    </p>
+          <span style="display:inline-block; width: 150px;"></span>
+          <form [formGroup]="firstFormGroup">
+            <div class="titulo">
+              <div class="custom-input-container">
+                <label for="codigo">Código del proyecto</label>
+                <input matInput id="codigo" placeholder="Ingrese el código" required formControlName="codigo" (blur)="verificarCodigo()">
+                <div *ngIf="codigoExistente" style="color: red;">
+                  {{ mensajeError }}
+                </div>
+              </div>                                          
+              <div class="custom-input-container">
+                <label for="codigo">Titulo</label>
+                <input matInput id="titulo" placeholder="Ingrese el titulo" required formControlName="titulo">
+              </div> 
+              <div class="custom-input-container">
+                <label for="codigo">Grupo de investigación</label>
+                <input matInput id="grupoInvestigacionPro" placeholder="Grupo de investigación" required formControlName="grupoInvestigacionPro">
+              </div>
+           
+          
+            </div>
+            <div class="titulo">
+              <div class="custom-input-container">
+                <label for="investigatorInput">Coinvestigadores</label>
+                <div class="custom-chip-list">
+                  <mat-chip-grid formControlName="coinvestigadores" #chipGrid aria-label="Active Investigators">
+                    <mat-chip-row
+                      *ngFor="let investigator of activeInvestigators; let i = index; trackBy: trackByFn"
+                      (removed)="remove(investigator)">
+                      {{ investigator.correo }}
+                      <button matChipRemove
+                        [attr.aria-label]="'remove ' + investigator.correo"
+                        (click)="removeCoinvestigador(investigator)">
+                        <mat-icon>cancel</mat-icon>
+                      </button>
+                    </mat-chip-row>
+                  </mat-chip-grid>
+                  <input matInput placeholder="Añadir coinvestigador" #investigatorInput [formControl]="investigatorCtrl"
+                    [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                    <mat-option *ngFor="let investigator of filteredInvestigators | async; trackBy: trackByFn"
+                      [value]="investigator">
+                      {{ displayInvestigator(investigator) }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </div>
+              </div>
+            
+              <div class="custom-input-container">
+                <label for="unidadAcademica">Unidad académica</label>
+                <mat-select id="unidadAcademica" placeholder="Seleccione la unidad academica" formControlName="unidadAcademica">
+                  <mat-option *ngFor="let data of unidadAcademicaData" [value]="data.value">
+                    {{data.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </div>
+            
+              <div class="custom-input-container">
+                <label for="area">Área</label>
+                <input matInput id="area" placeholder="Ingrese el área" required formControlName="area">
+              </div>
+            </div>
+            <div class="titulo">
+              <div class="custom-input-container">
+                <label for="origenValue">Origen</label>
+                <mat-select id="origenValue" placeholder="Seleccione el origen" formControlName="origen">
+                  <mat-option *ngFor="let data of origenData" [value]="data.value">
+                    {{data.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </div>
+              <div class="custom-input-container">
+                <label for="nivelRiesgoValue">Nivel de riesgo</label>
+                <mat-select id="nivelRiesgoValue" placeholder="Seleccione el nivel de riesgo" formControlName="nivelRiesgoEtico">
+                  <mat-option *ngFor="let data of nivelRiesgoEticoData" [value]="data.value">
+                    {{data.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </div>
+              <div class="custom-input-container">
+                <label for="modalidadValue">Modalidad</label>
+                <mat-select id="modalidadValue" placeholder="Seleccione la modalidad" formControlName="modalidadProyecto">
+                  <mat-option *ngFor="let data of modalidadData" [value]="data.value">
+                    {{data.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </div>
 
-                      <p>Unidad academica
-                        <mat-form-field>
-                          <input matInput  placeholder="" required formControlName="unidadAcademica">
-                        </mat-form-field>
-                      </p>
-                    </div>
-                    <div class="titulo2">
-                      <p>Área
-                        <mat-form-field>
-                          <input matInput  placeholder="" required formControlName="area">
-                        </mat-form-field>
-                      </p>
-                      <p>Origen
-                        <mat-form-field>
-                          <mat-select placeholder="Origen" #origenValue formControlName="origen">
-                            <mat-option  *ngFor="let data of origenData" [value]="data.value">
-                              {{data.viewValue}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </p>
-                    </div>
-                    <div class="titulo2">
-                      <p>Convocatoria
-                        <mat-form-field>
-                          <input matInput  placeholder="" required formControlName="convocatoria">
-                        </mat-form-field>
-                      </p>
-                      <p>Modalidad
-                        <mat-form-field>
-                          <mat-select placeholder="Seleccione" #origenValue formControlName="modalidadProyecto">
-                            <mat-option  *ngFor="let data of modalidadData" [value]="data.value">
-                              {{data.viewValue}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </p>
-                    </div>
-                    <div class="titulo2">
-
-                      <p>Nivel de riesgo
-                        <mat-form-field>
-                          <mat-select placeholder="Seleccione" #origenValue formControlName="nivelRiesgoEtico">
-                            <mat-option  *ngFor="let data of nivelRiesgoEticoData" [value]="data.value">
-                              {{data.viewValue}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </p>
-                      <p>Línea de investigación
-                        <mat-form-field>
-                          <input matInput  placeholder="" required formControlName="lineaInvestigacion">
-                        </mat-form-field>
-                      </p>
-                      <p>Grupo de investigación
-                        <mat-form-field>
-                          <input matInput placeholder="" required formControlName="grupoInvestigacionPro">
-                        </mat-form-field>
-                      </p>
-                    </div>
-                    <!----Porcentajes-->
-                    <div class="titulo2">
-                      <div class="percentage-container">
-                        <p>Porcentaje de ejecución en el corte</p>
-                        <div class="example-label-container">
-                          <label id="example-name-label" class="example-name-label">Valor:</label>
-                          <label class="example-value-label">{{value}}</label>
-                        </div>
-                        <mat-slider class="example-margin" [disabled]="disabled" [max]="max" [min]="min" [step]="step"
-                          [discrete]="thumbLabel" [showTickMarks]="showTicks"
-                          (input)="onValueChange($event)">
-                          <input matSliderThumb>
-                        </mat-slider>
-                      </div>
-                      <div class="percentage-container">
-                        <p>Porcentaje financiera al corte</p>
-                        <div class="example-label-container">
-                          <label id="example-name-label2" class="example-name-label">Valor:</label>
-                          <label class="example-value-label">{{value2}}</label>
-                        </div>
-                        <mat-slider class="example-margin" [disabled]="disabled2" [max]="max2" [min]="min2"
-                          [step]="step2" [discrete]="thumbLabel2" [showTickMarks]="showTicks2"
-                          (input)="onValue2Change($event)">
-                          <input matSliderThumb>
-                        </mat-slider>
-                      </div>
-                      <div class="percentage-container">
-                        <p>Porcentaje general del proyecto</p>
-                        <div class="example-label-container">
-                          <label id="example-name-label3" class="example-name-label">Valor:</label>
-                          <label class="example-value-label">{{value3}}</label>
-                        </div>
-                        <mat-slider class="example-margin" [disabled]="disabled3" [max]="max3" [min]="min3"
-                          [step]="step3" [discrete]="thumbLabel3" [showTickMarks]="showTicks3"
-                          (input)="onValue3Change($event)">
-                          <input matSliderThumb>
-                        </mat-slider>
-                      </div>
-                    </div>
-                    <!----Soporte proyecto-->
-                    <div class="titulo2">
-                      <p>Soporte</p>
-                      <input formControlName="soporteProyecto" type="file" (change)="onFileSelected($event)" />
-                    </div>
-                    <div class="titulo2">
-                      <p>Entidad a la cual se postulo</p>
-                    </div>
-                    <div formGroupName="entidadPostulo">
-                      <div class="titulo2">
-                        <p>Nombre de la institución</p>
-                        <p>Nombre del grupo</p>
-                      </div>
-                      <div class="reg">
-                        <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input matInput formControlName="nombreInstitucion" autocomplete="off">
-                        </mat-form-field>
-                        <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input type="text" matInput formControlName="nombreGrupo" autocomplete="off">
-                        </mat-form-field>
-                      </div>
-                    </div>
-                    <div class="titulo2">
-                      <p>Financiación</p>
-                    </div>
-                    <div formGroupName="financiacion">
-                      <div class="titulo2">
-                        <p>Valor Propuesto</p>
-                        <p>Valor ejecutado</p>
-                      </div>
-                      <div class="reg">
-                        <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input matInput formControlName="valorPropuestoFin" autocomplete="off">
-                        </mat-form-field>
-                        <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input type="text" matInput formControlName="valorEjecutadoFin" autocomplete="off">
-                        </mat-form-field>
-                      </div>
-                    </div>
-                    <div class="titulo2">
-                      <p>Transacciones</p>
-                    </div>
-                    <div formGroupName="transacciones">
-                      <div class="titulo2">
-                        <p>Fecha</p>
-                        <p>Acta</p>
-                        <p>Descripción</p>
-                      </div>
-                      <div class="reg">
-                        <mat-form-field class="form-field-spacing" appearance="fill">                        
-                            <mat-label>Seleccione</mat-label>
-                            <input matInput [matDatepicker]="picker2" formControlName="fecha_transacciones">
-                            <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
-                            <mat-datepicker #picker2></mat-datepicker>
-                        </mat-form-field>
-                        <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input matInput formControlName="acta" autocomplete="off">
-                        </mat-form-field>
-                        <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input type="text" matInput formControlName="descripcion" autocomplete="off">
-                        </mat-form-field>
-                      </div>
-                    </div>
-                    <div class="titulo2">
-                      <p>Ubicación del proyecto</p>
-                    </div>
-                    <div formGroupName="ubicacionProyecto">
-                      <div class="titulo2">
-                        <p>Instalacion</p>
-                        <p>Municipio</p>
-                      </div>
-                      <div class="reg">
-                        <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input type="text" matInput formControlName="instalacion" autocomplete="off">
-                        </mat-form-field>
-                        <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input type="text" matInput formControlName="municipio" autocomplete="off">
-                        </mat-form-field>
-                      </div>
-                      <div class="titulo2">
-                        <p>País</p>
-                        <p>Departamento</p>
-                      </div>
-                      <div class="reg">
-                        <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input type="text" matInput formControlName="pais" autocomplete="off">
-                        </mat-form-field>
-                        <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input type="text" matInput formControlName="departamento" autocomplete="off">
-                        </mat-form-field>
-                      </div>
-                    </div>
-                    <div class="titulo2">
-                      <p>Estudiantes</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <mat-select formControlName="estudiantesProyecto" multiple>
-                          <mat-option *ngFor="let data of estudiantesData" [value]="data.numeroDocumento">
-                            {{data.numeroDocumento}} - {{data.nombres}} {{data.apellidos}}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                      <div class="example-button-row">
-                        <div class="example-flex-container">
-                          <div class="example-button-container">
-                            <button (click)="openDialogEstudiante()" mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon">
-                              <mat-icon>plus_one</mat-icon>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="titulo2">
-                      <p>Participantes Externos</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <mat-select formControlName="participantesExternosProyecto" multiple>
-                          <mat-option *ngFor="let data of participanteExternoData" [value]="data.numerodocumento">
-                            {{data.numerodocumento}} - {{data.nombre}} {{data.apellidos}}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                      <div class="example-button-row">
-                        <div class="example-flex-container">
-                          <div class="example-button-container">
-                            <button (click)="openDialogParticipante()" mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon">
-                              <mat-icon>plus_one</mat-icon>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <button mat-button matStepperNext>Next</button>
-                  </div>
-                </form>
-              </mat-step>
-              <!----------------DATOS DE PRODUCTO-->
-              <mat-step [stepControl]="secondFormGroup">
-                <form [formGroup]="secondFormGroup">
-
-                  <ng-template matStepLabel>Ingresar datos producto</ng-template>
-                  <p>¿Va a ingresar un producto?</p>
-                  <mat-radio-group aria-label="" (change)="onSelectionChange($event)">
-                    <mat-radio-button value="1">Sí</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
-                  </mat-radio-group>
-                  <div *ngIf="mostrarInputs">
-                    <div class="titulo">
-                      <p>Código producto</p>
-                      <p>Título</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input  type="text" formControlName="id" matInput autocomplete="off" placeholder="Código producto">
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input  type="text" formControlName="tituloProducto" matInput autocomplete="off" placeholder="Título del producto">
-                      </mat-form-field>
-                    </div>
-                    <div class="titulo">
-                      <p>Publicación</p>
-                      <p>Estado inicio semestre</p>
-                      <p>Porcentaje avance fin de semestre</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                          <input type="text" formControlName="publicacion" matInput autocomplete="off" placeholder="Publicación">
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="estadoProdIniSemestre"  type="email" matInput autocomplete="off">
-                      </mat-form-field>
-                      <div class="percentage-container">
-                        <div class="example-label-container">
-                          <label id="example-name-label2" class="example-name-label">Valor:</label>
-                          <label class="example-value-label">{{value4}}</label>
-                        </div>
-                        <mat-slider class="example-margin" [disabled]="disabled4" [max]="max4" [min]="min4"
-                          [step]="step4" [discrete]="thumbLabel4" [showTickMarks]="showTicks4"
-                          (input)="onValue4Change($event)">
-                          <input matSliderThumb>
-                        </mat-slider>
-                      </div>
-                    </div>
-                    <div class="titulo">
-                      <p>Observaciones</p>
-                      <p>Estado</p>
-                      <p>Porcentaje avance comprometido</p>
-                      <p>Porcentaje avance real mensual</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="observaciones"  type="email" matInput autocomplete="off">
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing2">
-                        <mat-label>Seleccione</mat-label>
-                        <mat-select formControlName="estadoProducto">
-                            <mat-option *ngFor="let tipo of typeEstado" [value]="tipo">{{ tipo }}</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                      <div class="percentage-container">
-                        <div class="example-label-container">
-                          <label id="example-name-label2" class="example-name-label">Valor:</label>
-                          <label class="example-value-label">{{value5}}</label>
-                        </div>
-                        <mat-slider class="example-margin" [disabled]="disabled5" [max]="max5" [min]="min5"
-                          [step]="step5" [discrete]="thumbLabel5" [showTickMarks]="showTicks5"
-                          (input)="onValue5Change($event)">
-                          <input matSliderThumb>
-                        </mat-slider>
-                      </div>
-                      <div class="percentage-container">
-                        <div class="example-label-container">
-                          <label id="example-name-label2" class="example-name-label">Valor:</label>
-                          <label class="example-value-label">{{value6}}</label>
-                        </div>
-                        <mat-slider class="example-margin" [disabled]="disabled6" [max]="max6" [min]="min6"
-                          [step]="step6" [discrete]="thumbLabel6" [showTickMarks]="showTicks6"
-                          (input)="onValue6Change($event)">
-                          <input matSliderThumb>
-                        </mat-slider>
-                      </div>
-                    </div>
-                    <div class="titulo">
-                      <p>Fecha</p>
-                      <p>Origen</p>
-                      <p>Soporte</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input matInput [matDatepicker]="pickerProducto" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaProducto">
-                        <mat-datepicker-toggle matSuffix [for]="pickerProducto"></mat-datepicker-toggle>
-                        <mat-datepicker #pickerProducto></mat-datepicker>
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="origen"  type="text" matInput autocomplete="off">
-                      </mat-form-field>
-                      <input formControlName="Soporte" type="file" (change)="onFileSelected2($event)" />
-                    </div>
-                    <div class="titulo">
-                      <p>Estudiantes</p>
-                      <p>Participantes Externos</p>
-                      <p>Coinvestigadores</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <mat-select formControlName="estudiantesProducto" multiple>
-                          <mat-option *ngFor="let data of estudiantesData" [value]="data.numeroDocumento">
-                            {{data.numeroDocumento}} - {{data.nombres}} {{data.apellidos}}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                      <div class="example-button-row">
-                        <div class="example-flex-container">
-                          <div class="example-button-container">
-                            <button (click)="openDialogEstudiante()" mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon">
-                              <mat-icon>plus_one</mat-icon>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-        
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <mat-select formControlName="participantesExternosProducto" multiple>
-                          <mat-option *ngFor="let data of participanteExternoData" [value]="data.numerodocumento">
-                            {{data.numerodocumento}} - {{data.nombre}} {{data.apellidos}}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                      <div class="example-button-row">
-                        <div class="example-flex-container">
-                          <div class="example-button-container">
-                            <button (click)="openDialogParticipante()" mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon">
-                              <mat-icon>plus_one</mat-icon>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <mat-select formControlName="coinvestigadoresProducto" multiple>
-                          <mat-option *ngFor="let data of usuariosData" [value]="data.correo">
-                            {{data.correo}}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </div>
-                    <!---Lista productos-->
-                    <div formGroupName="listaProducto">
-                      <mat-tab-group class="nuevo vertical-tabs" mat-stretch-tabs="false" mat-align-tabs="end">
-                        <mat-tab label="Capitulos">
-                          <div formGroupName="capitulo">
-                              <div class="titulo">
-                                  <p>Nombre de la publicación</p>
-                                  <p>ISBN</p>
-                              </div>
-                              <div class="reg">
-                                  <mat-form-field class="form-field-spacing" appearance="fill">
-                                      <input type="text" formControlName="nombrepublicacion" matInput autocomplete="off">
-                                  </mat-form-field>
-                                  <mat-form-field class="form-field-spacing" appearance="fill">
-                                      <input type="text" formControlName="isbn" matInput autocomplete="off">
-                                  </mat-form-field>
-                              </div>
-                              <div class="titulo">
-                                  <p>Fecha</p>
-                                  <p>Editorial</p>
-                              </div>
-                              <div class="reg">
-                                <mat-form-field class="form-field-spacing" appearance="fill">
-                                  <input matInput [matDatepicker]="pickerCapitulo" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fecha">
-                                  <mat-datepicker-toggle matSuffix [for]="pickerCapitulo"></mat-datepicker-toggle>
-                                  <mat-datepicker #pickerCapitulo></mat-datepicker>
-                                </mat-form-field>
-                                <mat-form-field class="form-field-spacing" appearance="fill">
-                                  <input formControlName="editorial" matInput autocomplete="off">
-                                </mat-form-field>
-                              </div>
-                          </div>
-                        </mat-tab>
-                        <mat-tab label="articulo">
-                          <div formGroupName="articulo">
-                            <div class="titulo">
-                              <p>Fuente</p>
-                            </div>
-                            <div class="reg">
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="fuente" matInput autocomplete="off">
-                              </mat-form-field>
-                            </div>
-                          </div>
-                        </mat-tab>
-                        <mat-tab label="Libros">
-                          <div formGroupName="libro">
-                            <div class="titulo">
-                              <p>ISBN</p>
-                              <p>Fecha</p>
-                            </div>
-                            <div class="reg">
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="isbn" matInput autocomplete="off">
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input matInput [matDatepicker]="pickerLibros" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaLibro">
-                                <mat-datepicker-toggle matSuffix [for]="pickerLibros"></mat-datepicker-toggle>
-                                <mat-datepicker #pickerLibros></mat-datepicker>
-                              </mat-form-field>
-                            </div>
-                            <div class="titulo3">
-                              <p>Editorial</p>
-                              <p>Lugar de publicación</p>
-                            </div>
-                            <div class="reg">
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="editorial" type="text" matInput autocomplete="off">
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="luegarpublicacion" type="email" matInput autocomplete="off">
-                              </mat-form-field>
-                            </div>
-                          </div>
-                        </mat-tab>
-                        <mat-tab label="Software">
-                          <div formGroupName="software">
-                            <div class="titulo">
-                              <p>Tipo de registro</p>
-                              <p>Numero</p>
-                            </div>
-                            <div class="reg">
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="tiporegistro"  matInput autocomplete="off">
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="numero" type="number" matInput autocomplete="off">
-                              </mat-form-field>
-                            </div>
-                            <div class="titulo">
-                              <p>Fecha</p>
-                              <p>País</p>
-                            </div>
-                            <div class="reg">
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input matInput [matDatepicker]="pickerSoftware" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaSoftware">
-                                <mat-datepicker-toggle matSuffix [for]="pickerSoftware"></mat-datepicker-toggle>
-                                <mat-datepicker #pickerSoftware></mat-datepicker>
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="pais" type="text" matInput autocomplete="off">
-                              </mat-form-field>
-                            </div>
-                          </div>
-                        </mat-tab>
-                        <mat-tab label="Industrial">
-                          <div formGroupName="prototipoIndustrial">
-                            <div class="titulo">
-                              <p>Institución financiera</p>
-                              <p>Fecha</p>
-                              <p>País</p>
-                            </div>
-                            <div class="reg">
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="insitutofinanciador" matInput autocomplete="off">
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input matInput [matDatepicker]="picker4" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fecha">
-                                <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
-                                <mat-datepicker #picker4></mat-datepicker>
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="pais" type="text" matInput autocomplete="off">
-                              </mat-form-field>
-                            </div>
-                          </div>
-                        </mat-tab>
-                        <mat-tab label="Eventos">
-                          <div formGroupName="evento">
-                            <div class="titulo">
-                              <p>Fecha inicio</p>
-                              <p>Fecha fin</p>
-                            </div>
-                            <div class="reg">
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input matInput [matDatepicker]="picker5" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechainicio">
-                                <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
-                                <mat-datepicker #picker5></mat-datepicker>
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input matInput [matDatepicker]="picker6" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechafin">
-                                <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
-                                <mat-datepicker #picker6></mat-datepicker>
-                              </mat-form-field>
-                            </div>
-                            <div class="titulo">
-                              <p>Numero de participantes internos</p>
-                              <p>Numero de participantes externos</p>
-                              <p>Tipo evento</p>
-                            </div>
-                            <div class="reg">
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="numparticinerno" type="number" matInput autocomplete="off">
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input  formControlName="numparticexterno" type="number" matInput autocomplete="off">
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing2">
-                                <mat-label>Seleccione</mat-label>
-                                <mat-select formControlName="tipoevento">
-                                    <mat-option *ngFor="let data of eventosData" [value]="data.id">{{ data.tipo }}</mat-option>
-                                </mat-select>
-                              </mat-form-field>
-                            </div>
-                          </div>
-                        </mat-tab>
-                        <mat-tab label="Reconocimiento">
-                          <div formGroupName="reconocimiento">
-                            <div class="titulo">
-                              <p>Nombre de la entidad que otorga</p>
-                              <p>Fecha</p>
-                            </div>
-                            <div class="reg">
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="nombentidadotorgada"  matInput autocomplete="off">
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input matInput [matDatepicker]="picker7" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fecha">
-                                <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
-                                <mat-datepicker #picker7></mat-datepicker>
-                              </mat-form-field>
-                            </div>
-                          </div>
-                        </mat-tab>
-                        <mat-tab label="Apropiación">
-                          <div formGroupName="apropiacion">
-                            <div class="titulo">
-                              <p>Fecha inicio</p>
-                              <p>Fecha fin</p>
-                              <p>Licencia</p>
-                            </div>
-                            <div class="reg">
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input matInput [matDatepicker]="picker8" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechainicio">
-                                <mat-datepicker-toggle matSuffix [for]="picker8"></mat-datepicker-toggle>
-                                <mat-datepicker #picker8></mat-datepicker>
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input matInput [matDatepicker]="picker9" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaFin">
-                                <mat-datepicker-toggle matSuffix [for]="picker9"></mat-datepicker-toggle>
-                                <mat-datepicker #picker9></mat-datepicker>
-                              </mat-form-field>
-                              <div formGroupName="licencia">
-                                <mat-form-field class="form-field-spacing" appearance="fill">
-                                  <input formControlName="nombre"  type="text" matInput autocomplete="off">
-                                </mat-form-field>
-                              </div>
-                            </div>
-                            <div class="titulo">
-                              <p>Nombre de la entidad</p>
-                              <p>Formato</p>
-                              <p>Medio</p>
-                            </div>
-                            <div class="reg">
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="nombreEntidad"  matInput autocomplete="off">
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="formato"  type="text" matInput autocomplete="off">
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="medio" type="text" matInput autocomplete="off">
-                              </mat-form-field>
-                            </div>
-                          </div>
-                        </mat-tab>
-                        <mat-tab label="Consultorias">
-                          <div formGroupName="consultoria">
-                            <div class="titulo">
-                              <p>Nombre de la entidad</p>
-                              <p>Año</p>
-                            </div>
-                            <div class="reg">
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="nombreEntidad" matInput autocomplete="off">
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="año" type="text" matInput autocomplete="off">
-                              </mat-form-field>
-                            </div>
-                            <div class="titulo">
-                              <p>Contrato</p>
-                            </div>
-                            <div formGroupName="contrato">
-                              <div class="titulo">
-                                <p>numero</p>
-                                <p>nombre</p>
-                              </div>
-                              <div class="reg">
-                                <mat-form-field class="form-field-spacing" appearance="fill">
-                                  <input formControlName="nombre" matInput autocomplete="off">
-                                </mat-form-field>
-                                <mat-form-field class="form-field-spacing" appearance="fill">
-                                  <input formControlName="numero"  type="text" matInput autocomplete="off">
-                                </mat-form-field>
-                              </div>
-                            </div>
-                          </div>
-                        </mat-tab>
-                        <mat-tab label="Contenido">
-                          <div formGroupName="contenido">
-                            <div class="titulo">
-                              <p>Nombre de la entidad</p>
-                              <p>Pagina web</p>
-                            </div>
-                            <div class="reg">
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="nombreEntidad" matInput autocomplete="off">
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="paginaWeb" type="text" matInput autocomplete="off">
-                              </mat-form-field>
-                            </div>
-                          </div>
-                        </mat-tab>
-                        <mat-tab label="Pregrado Finalizado o en Curso">
-                          <div formGroupName="pregFinalizadoyCurso">
-                            <div class="titulo">
-                              <p>Fecha inicio</p>
-                              <p>Reconocimiento</p>
-                              <p>Numero de paginas</p>
-                            </div>
-                            <div class="reg">
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input matInput [matDatepicker]="picker10" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaInicio">
-                                <mat-datepicker-toggle matSuffix [for]="picker10"></mat-datepicker-toggle>
-                                <mat-datepicker #picker10></mat-datepicker>
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="reconocimientos" type="text" matInput autocomplete="off">
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="numeroPaginas" type="number" matInput autocomplete="off">
-                              </mat-form-field>
-                            </div>
-                          </div>
-                        </mat-tab>
-                        <mat-tab label="Maestria">
-                          <div formGroupName="maestria">
-                            <div class="titulo">
-                              <p>Fecha inicio</p>
-                              <p>Institución</p>
-                            </div>
-                            <div class="reg">
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input matInput [matDatepicker]="picker11" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaInicio">
-                                <mat-datepicker-toggle matSuffix [for]="picker11"></mat-datepicker-toggle>
-                                <mat-datepicker #picker11></mat-datepicker>
-                              </mat-form-field>
-                              <mat-form-field class="form-field-spacing" appearance="fill">
-                                <input formControlName="institucion" type="text" matInput autocomplete="off">
-                              </mat-form-field>
-                            </div>
-                          </div>
-                        </mat-tab>
-                        <mat-tab label="Otros">
-                          <div class="titulo">
-                            <p>Investigación curso</p>
-                            <p>Investigación formulado</p>
-                            <p>RSU</p>
-                          </div>
-                          <div class="reg">
-                            <mat-form-field class="form-field-spacing" appearance="fill">
-                              <input formControlName="proyectoCursoProducto" type="text" matInput autocomplete="off">
-                            </mat-form-field>
-                            <mat-form-field class="form-field-spacing" appearance="fill">
-                              <input formControlName="proyectoFormuladoProducto" type="text" matInput autocomplete="off">
-                            </mat-form-field>
-                            <mat-form-field class="form-field-spacing" appearance="fill">
-                              <input formControlName="proyectoRSUProducto" type="text" matInput autocomplete="off">
-                            </mat-form-field>
-                          </div>
-                        </mat-tab>
-                      </mat-tab-group>
-                    </div>
-                    <div>
-                      <button mat-button matStepperPrevious>Back</button>
-                      <button mat-button (click)="guardarProyecto()">Guardar</button>
-                    </div>
-                  </div>
-                  <div *ngIf="!mostrarInputs">
-                    <div>
-                      <button mat-button matStepperPrevious>Back</button>
-                      <button mat-button (click)="guardarProyecto()">Guardar</button>
-                    </div>
-                  </div>
-                </form>
-              </mat-step>
-            </mat-stepper>
+            </div>
+            <div class="titulo">
+              <div class="custom-input-container">
+                <label for="codigo">Convocatoria</label>
+                <input matInput id="convocatoria" placeholder="Ingrese la convocatoria" required formControlName="convocatoria">
+              </div>
+              
+              <div class="custom-input-container">
+                <label for="codigo">Línea de investigación</label>
+                <mat-select id="lineaInvestigacion" placeholder="Seleccione la línea de investigación" formControlName="lineaInvestigacion">
+                    <mat-option *ngFor="let data of lineaInvestigacionData" [value]="data.value">
+                      {{data.viewValue}}
+                    </mat-option>
+                  </mat-select>
+              </div>
+              <div class="custom-input-container">
+                <label for="coinvestigadoresProducto">Soporte</label>
+              <input formControlName="soporte" type="file" (change)="onFileSelected($event)" />
+            </div>
+            </div>
+          <!----Porcentajes-->
+          <div class="titulo">
+            <div class="percentage-container">
+              <p>Porcentaje de ejecucion en el corte</p>
+              
+              <div class="example-label-container">
+                <label id="example-name-label" class="example-name-label">Valor:</label>
+                <label class="example-value-label">{{value}}</label>
+              </div>
+              <mat-slider class="example-margin" [disabled]="disabled" [max]="max" [min]="min" [step]="step"
+                [discrete]="thumbLabel" [showTickMarks]="showTicks"
+                (input)="onValueChange($event)">
+                <input matSliderThumb>
+              </mat-slider>
+            </div>
+            <div class="percentage-container">
+              <p>Porcentaje financiera al corte</p>
+              <div class="example-label-container">
+                <label id="example-name-label2" class="example-name-label">Valor:</label>
+                <label class="example-value-label">{{value2}}</label>
+              </div>
+              <mat-slider class="example-margin" [disabled]="disabled2" [max]="max2" [min]="min2"
+                [step]="step2" [discrete]="thumbLabel2" [showTickMarks]="showTicks2"
+                (input)="onValue2Change($event)">
+                <input matSliderThumb>
+              </mat-slider>
+            </div>
+            <div class="percentage-container">
+              <p>Porcentaje general del proyecto</p>
+              <div class="example-label-container">
+                <label id="example-name-label3" class="example-name-label">Valor:</label>
+                <label class="example-value-label">{{value3}}</label>
+              </div>
+              <mat-slider class="example-margin" [disabled]="disabled3" [max]="max3" [min]="min3"
+                [step]="step3" [discrete]="thumbLabel3" [showTickMarks]="showTicks3"
+                (input)="onValue3Change($event)">
+                <input matSliderThumb>
+              </mat-slider>
+            </div>
           </div>
+          <div class="titulo">
+            <div class="custom-input-container form-field-spacing" appearance="fill">
+              <label for="estudiantesProducto">Estudiantes</label>
+              <mat-select  placeholder="Añadir estudiante" formControlName="estudiantesProyecto" multiple>
+                <mat-option *ngFor="let data of estudiantesData" [value]="data.numeroDocumento">
+                  {{data.numeroDocumento}} - {{data.nombres}} {{data.apellidos}}
+                </mat-option>
+              </mat-select>
+            </div>
+            
+            <div class="example-button-row">
+              <div class="example-flex-container">
+                <div class="example-button-container">
+                  <button (click)="openDialogEstudiante()" mat-mini-fab color="accent" aria-label="Agregar estudiante">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <div class="titulo">
+            <div class="custom-input-container form-field-spacing" appearance="fill">
+              <label for="estudiantesProducto">Participantes Externos</label>
+              <mat-select placeholder="Añadir participante externo" formControlName="participantesExternosProyecto" multiple>
+                <mat-option *ngFor="let data of participanteExternoData" [value]="data.numerodocumento">
+                  {{data.numerodocumento}} - {{data.nombre}} {{data.apellidos}}
+                </mat-option>
+              </mat-select>
+            </div>
+            <div class="example-button-row">
+              <div class="example-flex-container">
+                <div class="example-button-container">
+                  <button (click)="openDialogParticipante()" mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div formGroupName="ubicacionProyecto">
+            <span style="display:inline-block; width: 150px;"></span>
+            <h3 style="text-align: center;"> UBICACIÓN DEL PROYECTO</h3>
+            <span style="display:inline-block; width: 150px;"></span>
+            <div class="titulo">
+              <div class="custom-input-container form-field-spacing" appearance="fill">
+                <label for="codigo">Instalación</label>
+                <input matInput formControlName="instalacion" autocomplete="off" placeholder="instalacion">
+              </div>
+              <div class="custom-input-container form-field-spacing" appearance="fill">
+                <label for="codigo">Municipio</label>
+                <input matInput formControlName="municipio" autocomplete="off" placeholder="municipio">
+              </div>
+            </div>
+            <div class="titulo">
+              <div class="custom-input-container form-field-spacing" appearance="fill">
+                <label for="codigo">País</label>
+                <input matInput formControlName="pais" autocomplete="off" placeholder="pais">
+              </div>
+              <div class="custom-input-container form-field-spacing" appearance="fill">
+                <label for="codigo">Departamento</label>
+                <input matInput formControlName="departamento" autocomplete="off" placeholder="departamento">
+              </div>
+            </div>
+          </div>
+          <div class="titulo">
+            <mat-button-toggle-group  aria-label="Ingredients" multiple (change)="onSelectionChange2($event)">
+              <mat-button-toggle value="flour">Entidad a la cual se postulo</mat-button-toggle>
+              <mat-button-toggle value="eggs">Financiación</mat-button-toggle>
+              <mat-button-toggle value="sugar">Transacciones</mat-button-toggle>
+              <mat-button-toggle value="producto">Producto</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+          <div *ngIf="selectedOption.includes('eggs')">
+            <span style="display:inline-block; width: 150px;"></span>
+            <h3 style="text-align: center;"> FINANCIACIÓN</h3>
+            <span style="display:inline-block; width: 150px;"></span>
+            <div formGroupName="financiacion">
+              <div class="titulo">
+                  <div class="custom-input-container">
+                      <label for="valorPropuestoFin">Valor Propuesto</label>
+                      <input matInput id="valorPropuestoFin" placeholder="Ingrese el valor" formControlName="valorPropuestoFin">
+                      <div *ngIf="firstFormGroup.get('financiacion.valorPropuestoFin')?.invalid && (firstFormGroup.get('financiacion.valorPropuestoFin')?.dirty || firstFormGroup.get('financiacion.valorPropuestoFin')?.touched)">
+                          <p class="error-message">Ingrese solo números.</p>
+                      </div>
+                  </div>
+                  <div class="custom-input-container">
+                      <label for="valorEjecutadoFin">Valor Ejecutado</label>
+                      <input matInput id="valorEjecutadoFin" placeholder="Ingrese el valor" formControlName="valorEjecutadoFin">
+                      <div *ngIf="firstFormGroup.get('financiacion.valorEjecutadoFin')?.invalid && (firstFormGroup.get('financiacion.valorEjecutadoFin')?.dirty || firstFormGroup.get('financiacion.valorEjecutadoFin')?.touched)">
+                          <p class="error-message">Ingrese solo números.</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+        </div>
+        
+        <div *ngIf="selectedOption.includes('flour')">
+          <span style="display:inline-block; width: 150px;"></span>
+          <h3 style="text-align: center;"> ENTIDAD A LA CUAL SE POSTULO</h3>
+          <span style="display:inline-block; width: 150px;"></span>
+          <div formGroupName="entidadPostulo">
+            <div class="titulo">
+              <div class="custom-input-container">
+                <label for="nombreInstitucion">Nombre de la institución</label>
+                <input matInput id="nombreInstitucion" placeholder="Ingrese el nombre" formControlName="nombreInstitucion" [ngClass]="{ 'invalid-input': firstFormGroup.get('entidadPostulo.nombreInstitucion')?.invalid && (firstFormGroup.get('entidadPostulo.nombreInstitucion')?.dirty || firstFormGroup.get('entidadPostulo.nombreInstitucion')?.touched) }">
+                <div *ngIf="firstFormGroup.get('entidadPostulo.nombreInstitucion')?.invalid && firstFormGroup.get('entidadPostulo.nombreInstitucion')?.dirty" class="error-message">Por favor, ingrese solo letras.</div>
+              </div>
+              <div class="custom-input-container">
+                <label for="nombreGrupo">Nombre del grupo</label>
+                <input matInput id="nombreGrupo" placeholder="Ingrese el nombre" formControlName="nombreGrupo" [ngClass]="{ 'invalid-input': firstFormGroup.get('entidadPostulo.nombreGrupo')?.invalid && (firstFormGroup.get('entidadPostulo.nombreGrupo')?.dirty || firstFormGroup.get('entidadPostulo.nombreGrupo')?.touched) }">
+                <div *ngIf="firstFormGroup.get('entidadPostulo.nombreGrupo')?.invalid && firstFormGroup.get('entidadPostulo.nombreGrupo')?.dirty" class="error-message">Por favor, ingrese solo letras.</div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+        <div *ngIf="selectedOption.includes('sugar')">
+          <span style="display:inline-block; width: 150px;"></span>
+          <h3 style="text-align: center;"> TRANSACCIONES</h3>
+          <span style="display:inline-block; width: 150px;"></span>
+            <div formGroupName="transacciones">
+                <div class="titulo">
+                  <div class="custom-input-container form-field-spacing" appearance="fill">
+                    <label for="fecha">Fecha</label>
+                    <input matInput [matDatepicker]="picker2" formControlName="fecha">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                  </div>
+                    <div class="custom-input-container">
+                      <label for="coinvestigadoresProducto">Acta</label>
+                    <input formControlName="acta" type="file" (change)="onFileSelected3($event)" />
+                  </div>
+                    <div class="custom-input-container form-field-spacing" appearance="fill">
+                        <label for="descripcion">Descripción</label>
+                        <input type="text" matInput formControlName="descripcion" autocomplete="off" placeholder="Descripción">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+          <div *ngIf="selectedOption.includes('producto')">
+            <span style="display:inline-block; width: 150px;"></span>
+            <h3 style="text-align: center;"> PRODUCTO</h3>
+            <span style="display:inline-block; width: 150px;"></span>
+            <div formGroupName="producto">
+                <div class="titulo">
+                  <div class="custom-input-container">
+                    <label for="codigoProducto">Código del producto</label>
+                    <input matInput id="codigoProducto" placeholder="Ingrese el código" formControlName="id" (blur)="verificarId()">
+                    <div *ngIf="idExistente" style="color: red;">
+                      {{ mensajeErrorId }}
+                    </div>
+                  </div>
+                  <div class="custom-input-container">
+                    <label for="codigo">Título</label>
+                    <input matInput id="codigo" placeholder="Ingrese el título"  formControlName="tituloProducto">
+                  </div>
+                  <div class="custom-input-container">
+                    <label for="origenValue">Origen</label>
+                    <mat-select id="origenValue" placeholder="Seleccione el origen" formControlName="origen">
+                      <mat-option *ngFor="let data of origenData" [value]="data.value">
+                        {{data.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div class="titulo">
+                  <div class="custom-input-container">
+                    <label for="codigo">Publicación</label>
+                    <input matInput id="codigo" placeholder="Ingrese el medio de publicación"  formControlName="publicacion">
+                  </div> 
+                  <div class="custom-input-container">
+                    <label for="codigo">Estado inicio semestre</label>
+                    <input matInput id="codigo" placeholder="Ingrese el estado inicio de semestre"  formControlName="estadoProdIniSemestre">
+                  </div> 
+                  <div class="custom-input-container">
+                    <label for="codigo">Observaciones</label>
+                    <input matInput id="codigo" placeholder="Ingrese la observación"  formControlName="observaciones">
+                  </div> 
+                </div>     
+                <div class="titulo">
+                  <div class="custom-input-container">
+                    <label for="investigatorInput">Coinvestigadores</label>
+                    <div class="custom-chip-list">
+                      <mat-chip-grid formControlName="coinvestigadoresProducto" #chipGrid aria-label="Active Investigators">
+                        <mat-chip-row
+                          *ngFor="let investigator of activeInvestigators; let i = index; trackBy: trackByFn"
+                          (removed)="remove(investigator)">
+                          {{ investigator.correo }}
+                          <button matChipRemove
+                            [attr.aria-label]="'remove ' + investigator.correo"
+                            (click)="removeCoinvestigador(investigator)">
+                            <mat-icon>cancel</mat-icon>
+                          </button>
+                        </mat-chip-row>
+                      </mat-chip-grid>
+                      <input matInput placeholder="Añadir coinvestigador" #investigatorInput [formControl]="investigatorCtrl"
+                        [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
+                      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                        <mat-option *ngFor="let investigator of filteredInvestigators | async; trackBy: trackByFn"
+                          [value]="investigator">
+                          {{ displayInvestigator(investigator) }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </div>
+                  </div>
+                  <div class="custom-input-container">
+                    <label for="coinvestigadoresProducto">Soporte</label>
+                    <input formControlName="Soporte" type="file" (change)="onFileSelected($event)" />
+                  </div>
+                </div>                          
+                <div class="titulo">
+                  <div class="percentage-container">
+                    
+                    <p> Porcentaje avance fin de semestre</p>
+                    <div class="example-label-container">
+                      <label id="example-name-label2" class="example-name-label">Valor:</label>
+                      <label class="example-value-label">{{value4}}</label>
+                    </div>
+                    <mat-slider class="example-margin" [disabled]="disabled4" [max]="max4" [min]="min4"
+                      [step]="step4" [discrete]="thumbLabel4" [showTickMarks]="showTicks4"
+                      (input)="onValue4Change($event)">
+                      <input matSliderThumb>
+                    </mat-slider>
+                  </div>
+                  <div class="percentage-container">
+                    <p>Porcentaje avance comprometido</p>
+                    <div class="example-label-container">
+                      <label id="example-name-label2" class="example-name-label">Valor:</label>
+                      <label class="example-value-label">{{value5}}</label>
+                    </div>
+                    <mat-slider class="example-margin" [disabled]="disabled5" [max]="max5" [min]="min5"
+                      [step]="step5" [discrete]="thumbLabel5" [showTickMarks]="showTicks5"
+                      (input)="onValue5Change($event)">
+                      <input matSliderThumb>
+                    </mat-slider>
+                  </div>
+                  <div class="percentage-container">
+                    <p>Porcentaje avance real mensual</p>
+                    <div class="example-label-container">
+                      <label id="example-name-label2" class="example-name-label">Valor:</label>
+                      <label class="example-value-label">{{value6}}</label>
+                    </div>
+                    <mat-slider class="example-margin" [disabled]="disabled6" [max]="max6" [min]="min6"
+                      [step]="step6" [discrete]="thumbLabel6" [showTickMarks]="showTicks6"
+                      (input)="onValue6Change($event)">
+                      <input matSliderThumb>
+                    </mat-slider>
+                  </div>
+                </div>
+                <div class="titulo">
+                  <div class="custom-input-container form-field-spacing" appearance="fill">
+                    <label for="estudiantesProducto">Estudiantes</label>
+                    <mat-select id="estudiantesProducto" placeholder="Añadir estudiantes" formControlName="estudiantesProducto" multiple>
+                      <mat-option *ngFor="let data of estudiantesData" [value]="data.numeroDocumento">
+                        {{data.numeroDocumento}} - {{data.nombres}} {{data.apellidos}}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                  <div class="example-button-row">
+                    <div class="example-flex-container">
+                      <div class="example-button-container">
+                        <button (click)="openDialogEstudiante()" mat-mini-fab color="accent" aria-label="Agregar estudiante">
+                          <mat-icon>add</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="titulo">
+                  <div class="custom-input-container form-field-spacing" appearance="fill">
+                    <label for="participantesExternosProducto">Participantes Externos</label>
+                    <mat-select id="participantesExternosProducto" placeholder="Añadir participante externo" formControlName="participantesExternosProducto" multiple>
+                      <mat-option *ngFor="let data of participanteExternoData" [value]="data.numerodocumento">
+                        {{data.numerodocumento}} - {{data.nombre}} {{data.apellidos}}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                  <div class="example-button-row">
+                    <div class="example-flex-container">
+                      <div class="example-button-container">
+                        <button (click)="openDialogParticipante()" mat-mini-fab color="accent" aria-label="Agregar participante">
+                          <mat-icon>add</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!---Lista productos-->
+                <div formGroupName="listaProducto">
+                  <mat-tab-group class="nuevo vertical-tabs" mat-stretch-tabs="True" mat-align-tabs="end">
+                    <mat-tab label="Capitulos">
+                      <div formGroupName="capitulo">
+                          <div class="titulo">
+                            <div class="custom-input-container">
+                              <label for="codigo">Nombre de la publicación</label>
+                              <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="nombrepublicacion">
+                            </div> 
+                            <div class="custom-input-container">
+                              <label for="codigo">ISBN</label>
+                              <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="isbn">
+                            </div>
+                          </div>
+                          <div class="titulo">
+                            <div class="custom-input-container form-field-spacing" appearance="fill">
+                              <label for="codigo">Fecha</label>
+                              <input matInput [matDatepicker]="pickerCapitulo" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fecha">
+                              <mat-datepicker-toggle matSuffix [for]="pickerCapitulo"></mat-datepicker-toggle>
+                              <mat-datepicker #pickerCapitulo></mat-datepicker>
+                            </div>          
+                            <div class="custom-input-container">
+                              <label for="codigo">Editorial</label>
+                              <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="editorial">
+                            </div>   
+                          </div>
+                      </div>
+                    </mat-tab>
+                    <mat-tab label="articulo">
+                      <div formGroupName="articulo">
+                        <div class="titulo">
+                          <div class="custom-input-container">
+                            <label for="codigo">Fuente</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="fuente">
+                          </div>
+                        </div>
+                      </div>
+                    </mat-tab>
+                    <mat-tab label="Libros">
+                      <div formGroupName="libro">
+                        <div class="titulo">
+                          <div class="custom-input-container">
+                            <label for="codigo">ISBN</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="isbn">
+                          </div> 
+                          <div class="custom-input-container form-field-spacing" appearance="fill">
+                            <label for="codigo">Fecha</label>
+                            <input matInput [matDatepicker]="pickerLibros" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaLibro">
+                            <mat-datepicker-toggle matSuffix [for]="pickerLibros"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerLibros></mat-datepicker>
+                          </div>                          
+                        </div>
+                        <div class="titulo">
+                          <div class="custom-input-container">
+                            <label for="codigo">Editorial</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="editorial">
+                          </div> 
+                          <div class="custom-input-container">
+                            <label for="codigo">Lugar de publicación</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="luegarpublicacion">
+                          </div>
+                        </div>
+                      </div>
+                    </mat-tab>
+                    <mat-tab label="Software">
+                      <div formGroupName="software">
+                        <div class="titulo">
+                          <div class="custom-input-container">
+                            <label for="codigo">Tipo de registro</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="tiporegistro">
+                          </div>
+                          <div class="custom-input-container">
+                            <label for="codigo">Número</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="numero">
+                          </div>
+                        </div>
+                        <div class="titulo">
+                          <div class="custom-input-container form-field-spacing" appearance="fill">
+                            <label for="codigo">Fecha</label>
+                            <input matInput [matDatepicker]="pickerSoftware" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaSoftware">
+                            <mat-datepicker-toggle matSuffix [for]="pickerSoftware"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerSoftware></mat-datepicker>
+                          </div>
+                          <div class="custom-input-container">
+                            <label for="codigo">País</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="pais">
+                          </div>
+                        </div>
+                      </div>
+                    </mat-tab>
+                    <mat-tab label="Industrial">
+                      <div formGroupName="prototipoIndustrial">
+                        <div class="titulo">
+                          <div class="custom-input-container">
+                            <label for="codigo">Institución financiera</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="insitutofinanciador">
+                          </div>
+                          <div class="custom-input-container form-field-spacing" appearance="fill">
+                            <label for="codigo">Fecha</label>
+                            <input matInput [matDatepicker]="picker4" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fecha">
+                            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                            <mat-datepicker #picker4></mat-datepicker>
+                          </div>    
+                          <div class="custom-input-container">
+                            <label for="codigo">País</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="pais">
+                          </div>
+                        </div>
+                      </div>
+                    </mat-tab>
+                    <mat-tab label="Eventos">
+                      <div formGroupName="evento">
+                        <div class="titulo">
+                          <div class="custom-input-container form-field-spacing" appearance="fill">
+                            <label for="codigo">Fecha inico</label>
+                            <input matInput [matDatepicker]="picker5" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechainicio">
+                            <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                            <mat-datepicker #picker5></mat-datepicker>
+                          </div>
+                          <div class="custom-input-container form-field-spacing" appearance="fill">
+                            <label for="codigo">Fecha fin</label>
+                            <input matInput [matDatepicker]="picker6" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechafin">
+                            <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+                            <mat-datepicker #picker6></mat-datepicker>
+                          </div>                          
+                        </div>
+                        <div class="titulo">
+                          <div class="custom-input-container">
+                            <label for="codigo">Numero de participantes internos</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="numparticinerno">
+                          </div>
+                          <div class="custom-input-container">
+                            <label for="codigo">Numero de participantes externos</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="numparticexterno">
+                          </div>
+                          <div class="custom-input-container form-field-spacing2">
+                            <label for="codigo">Tipo evento</label>
+                            <mat-select formControlName="tipoevento">
+                              <mat-option *ngFor="let data of eventosData" [value]="data.id">{{ data.tipo }}</mat-option>
+                            </mat-select>
+                          </div>
+                          
+                          
+                        </div>
+                      </div>
+                    </mat-tab>
+                    <mat-tab label="Reconocimiento">
+                      <div formGroupName="reconocimiento">
+                        <div class="titulo">
+                          <div class="custom-input-container">
+                            <label for="codigo">Nombre de la entidad que otorga</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="nombentidadotorgada">
+                          </div>
+                          <div class="custom-input-container form-field-spacing" appearance="fill">
+                            <label for="codigo">Fecha</label>
+                            <input matInput [matDatepicker]="picker7" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fecha">
+                            <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
+                            <mat-datepicker #picker7></mat-datepicker>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-tab>
+                    <mat-tab label="Apropiación">
+                      <div formGroupName="apropiacion">
+                        <div class="titulo">
+                          <div class="custom-input-container form-field-spacing" appearance="fill">
+                            <label for="codigo">Fecha inicio</label>
+                            <input matInput [matDatepicker]="picker8" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechainicio">
+                            <mat-datepicker-toggle matSuffix [for]="picker8"></mat-datepicker-toggle>
+                            <mat-datepicker #picker8></mat-datepicker>
+                          </div>
+                          <div class="custom-input-container form-field-spacing" appearance="fill">
+                            <label for="codigo">Fecha fin</label>
+                            <input matInput [matDatepicker]="picker9" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaFin">
+                            <mat-datepicker-toggle matSuffix [for]="picker9"></mat-datepicker-toggle>
+                            <mat-datepicker #picker9></mat-datepicker>
+                          </div>                       
+                          <div formGroupName="licencia" class="custom-input-container">
+                              <label for="codigo">Licencia</label>
+                              <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="nombre">
+                           </div>
+                        </div>
+                        <div class="titulo">
+                          <div class="custom-input-container">
+                            <label for="codigo">Nombre de la entidad</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="nombreEntidad">
+                          </div> 
+                          <div class="custom-input-container">
+                            <label for="codigo">Formato</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="formato">
+                          </div>
+                          <div class="custom-input-container">
+                            <label for="codigo">Medio</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="medio">
+                          </div>
+                        </div>
+                      </div>
+                    </mat-tab>
+                    <mat-tab label="Consultorias">
+                      <div formGroupName="consultoria">
+                        <div class="titulo">
+                          <div class="custom-input-container">
+                            <label for="codigo">Nombre de la entidad</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="nombreEntidad">
+                         </div>
+                         <div class="custom-input-container">
+                          <label for="codigo">Año</label>
+                          <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="año">
+                        </div>
+                        </div>
+                        <div class="titulo">
+                          <h3 style="text-align: center;">Contrato</h3>
+                        </div>
+                        <div formGroupName="contrato">
+                          
+                          <div class="titulo">
+                            <div class="custom-input-container">
+                              <label for="codigo">Número</label>
+                              <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="numero">
+                           </div>
+                           <div class="custom-input-container">
+                            <label for="codigo">Nombre</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="nombre">
+                         </div>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-tab>
+                    <mat-tab label="Contenido">
+                      <div formGroupName="contenido">
+                        
+                        <div class="titulo">
+                          <div class="custom-input-container">
+                            <label for="codigo">Nombre de la entidad</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="nombreEntidad">
+                          </div>
+                          <div class="custom-input-container">
+                            <label for="codigo">Pagina web</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="paginaWeb">
+                          </div>
+                        </div>
+                      </div>
+                    </mat-tab>
+                    <mat-tab label="Pregrado Finalizado o en Curso">
+                      <div formGroupName="pregFinalizadoyCurso">
+                       
+                        <div class="titulo">
+                          <div class="custom-input-container form-field-spacing" appearance="fill">
+                            <label for="codigo">Fecha</label>
+                            <input matInput [matDatepicker]="picker10" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaInicio">
+                            <mat-datepicker-toggle matSuffix [for]="picker10"></mat-datepicker-toggle>
+                            <mat-datepicker #picker10></mat-datepicker>
+                          </div>
+                          <div class="custom-input-container">
+                            <label for="codigo">Reconocimiento</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="reconocimientos">
+                          </div>
+                          <div class="custom-input-container">
+                            <label for="codigo">Número de paginas</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="numeroPaginas">
+                          </div>
+                        </div>
+                      </div>
+                    </mat-tab>
+                    <mat-tab label="Maestria">
+                      <div formGroupName="maestria">
+                        <div class="titulo">
+                          <div class="custom-input-container form-field-spacing" appearance="fill">
+                            <label for="codigo">Fecha inicio</label>
+                            <input matInput [matDatepicker]="picker11" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaInicio">
+                            <mat-datepicker-toggle matSuffix [for]="picker11"></mat-datepicker-toggle>
+                            <mat-datepicker #picker11></mat-datepicker>
+                          </div>                          
+                          <div class="custom-input-container">
+                            <label for="codigo">Institución</label>
+                            <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="institucion">
+                          </div>
+                        </div>
+                      </div>
+                    </mat-tab>
+                    <mat-tab label="Otros">
+                      <div class="titulo">
+                        <div class="custom-input-container">
+                          <label for="codigo">Investigación curso</label>
+                          <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="proyectoCursoProducto">
+                        </div>
+                        <div class="custom-input-container">
+                          <label for="codigo">Investigación formulado</label>
+                          <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="proyectoFormuladoProducto">
+                        </div>
+                        <div class="custom-input-container">
+                          <label for="codigo">RSU</label>
+                          <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="proyectoRSUProducto">
+                        </div>
+                      </div>
+                    </mat-tab>
+                  </mat-tab-group>
+                </div>
+                </div>
+          </div>
+           
+          <button mat-button (click)="guardarProyecto()">Guardar</button>
+          
+          </form>
         </mat-tab>
-        <!----------------------------- PRODUCTOS-->
+        <!--- PRODUCTOS-->
         <mat-tab label="Producto">
+          <span style="display:inline-block; width: 150px;"></span>
           <form [formGroup]="productoFormGroup">
+
             <div class="titulo">
-              <p>Codigo producto</p>
-              <p>Titulo</p>
+              <div class="custom-input-container ">
+                <label for="codigo">Código proyecto</label>
+                <mat-select formControlName="codigo" multiple>
+                  <mat-option *ngFor="let codigo of codigosProyectosExistentes" [value]="codigo">
+                    {{ codigo }}
+                  </mat-option>
+                </mat-select>
+              </div>              
+              <div class="custom-input-container">
+                <label for="codigoProducto">Código del producto</label>
+                <input matInput id="codigoProducto" placeholder="Ingrese el código"  required formControlName="id" (blur)="verificarIds()">
+                <div *ngIf="idExistente" style="color: red;">
+                  {{ mensajeErrorId }}
+                </div>
+              </div>
+              <div class="custom-input-container">
+                <label for="codigo">Titulo</label>
+                <input matInput id="codigo" placeholder="Ingrese el código" required formControlName="tituloProducto">
+              </div> 
+             
             </div>
-            <div class="reg">
-              <mat-form-field class="form-field-spacing" appearance="fill">
-                <input formControlName="id" type="text" matInput autocomplete="off">
-              </mat-form-field>
-              <mat-form-field class="form-field-spacing" appearance="fill">
-                <input formControlName="tituloProducto" type="email" matInput autocomplete="off">
-              </mat-form-field>
+            
+            <div class="titulo">
+              <div class="custom-input-container">
+                <label for="codigo">Origen</label>
+                <input matInput id="codigo" placeholder="Ingrese el código" required formControlName="origen">
+              </div>
+              <div class="custom-input-container">
+                <label for="codigo">publicación</label>
+                <input matInput id="codigo" placeholder="Ingrese el código" required formControlName="publicacion">
+              </div>
+              <div class="custom-input-container">
+                <label for="codigo">Estado inicio semestre</label>
+                <input matInput id="codigo" placeholder="Ingrese el código" required formControlName="estadoProdIniSemestre">
+              </div>
+              
+            </div>
+            
+            <div class="titulo">
+              <div class="custom-input-container">
+                <label for="codigo">Observaciones</label>
+                <input matInput id="codigo" placeholder="Ingrese el código" required formControlName="observaciones">
+              </div>
+              <div class="custom-input-container form-field-spacing" appearance="fill">
+                <label for="codigo">Coinvestigadores</label>
+                <mat-select formControlName="coinvestigadoresProducto" multiple>
+                  <mat-option *ngFor="let data of usuariosData" [value]="data.correo">
+                    {{data.correo}}
+                  </mat-option>
+                </mat-select>
+              </div>              
+              <div class="custom-input-container">
+                <label for="soporte">Soporte</label>
+                <input formControlName="Soporte" type="file" (change)="onFileSelected2($event)" />
+              </div>
             </div>
             <div class="titulo">
-              <p>publicación</p>
-              <p>Estado inicio semestre</p>
-              <p>porcentaje avance fin de semestre</p>
-            </div>
-            <div class="reg">
-              <mat-form-field class="form-field-spacing" appearance="fill">
-                <input formControlName="publicacion" matInput autocomplete="off">
-              </mat-form-field>
-              <mat-form-field class="form-field-spacing" appearance="fill">
-                <input formControlName="estadoProdIniSemestre"  type="email" matInput autocomplete="off">
-              </mat-form-field>
               <div class="percentage-container">
+                <p>porcentaje avance fin de semestre</p>
                 <div class="example-label-container">
                   <label id="example-name-label2" class="example-name-label">Valor:</label>
                   <label class="example-value-label">{{value4}}</label>
@@ -935,24 +1045,8 @@
                   <input matSliderThumb>
                 </mat-slider>
               </div>
-            </div>
-            <div class="titulo">
-              <p>Observaciones</p>
-              <p>Estado</p>
-              <p>Porcentaje avance comprometido</p>
-              <p>porcentaje avance real mensual</p>
-            </div>
-            <div class="reg">
-              <mat-form-field class="form-field-spacing" appearance="fill">
-                <input formControlName="observaciones"  type="email" matInput autocomplete="off">
-              </mat-form-field>
-              <mat-form-field class="form-field-spacing2">
-                <mat-label>Seleccione</mat-label>
-                <mat-select formControlName="estadoProducto">
-                    <mat-option *ngFor="let tipo of typeEstado" [value]="tipo">{{ tipo }}</mat-option>
-                </mat-select>
-              </mat-form-field>
               <div class="percentage-container">
+                <p>Porcentaje avance comprometido</p>
                 <div class="example-label-container">
                   <label id="example-name-label2" class="example-name-label">Valor:</label>
                   <label class="example-value-label">{{value5}}</label>
@@ -964,6 +1058,7 @@
                 </mat-slider>
               </div>
               <div class="percentage-container">
+                <p>porcentaje avance real mensual</p>
                 <div class="example-label-container">
                   <label id="example-name-label2" class="example-name-label">Valor:</label>
                   <label class="example-value-label">{{value6}}</label>
@@ -976,399 +1071,338 @@
               </div>
             </div>
             <div class="titulo">
-              <p>Fecha</p>
-              <p>Origen</p>
-              <p>Soporte</p>
-            </div>
-            <div class="reg">
-              <mat-form-field class="form-field-spacing" appearance="fill">
-                <input matInput [matDatepicker]="pickerProducto" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaProducto">
-                <mat-datepicker-toggle matSuffix [for]="pickerProducto"></mat-datepicker-toggle>
-                <mat-datepicker #pickerProducto></mat-datepicker>
-              </mat-form-field>
-              <mat-form-field class="form-field-spacing" appearance="fill">
-                <input formControlName="origen"  type="text" matInput autocomplete="off">
-              </mat-form-field>
-              <input formControlName="Soporte" type="file" (change)="onFileSelected2($event)" />
-            </div>
-            <div class="titulo">
-              <p>Estudiantes</p>
-              <p>Participantes Externos</p>
-              <p>Coinvestigadores</p>
-            </div>
-            <div class="reg">
-              <mat-form-field class="form-field-spacing" appearance="fill">
+              <div class="custom-input-container form-field-spacing" appearance="fill">
+                <label for="codigo">Estudiantes</label>
                 <mat-select formControlName="estudiantesProducto" multiple>
                   <mat-option *ngFor="let data of estudiantesData" [value]="data.numeroDocumento">
                     {{data.numeroDocumento}} - {{data.nombres}} {{data.apellidos}}
                   </mat-option>
                 </mat-select>
-              </mat-form-field>
+              </div>
               <div class="example-button-row">
                 <div class="example-flex-container">
                   <div class="example-button-container">
                     <button (click)="openDialogEstudiante()" mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon">
-                      <mat-icon>plus_one</mat-icon>
+                      <mat-icon>add</mat-icon>
                     </button>
                   </div>
                 </div>
               </div>
-
-              <mat-form-field class="form-field-spacing" appearance="fill">
+            </div>
+            <div class="titulo">
+              <div class="custom-input-container form-field-spacing" appearance="fill">
+                <label for="codigo">Participantes Externos</label>
                 <mat-select formControlName="participantesExternosProducto" multiple>
                   <mat-option *ngFor="let data of participanteExternoData" [value]="data.numerodocumento">
                     {{data.numerodocumento}} - {{data.nombre}} {{data.apellidos}}
                   </mat-option>
                 </mat-select>
-              </mat-form-field>
+              </div>
               <div class="example-button-row">
                 <div class="example-flex-container">
                   <div class="example-button-container">
                     <button (click)="openDialogParticipante()" mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon">
-                      <mat-icon>plus_one</mat-icon>
+                      <mat-icon>add</mat-icon>
                     </button>
                   </div>
                 </div>
               </div>
-              <mat-form-field class="form-field-spacing" appearance="fill">
-                <mat-select formControlName="coinvestigadoresProducto" multiple>
-                  <mat-option *ngFor="let data of usuariosData" [value]="data.correo">
-                    {{data.correo}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-
             </div>
-
            
             <div formGroupName="listaProducto">
-              <mat-tab-group class="nuevo vertical-tabs" mat-stretch-tabs="false" mat-align-tabs="end">
+              <mat-tab-group class="nuevo vertical-tabs" mat-stretch-tabs="True" mat-align-tabs="end">
                 <mat-tab label="Capitulos">
                   <div formGroupName="capitulo">
-                    <div class="titulo">
-                      <p>Nombre de la publicación</p>
-                      <p>ISBN</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="nombrepublicacion" matInput autocomplete="off">
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="isbn" type="text" matInput autocomplete="off">
-                      </mat-form-field>
-                    </div>
-                    <div class="titulo">
-                      <p>Fecha</p>
-                      <p>Editorial</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input matInput [matDatepicker]="pickerCapitulo" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fecha">
-                        <mat-datepicker-toggle matSuffix [for]="pickerCapitulo"></mat-datepicker-toggle>
-                        <mat-datepicker #pickerCapitulo></mat-datepicker>
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="editorial" matInput autocomplete="off">
-                      </mat-form-field>
-                    </div>
+                      <div class="titulo">
+                        <div class="custom-input-container">
+                          <label for="codigo">Nombre de la publicación</label>
+                          <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="nombrepublicacion">
+                        </div> 
+                        <div class="custom-input-container">
+                          <label for="codigo">ISBN</label>
+                          <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="isbn">
+                        </div>
+                      </div>
+                      <div class="titulo">
+                        <div class="custom-input-container form-field-spacing" appearance="fill">
+                          <label for="codigo">Fecha</label>
+                          <input matInput [matDatepicker]="pickerCapitulo" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fecha">
+                          <mat-datepicker-toggle matSuffix [for]="pickerCapitulo"></mat-datepicker-toggle>
+                          <mat-datepicker #pickerCapitulo></mat-datepicker>
+                        </div>          
+                        <div class="custom-input-container">
+                          <label for="codigo">Editorial</label>
+                          <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="editorial">
+                        </div>   
+                      </div>
                   </div>
                 </mat-tab>
-                <mat-tab label="articulo"> 
+                <mat-tab label="articulo">
                   <div formGroupName="articulo">
                     <div class="titulo">
-                      <p>Fuente</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="fuente" matInput autocomplete="off">
-                      </mat-form-field>
+                      <div class="custom-input-container">
+                        <label for="codigo">Fuente</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="fuente">
+                      </div>
                     </div>
                   </div>
                 </mat-tab>
                 <mat-tab label="Libros">
                   <div formGroupName="libro">
                     <div class="titulo">
-                      <p>ISBN</p>
-                      <p>Fecha</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="isbn" matInput autocomplete="off">
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
+                      <div class="custom-input-container">
+                        <label for="codigo">ISBN</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="isbn">
+                      </div> 
+                      <div class="custom-input-container form-field-spacing" appearance="fill">
+                        <label for="codigo">Fecha</label>
                         <input matInput [matDatepicker]="pickerLibros" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaLibro">
                         <mat-datepicker-toggle matSuffix [for]="pickerLibros"></mat-datepicker-toggle>
                         <mat-datepicker #pickerLibros></mat-datepicker>
-                      </mat-form-field>
+                      </div>                          
                     </div>
-                    <div class="titulo3">
-                      <p>Editorial</p>
-                      <p>Lugar de publicación</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="editorial" type="text" matInput autocomplete="off">
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="luegarpublicacion" type="email" matInput autocomplete="off">
-                      </mat-form-field>
+                    <div class="titulo">
+                      <div class="custom-input-container">
+                        <label for="codigo">Editorial</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="editorial">
+                      </div> 
+                      <div class="custom-input-container">
+                        <label for="codigo">Lugar de publicación</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="luegarpublicacion">
+                      </div>
                     </div>
                   </div>
                 </mat-tab>
                 <mat-tab label="Software">
                   <div formGroupName="software">
                     <div class="titulo">
-                      <p>Tipo de registro</p>
-                      <p>Numero</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="tiporegistro"  matInput autocomplete="off">
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="numero" type="number" matInput autocomplete="off">
-                      </mat-form-field>
+                      <div class="custom-input-container">
+                        <label for="codigo">Tipo de registro</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="tiporegistro">
+                      </div>
+                      <div class="custom-input-container">
+                        <label for="codigo">Número</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="numero">
+                      </div>
                     </div>
                     <div class="titulo">
-                      <p>Fecha</p>
-                      <p>País</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
+                      <div class="custom-input-container form-field-spacing" appearance="fill">
+                        <label for="codigo">Fecha</label>
                         <input matInput [matDatepicker]="pickerSoftware" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaSoftware">
                         <mat-datepicker-toggle matSuffix [for]="pickerSoftware"></mat-datepicker-toggle>
                         <mat-datepicker #pickerSoftware></mat-datepicker>
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="pais" type="text" matInput autocomplete="off">
-                      </mat-form-field>
+                      </div>
+                      <div class="custom-input-container">
+                        <label for="codigo">País</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="pais">
+                      </div>
                     </div>
                   </div>
                 </mat-tab>
                 <mat-tab label="Industrial">
-                 <div formGroupName="prototipoIndustrial">
-                  <div class="titulo">
-                    <p>Institución financiera</p>
-                    <p>Fecha</p>
-                    <p>País</p>
+                  <div formGroupName="prototipoIndustrial">
+                    <div class="titulo">
+                      <div class="custom-input-container">
+                        <label for="codigo">Institución financiera</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="insitutofinanciador">
+                      </div>
+                      <div class="custom-input-container form-field-spacing" appearance="fill">
+                        <label for="codigo">Fecha</label>
+                        <input matInput [matDatepicker]="picker4" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fecha">
+                        <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                        <mat-datepicker #picker4></mat-datepicker>
+                      </div>    
+                      <div class="custom-input-container">
+                        <label for="codigo">País</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="pais">
+                      </div>
+                    </div>
                   </div>
-                  <div class="reg">
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input formControlName="insitutofinanciador" matInput autocomplete="off">
-                    </mat-form-field>
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input matInput [matDatepicker]="picker4" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fecha">
-                      <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
-                      <mat-datepicker #picker4></mat-datepicker>
-                    </mat-form-field>
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input formControlName="pais" type="text" matInput autocomplete="off">
-                    </mat-form-field>
-                  </div>
-                 </div>
                 </mat-tab>
                 <mat-tab label="Eventos">
                   <div formGroupName="evento">
                     <div class="titulo">
-                      <p>Fecha inicio</p>
-                      <p>Fecha fin</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
+                      <div class="custom-input-container form-field-spacing" appearance="fill">
+                        <label for="codigo">Fecha inico</label>
                         <input matInput [matDatepicker]="picker5" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechainicio">
                         <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
                         <mat-datepicker #picker5></mat-datepicker>
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
+                      </div>
+                      <div class="custom-input-container form-field-spacing" appearance="fill">
+                        <label for="codigo">Fecha fin</label>
                         <input matInput [matDatepicker]="picker6" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechafin">
                         <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
                         <mat-datepicker #picker6></mat-datepicker>
-                      </mat-form-field>
+                      </div>                          
                     </div>
                     <div class="titulo">
-                      <p>Numero de participantes internos</p>
-                      <p>Numero de participantes externos</p>
-                      <p>Tipo evento</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="numparticinerno" type="number" matInput autocomplete="off">
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input  formControlName="numparticexterno" type="number" matInput autocomplete="off">
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing2">
-                        <mat-label>Seleccione</mat-label>
+                      <div class="custom-input-container">
+                        <label for="codigo">Numero de participantes internos</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="numparticinerno">
+                      </div>
+                      <div class="custom-input-container">
+                        <label for="codigo">Numero de participantes externos</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="numparticexterno">
+                      </div>
+                      <div class="custom-input-container form-field-spacing2">
+                        <label for="codigo">Tipo evento</label>
                         <mat-select formControlName="tipoevento">
-                            <mat-option *ngFor="let data of eventosData" [value]="data.id">{{ data.tipo }}</mat-option>
+                          <mat-option *ngFor="let data of eventosData" [value]="data.id">{{ data.tipo }}</mat-option>
                         </mat-select>
-                      </mat-form-field>
+                      </div>
+                      
+                      
                     </div>
                   </div>
                 </mat-tab>
                 <mat-tab label="Reconocimiento">
                   <div formGroupName="reconocimiento">
                     <div class="titulo">
-                      <p>Nombre de la entidad que otorga</p>
-                      <p>Fecha</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="nombentidadotorgada"  matInput autocomplete="off">
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
+                      <div class="custom-input-container">
+                        <label for="codigo">Nombre de la entidad que otorga</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="nombentidadotorgada">
+                      </div>
+                      <div class="custom-input-container form-field-spacing" appearance="fill">
+                        <label for="codigo">Fecha</label>
                         <input matInput [matDatepicker]="picker7" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fecha">
                         <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
                         <mat-datepicker #picker7></mat-datepicker>
-                      </mat-form-field>
+                      </div>
                     </div>
                   </div>
                 </mat-tab>
                 <mat-tab label="Apropiación">
-                 <div formGroupName="apropiacion">
-                  <div class="titulo">
-                    <p>Fecha inicio</p>
-                    <p>Fecha fin</p>
-                    <p>Licencia</p>
-                  </div>
-                  <div class="reg">
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input matInput [matDatepicker]="picker8" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechainicio">
-                      <mat-datepicker-toggle matSuffix [for]="picker8"></mat-datepicker-toggle>
-                      <mat-datepicker #picker8></mat-datepicker>
-                    </mat-form-field>
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input matInput [matDatepicker]="picker9" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaFin">
-                      <mat-datepicker-toggle matSuffix [for]="picker9"></mat-datepicker-toggle>
-                      <mat-datepicker #picker9></mat-datepicker>
-                    </mat-form-field>
-                    <div formGroupName="licencia">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="nombre"  type="text" matInput autocomplete="off">
-                      </mat-form-field>
+                  <div formGroupName="apropiacion">
+                    <div class="titulo">
+                      <div class="custom-input-container form-field-spacing" appearance="fill">
+                        <label for="codigo">Fecha inicio</label>
+                        <input matInput [matDatepicker]="picker8" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechainicio">
+                        <mat-datepicker-toggle matSuffix [for]="picker8"></mat-datepicker-toggle>
+                        <mat-datepicker #picker8></mat-datepicker>
+                      </div>
+                      <div class="custom-input-container form-field-spacing" appearance="fill">
+                        <label for="codigo">Fecha fin</label>
+                        <input matInput [matDatepicker]="picker9" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaFin">
+                        <mat-datepicker-toggle matSuffix [for]="picker9"></mat-datepicker-toggle>
+                        <mat-datepicker #picker9></mat-datepicker>
+                      </div>                       
+                      <div formGroupName="licencia" class="custom-input-container">
+                          <label for="codigo">Licencia</label>
+                          <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="nombre">
+                       </div>
+                    </div>
+                    <div class="titulo">
+                      <div class="custom-input-container">
+                        <label for="codigo">Nombre de la entidad</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="nombreEntidad">
+                      </div> 
+                      <div class="custom-input-container">
+                        <label for="codigo">Formato</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="formato">
+                      </div>
+                      <div class="custom-input-container">
+                        <label for="codigo">Medio</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="medio">
+                      </div>
                     </div>
                   </div>
-                  <div class="titulo">
-                    <p>Nombre de la entidad</p>
-                    <p>Formato</p>
-                    <p>Medio</p>
-                  </div>
-                  <div class="reg">
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input formControlName="nombreEntidad"  matInput autocomplete="off">
-                    </mat-form-field>
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input formControlName="formato"  type="text" matInput autocomplete="off">
-                    </mat-form-field>
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input formControlName="medio" type="text" matInput autocomplete="off">
-                    </mat-form-field>
-                  </div>
-                 </div>
                 </mat-tab>
                 <mat-tab label="Consultorias">
-                 <div formGroupName="consultoria">
-                  <div class="titulo">
-                    <p>Nombre de la entidad</p>
-                    <p>Año</p>
+                  <div formGroupName="consultoria">
+                    <div class="titulo">
+                      <div class="custom-input-container">
+                        <label for="codigo">Nombre de la entidad</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="nombreEntidad">
+                     </div>
+                     <div class="custom-input-container">
+                      <label for="codigo">Año</label>
+                      <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="año">
+                    </div>
+                    </div>
+                    <div class="titulo">
+                      <h3 style="text-align: center;">Contrato</h3>
+                    </div>
+                    <div formGroupName="contrato">
+                      
+                      <div class="titulo">
+                        <div class="custom-input-container">
+                          <label for="codigo">Número</label>
+                          <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="numero">
+                       </div>
+                       <div class="custom-input-container">
+                        <label for="codigo">Nombre</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="nombre">
+                     </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="reg">
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input formControlName="nombreEntidad" matInput autocomplete="off">
-                    </mat-form-field>
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input formControlName="año" type="text" matInput autocomplete="off">
-                    </mat-form-field>
-                  </div>
-                  <div class="titulo">
-                    <p>Contrato</p>
-                  </div>
-                  <div class="titulo">
-                    <p>Nombre</p>
-                    <p>Número</p>
-                  </div>
-                  <div class="reg" formGroupName="contrato">
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input formControlName="nombre" matInput autocomplete="off">
-                    </mat-form-field>
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input formControlName="numero"  type="text" matInput autocomplete="off">
-                    </mat-form-field>
-                  </div>
-                 </div>
                 </mat-tab>
                 <mat-tab label="Contenido">
-                 <div formGroupName="contenido">
-                  <div class="titulo">
-                    <p>Nombre de la entidad</p>
-                    <p>Pagina web</p>
+                  <div formGroupName="contenido">
+                    
+                    <div class="titulo">
+                      <div class="custom-input-container">
+                        <label for="codigo">Nombre de la entidad</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="nombreEntidad">
+                      </div>
+                      <div class="custom-input-container">
+                        <label for="codigo">Pagina web</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="paginaWeb">
+                      </div>
+                    </div>
                   </div>
-                  <div class="reg">
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input formControlName="nombreEntidad" matInput autocomplete="off">
-                    </mat-form-field>
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input formControlName="paginaWeb" type="text" matInput autocomplete="off">
-                    </mat-form-field>
-                  </div>
-                 </div>
                 </mat-tab>
                 <mat-tab label="Pregrado Finalizado o en Curso">
                   <div formGroupName="pregFinalizadoyCurso">
+                   
                     <div class="titulo">
-                      <p>Fecha inicio</p>
-                      <p>Reconocimiento</p>
-                      <p>Numero de paginas</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
+                      <div class="custom-input-container form-field-spacing" appearance="fill">
+                        <label for="codigo">Fecha</label>
                         <input matInput [matDatepicker]="picker10" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaInicio">
                         <mat-datepicker-toggle matSuffix [for]="picker10"></mat-datepicker-toggle>
                         <mat-datepicker #picker10></mat-datepicker>
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="reconocimientos" type="text" matInput autocomplete="off">
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="numeroPaginas" type="number" matInput autocomplete="off">
-                      </mat-form-field>
+                      </div>
+                      <div class="custom-input-container">
+                        <label for="codigo">Reconocimiento</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="reconocimientos">
+                      </div>
+                      <div class="custom-input-container">
+                        <label for="codigo">Número de paginas</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="numeroPaginas">
+                      </div>
                     </div>
                   </div>
                 </mat-tab>
                 <mat-tab label="Maestria">
                   <div formGroupName="maestria">
                     <div class="titulo">
-                      <p>Fecha inicio</p>
-                      <p>Institución</p>
-                    </div>
-                    <div class="reg">
-                      <mat-form-field class="form-field-spacing" appearance="fill">
+                      <div class="custom-input-container form-field-spacing" appearance="fill">
+                        <label for="codigo">Fecha inicio</label>
                         <input matInput [matDatepicker]="picker11" autocomplete="off" placeholder="Seleccione una fecha" formControlName="fechaInicio">
                         <mat-datepicker-toggle matSuffix [for]="picker11"></mat-datepicker-toggle>
                         <mat-datepicker #picker11></mat-datepicker>
-                      </mat-form-field>
-                      <mat-form-field class="form-field-spacing" appearance="fill">
-                        <input formControlName="institucion" type="text" matInput autocomplete="off">
-                      </mat-form-field>
+                      </div>                          
+                      <div class="custom-input-container">
+                        <label for="codigo">Institución</label>
+                        <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="institucion">
+                      </div>
                     </div>
                   </div>
                 </mat-tab>
                 <mat-tab label="Otros">
                   <div class="titulo">
-                    <p>Investigación curso</p>
-                    <p>Investigación formulado</p>
-                    <p>RSU</p>
-                  </div>
-                  <div class="reg">
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input formControlName="proyectoCursoProducto" type="text" matInput autocomplete="off">
-                    </mat-form-field>
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input formControlName="proyectoFormuladoProducto" type="text" matInput autocomplete="off">
-                    </mat-form-field>
-                    <mat-form-field class="form-field-spacing" appearance="fill">
-                      <input formControlName="proyectoRSUProducto" type="text" matInput autocomplete="off">
-                    </mat-form-field>
+                    <div class="custom-input-container">
+                      <label for="codigo">Investigación curso</label>
+                      <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="proyectoCursoProducto">
+                    </div>
+                    <div class="custom-input-container">
+                      <label for="codigo">Investigación formulado</label>
+                      <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="proyectoFormuladoProducto">
+                    </div>
+                    <div class="custom-input-container">
+                      <label for="codigo">RSU</label>
+                      <input matInput id="codigo" placeholder="Ingrese el código"  formControlName="proyectoRSUProducto">
+                    </div>
                   </div>
                 </mat-tab>
               </mat-tab-group>

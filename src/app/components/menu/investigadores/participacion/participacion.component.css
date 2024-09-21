@@ -19,7 +19,9 @@ table {
     justify-content: space-evenly; /* Distribuye los elementos a lo largo del contenedor */
     margin-top: 60px;
   }
-  
+  .mat-mdc-icon-button{
+    color: #6aaba0;
+  }
   .titulo2{
     display: flex;
     justify-content: space-evenly; /* Distribuye los elementos a lo largo del contenedor */

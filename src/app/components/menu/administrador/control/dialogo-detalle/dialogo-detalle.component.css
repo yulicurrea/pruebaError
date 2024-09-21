@@ -1,30 +1,114 @@
+/* Estilo general del diálogo */
+.mat-dialog-container {
+  padding: 24px;
+  background-color: #fff; /* Fondo blanco para mayor claridad */
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  max-width: 80vw;
+  max-height: 80vh;
+  overflow: hidden;
+}
+
+/* Título del diálogo */
+.mat-dialog-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #6AABA0;
+  padding-bottom: 8px;
+}
+
+/* Contenido del diálogo */
+.mat-dialog-content {
+  max-height: 65vh;
+  overflow-y: auto;
+  margin-bottom: 24px;
+}
+
+/* Espaciado y apariencia del campo de formulario */
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Estilo de la tabla */
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabla th, .tabla td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.tabla th {
+  background-color: #6AABA0; /* Color de fondo de los encabezados */
+  color: #fff; /* Color del texto de los encabezados */
+}
+
+.tabla td {
+  background-color: #fff;
+}
+
 .table_component {
-    overflow: auto;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-.table_component table {
-    border: 1px solid #dededf;
-    table-layout: fixed;
-    border-collapse: collapse;
-    border-spacing: 1px;
-    text-align: left;
+/* Botones del diálogo */
+.mat-dialog-actions {
+  padding-top: 16px;
+  display: flex;
+  justify-content: flex-end;
 }
 
-.table_component th {
-    border: 1px solid #dededf;
-    background-color: #eceff1;
-    color: #000000;
-    padding: 5px;
+.mat-dialog-actions button {
+  margin-left: 8px;
+  font-weight: 500;
+  border-radius: 4px;
+  border: none;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
 }
 
-.table_component td {
-    border: 1px solid #dededf;
-    background-color: #ffffff;
-    color: #000000;
-    padding: 5px;
+/* Botón Cancelar */
+button[mat-button].cancel-button {
+  background-color: #f1f1f1; /* Color de fondo del botón Cancelar */
+  color: #555; /* Color del texto del botón Cancelar */
+  transition: background-color 0.3s ease;
 }
 
-mat-form-field {
-    width: 100%;
-  }
-  
+button[mat-button].cancel-button:hover {
+  background-color: #e0e0e0; /* Color de fondo en hover */
+}
+
+/* Botón Confirmar */
+button[mat-button].confirm-button {
+  background-color: #6AABA0; /* Color de fondo del botón Confirmar */
+  color: #fff; /* Color del texto del botón Confirmar */
+  transition: background-color 0.3s ease;
+}
+
+button[mat-button].confirm-button:hover {
+  background-color: #5a9a8b; /* Color de fondo en hover */
+}
+
+/* Estilo de la etiqueta de los campos de selección */
+.mat-select-panel {
+  background-color: #fff; /* Fondo blanco para el panel de selección */
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para el campo de selección */
+.mat-select {
+  width: 100%;
+}

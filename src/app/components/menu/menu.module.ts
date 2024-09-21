@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,31 +17,26 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
-@NgModule({
-  declarations: [
-    MenuComponent,
-    NavbarComponent,
-  ],
-  imports: [
-    CommonModule,
-    MenuRoutingModule,
-    SharedModule,
-    MatCardModule,
-    MatTabsModule,
-    MatExpansionModule,
-    MatSelectModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    MatFormFieldModule,
-    FormsModule,
-    MatSlideToggleModule,
-    MatSnackBarModule,
-  ],
-})
+import { MatCheckboxModule } from '@angular/material/checkbox';
+@NgModule({ declarations: [
+        MenuComponent,
+        NavbarComponent,
+    ], imports: [CommonModule,
+        MenuRoutingModule,
+        SharedModule,
+        MatCheckboxModule,
+        MatCardModule,
+        MatTabsModule,
+        MatExpansionModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatIconModule,
+        MatButtonModule,
+        MatInputModule,
+        MatFormFieldModule,
+        FormsModule,
+        MatSlideToggleModule,
+        MatSnackBarModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class MenuModule {
   panelOpenState = false;
  

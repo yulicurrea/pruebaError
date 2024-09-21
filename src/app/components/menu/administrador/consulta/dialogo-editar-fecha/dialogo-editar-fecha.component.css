@@ -1,0 +1,43 @@
+.dialog-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #4A4A4A; /* Cambia esto al color que prefieras */
+    margin-bottom: 20px;
+  }
+  
+  .form-field {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .mat-dialog-content {
+    padding: 20px 24px;
+  }
+  
+  .mat-dialog-actions {
+    padding: 10px 24px;
+    border-top: 1px solid #E0E0E0;
+  }
+  
+  .cancel-button {
+    color: #6AABA0; /* Ajusta al color que prefieras */
+  }
+  
+  .mat-dialog-actions button {
+    margin-left: 8px;
+  }
+  
+  .mat-form-field {
+    background: #f9f9f9;
+    border-radius: 4px;
+  }
+  
+  .mat-input-element {
+    padding: 10px;
+  }
+  
+  button.mat-raised-button {
+    background-color: #6AABA0;
+    color: #fff;
+  }
+  

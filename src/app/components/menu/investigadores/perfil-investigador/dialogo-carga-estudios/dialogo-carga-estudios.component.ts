@@ -67,15 +67,15 @@ export class DialogoCargaEstudiosComponent implements OnInit {
 
     if(this.type === 'Pregrado'){
       this.firstFormGroup = this.formBuilder.group({
-        titulo: ['', [Validators.required]],
+        titulo: ['', [Validators.required, Validators.pattern('[A-Za-z ]+')]],
         fecha: ['', [Validators.required]],
-        institucion: ['', [Validators.required]],
+        institucion: ['', [Validators.required, Validators.pattern('[A-Za-z ]+')]],
       });
     } else {
       this.secondFormGroup = this.formBuilder.group({
-        titulo2: ['', [Validators.required]],
+        titulo2: ['', [Validators.required, Validators.pattern('[A-Za-z ]+')]],
         fecha2: ['', [Validators.required]],
-        institucion2: ['', [Validators.required]],
+        institucion2: ['', [Validators.required, Validators.pattern('[A-Za-z ]+')]],
         tipo2: ['', [Validators.required]],
       });
     }
@@ -116,6 +116,7 @@ export class DialogoCargaEstudiosComponent implements OnInit {
         (resp) => {
           console.log('Se ha creado el pregrado:', resp);
           this.dialogRef.close(true);
+          window.location.reload(); 
         },
         (error) => {
           console.error('Error al notificar:', error);
@@ -132,6 +133,7 @@ export class DialogoCargaEstudiosComponent implements OnInit {
       (resp) => {
         console.log('Se ha creado el posgrado:', resp);
         this.dialogRef.close(true);
+        window.location.reload(); 
       },
       (error) => {
         console.error('Error al notificar:', error);

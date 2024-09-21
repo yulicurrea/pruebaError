@@ -1,30 +1,47 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError } from 'rxjs';
-import { Investigador } from '../modelo/investigador';
+import { Observable, catchError, throwError,tap  } from 'rxjs';
+import { Investigador, Investigadores } from '../modelo/investigador';
+import { Person } from '../modelo/person';
+import { AutenticacionService } from './autenticacion';
 
 @Injectable({
   providedIn: 'root' // Asegúrate de tener este providedIn en tu servicio
 })
 export class InvestigadorService {
-  private apiUrl = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/investigador'; 
-  private apiUrl2 = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/grupoinvestigacion'; 
-  private apiUrl3 = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/mostrarInvestigador'; 
-  private apiNotificaciones = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/notificaciones'; 
+  private apiUrl = 'http://localhost:8000/investigador'; 
+  private apiUrl2 = 'http://localhost:8000/grupoinvestigacion'; 
+  private apiUrl3 = 'http://localhost:8000/mostrarInvestigador'; 
+  private apiNotificaciones = 'http://localhost:8000/notificaciones'; 
+  private url = 'http://localhost:8000/ActualizarInvestigador';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private AutenticacionService:AutenticacionService) { }
 
   // mostrar la informacion de todos los investigadores
   getUsuarios(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}`);
   }
-
+  //mostrar grupos
+  getgrupos(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl2}`);
+  }
   getUsuarioDetail(documento:string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${documento}`);
   }
-
+  
+  private mostrarPyP = 'http://localhost:8000/mostrarPyP';
+  getmostrarPyP(): Observable<Person[]> {
+    return this.http.get<Person[]>(`${this.mostrarPyP}`).pipe(
+      catchError(error => {
+        console.error('Error fetching data:', error);
+        return throwError(() => new Error('Error fetching data'));
+      })
+    );
+  }
+  
+  
   //Crear pregrado
-  private apiPregrado = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/pregrado';
+  private apiPregrado = 'http://localhost:8000/pregrado';
   crearPregrado(data: any): Observable<any> {
     return this.http.post<any>(this.apiPregrado, data);
   }
@@ -33,7 +50,7 @@ export class InvestigadorService {
   }
 
   //Crear posgrado
-  private apiPosgrado = 'https://pruebabackend-86ba2adf9f62.herokuapp.com/posgrado';
+  private apiPosgrado = 'http://localhost:8000/posgrado';
   crearPosgrado(data: any): Observable<any> {
     return this.http.post<any>(this.apiPosgrado, data);
   }
@@ -45,18 +62,24 @@ export class InvestigadorService {
     return this.http.get<any[]>(`${this.apiNotificaciones}`);
   }
 
-  leerNotificacion(notifica: any) {
+  leerNotificacion(notifica: any): Observable<void> {
+    if (!notifica || !notifica.id) {
+      return throwError('ID de notificación no válido');
+    }
     const url = `${this.apiNotificaciones}/${notifica.id}`;
-    return this.http.put(url, notifica).pipe(
+    console.log('Enviando solicitud PUT a:', url);
+    console.log('Datos de la notificación:', notifica);
+    return this.http.put<void>(url, notifica).pipe(
+      tap(() => {
+        console.log('Notificación marcada como leída');
+      }),
       catchError(error => {
-        if(error instanceof HttpErrorResponse) {
+        if (error instanceof HttpErrorResponse) {
           switch (error.status) {
             case 404:
-              // El investigador no existe
               return throwError('Investigador no encontrado');
             case 400:
-              // Datos inválidos
-              return throwError('Datos de investigador inválidos'); 
+              return throwError('Datos de investigador inválidos');
             default:
               return throwError('Error al actualizar investigador');
           }
@@ -65,40 +88,11 @@ export class InvestigadorService {
       })
     );
   }
-
+  
+  
   getInvestigadores(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl3}`);
   }
-  //getInvestigadores(): Observable<any[]> {
-    //return this.http.get<any[]>(`${this.apiUrl}`).pipe(
-      //switchMap((investigadores: any[]) => {
-        // Obtener los IDs únicos de los grupos de investigadores
-        //const uniqueGrupoIds = new Set(investigadores.map(investigador => investigador.grupoinvestigacion));
-
-        // Obtener el nombre de cada grupo
-        //const observables = Array.from(uniqueGrupoIds).map(idGrupo => {
-          //return this.http.get<Grupoinvestigacion>(`${this.apiUrl2}/${idGrupo}`).pipe(
-            //map((grupo: Grupoinvestigacion) => ({ id: idGrupo, nombre: grupo.nombre }))
-          //);
-        //});
-
-        // Combinar todas las solicitudes en paralelo
-        //return forkJoin(observables).pipe(
-          //map(grupos => {
-            // Crear un mapa para buscar rápidamente el nombre del grupo por ID
-            //const grupoMap = new Map(grupos.map(grupo => [grupo.id, grupo.nombre]));
-
-            // Asignar el nombre del grupo a cada investigador
-            //return investigadores.map(investigador => ({
-              //...investigador,
-              //nombre_grupo: grupoMap.get(investigador.grupoinvestigacion)
-            //}));
-          //})
-        //);
-      //})
-    //);
-  //}
-
 
   //registro
   registrarInvestigador(nuevoInvestigador: Investigador): Observable<Investigador> {
@@ -116,38 +110,40 @@ export class InvestigadorService {
         })
       );
   }
-  actualizarInvestigador(investigador: Investigador) {
+  
+  
 
-    const url = `${this.apiUrl}/${investigador.numerodocumento}`;
-  
-    return this.http.put(url, investigador).pipe(
-  
+  actualizarInvestigador(investigador: Investigadores) {
+    const url = `${this.url}`;
+    const formData = new FormData();
+
+    // Append form fields to formData
+    Object.keys(investigador).forEach(key => {
+      const investigadorKey = key as keyof Investigador; // Convertir key a una clave válida de Investigador
+      if (investigador[investigadorKey] !== undefined && investigador[investigadorKey] !== null) {
+        formData.append(key, investigador[investigadorKey] as any);
+      }
+    });
+
+    // Append the image file to formData if it exists
+    if (investigador.imagen) {
+      formData.append('imagen', investigador.imagen);
+    }
+
+    return this.http.put(url, formData).pipe(
       catchError(error => {
-  
-        if(error instanceof HttpErrorResponse) {
-  
+        if (error instanceof HttpErrorResponse) {
           switch (error.status) {
             case 404:
-              // El investigador no existe
               return throwError('Investigador no encontrado');
-  
             case 400:
-              // Datos inválidos
-              return throwError('Datos de investigador inválidos'); 
-  
+              return throwError('Datos de investigador inválidos');
             default:
               return throwError('Error al actualizar investigador');
-          
           }
-  
         }
-  
         return throwError('Error desconocido');
-  
       })
-  
     );
-  
   }
-
 }
