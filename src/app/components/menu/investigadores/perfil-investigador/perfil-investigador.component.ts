@@ -258,7 +258,7 @@ export class PerfilInvestigadorComponent implements OnInit {
     }
 
     if (this.selectedFile) {
-      formData.append('imagen', this.selectedFile); // Adjuntar el archivo
+      tramiteGeneral.append('imagen', this.selectedFile); // Adjuntar el archivo
     }
 
     console.log('guardarDatos =>', tramiteGeneral);
