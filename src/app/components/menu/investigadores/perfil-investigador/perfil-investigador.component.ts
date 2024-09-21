@@ -247,29 +247,37 @@ export class PerfilInvestigadorComponent implements OnInit {
     this.firstFormGroup.get('unidadAcademica')?.disable();
   }
 
-  guardarDatos() {
-    if (this.firstFormGroup.valid) {
-      const tramiteGeneral = this.firstFormGroup.value;
-      tramiteGeneral.numerodocumento = this.usuarioSesion.numerodocumento;
-  
-      if (this.selectedFile) {
-        tramiteGeneral.imagen = this.selectedFile;
-      }
-      console.log(' guardarDatos => ',tramiteGeneral);
-      this.investigadorService.actualizarInvestigador(tramiteGeneral).subscribe(
-        () => {
-          Swal.fire({
-            title: 'Registro Exitoso !!!',
-            text: 'Se ha editado el perfil',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-          });
-          this.desactivarInput();
-        },
-        (error) => {
-          console.error('Error al actualizar el investigador:', error);
-        }
-      );
+ guardarDatos() {
+  if (this.firstFormGroup.valid) {
+    const tramiteGeneral = this.firstFormGroup.value;
+    tramiteGeneral.numerodocumento = this.usuarioSesion.numerodocumento;
+
+    const formData = new FormData(); // Crear FormData para enviar los datos
+    for (let key in tramiteGeneral) {
+      formData.append(key, tramiteGeneral[key]); // Agregar los datos del formulario
     }
+
+    if (this.selectedFile) {
+      formData.append('imagen', this.selectedFile); // Adjuntar el archivo
+    }
+
+    console.log('guardarDatos =>', tramiteGeneral);
+
+    this.investigadorService.actualizarInvestigador(formData).subscribe(
+      () => {
+        Swal.fire({
+          title: 'Registro Exitoso !!!',
+          text: 'Se ha editado el perfil',
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        });
+        this.desactivarInput();
+      },
+      (error) => {
+        console.error('Error al actualizar el investigador:', error);
+      }
+    );
   }
+}
+
 }
