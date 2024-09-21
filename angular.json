@@ -30,10 +30,13 @@
               "src/styles.css"
             ],
             "scripts": [
-              "node_modules/zone.js/dist/zone.js",
+             
               "node_modules/moment/moment.js",
               "node_modules/sweetalert2/dist/sweetalert2.js"
-            ]            
+            ],
+            "polyfills": [
+              "zone.js"
+            ]           
           },
           "configurations": {
             "production": {
