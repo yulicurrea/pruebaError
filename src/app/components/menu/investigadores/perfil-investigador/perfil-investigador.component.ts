@@ -104,9 +104,11 @@ export class PerfilInvestigadorComponent implements OnInit {
             horasformacion: this.userData?.horasformacion || '0',
             lineainvestigacion: this.userData?.lineainvestigacion || '',
             unidadAcademica: this.userData?.unidadAcademica || '',
-            imagen: this.userData.imagenUrl|| ''
+            imagen: this.userData.imagen?.imagen || ''
+            
           });
-        this.imagenUrl = this.userData.imagen_url;
+          console.log(this.userData.imagen);
+          this.imagenUrl = this.userData.imagen?.imagen;
 
           if (this.inputDeshabilitado) {
             this.firstFormGroup.disable();
