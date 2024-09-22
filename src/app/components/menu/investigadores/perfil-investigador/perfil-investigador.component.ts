@@ -139,6 +139,7 @@ export class PerfilInvestigadorComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = () => {
         this.imagenUrl = reader.result as string;
+        console.log('Imagen cargada:', this.imagenUrl); //
       };
       reader.readAsDataURL(file);
     }
