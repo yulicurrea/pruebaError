@@ -253,18 +253,8 @@ export class PerfilInvestigadorComponent implements OnInit {
       tramiteGeneral.numerodocumento = this.usuarioSesion.numerodocumento;
   
       if (this.selectedFile) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          tramiteGeneral.imagen = e.target.result;
-          this.finalizarGuardado(tramiteGeneral);
-        };
-        reader.readAsDataURL(this.selectedFile);
-      } else {
-        this.finalizarGuardado(tramiteGeneral);
+        tramiteGeneral.imagen = this.selectedFile;
       }
-    }
-  }
-      private finalizarGuardado(tramiteGeneral: any) {
       console.log(' guardarDatos => ',tramiteGeneral);
       this.investigadorService.actualizarInvestigador(tramiteGeneral).subscribe(
         () => {
@@ -282,4 +272,4 @@ export class PerfilInvestigadorComponent implements OnInit {
       );
     }
   }
-
+}
