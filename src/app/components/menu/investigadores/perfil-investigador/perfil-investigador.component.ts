@@ -106,7 +106,7 @@ export class PerfilInvestigadorComponent implements OnInit {
             unidadAcademica: this.userData?.unidadAcademica || '',
             imagen: this.userData.imagenUrl|| ''
           });
-          this.imagenUrl = this.userData.imagen_url || this.defaultImageUrl;
+        this.imagenUrl = this.userData.imagen_url;
 
           if (this.inputDeshabilitado) {
             this.firstFormGroup.disable();
