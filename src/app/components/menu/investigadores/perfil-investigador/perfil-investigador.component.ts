@@ -107,7 +107,7 @@ export class PerfilInvestigadorComponent implements OnInit {
             imagen: this.userData.imagen?.imagen || ''
             
           });
-          console.log(this.userData.imagen);
+          console.log(this.imagenUrl);
           this.imagenUrl = this.userData.imagen?.imagen;
 
           if (this.inputDeshabilitado) {
