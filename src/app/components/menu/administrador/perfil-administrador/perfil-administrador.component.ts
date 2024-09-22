@@ -106,7 +106,8 @@ export class PerfilAdministradorComponent  implements OnInit {
           unidadAcademica: this.userData?.unidadAcademica || '',
           imagen: this.userData.imagen?.imagen || ''
         });
-        this.imagenUrl = this.userData.imagen?.imagen;
+        this.imagenUrl = this.userData.imagen ? this.userData.imagen.imagen : this.defaultImageUrl;
+          console.log(this.imagenUrl);
 
         if (this.inputDeshabilitado) {
           this.firstFormGroup.disable();
@@ -137,6 +138,7 @@ onFileSelected(event: Event): void {
     const reader = new FileReader();
     reader.onload = () => {
       this.imagenUrl = reader.result as string;
+      console.log('Imagen cargada:', this.imagenUrl); //
     };
     reader.readAsDataURL(file);
   }
