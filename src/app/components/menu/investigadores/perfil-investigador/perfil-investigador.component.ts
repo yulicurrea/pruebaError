@@ -107,9 +107,10 @@ export class PerfilInvestigadorComponent implements OnInit {
             imagen: this.userData.imagen?.imagen || ''
             
           });
+          
+          this.imagenUrl = this.userData.imagen?.imagen ? `data:image/png;base64,${this.userData.imagen?.imagen}` 
+          : this.defaultImageUrl;
           console.log(this.imagenUrl);
-          this.imagenUrl = this.userData.imagen?.imagen;
-
           if (this.inputDeshabilitado) {
             this.firstFormGroup.disable();
           } else {
