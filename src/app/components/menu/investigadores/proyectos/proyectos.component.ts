@@ -525,6 +525,7 @@ export class ProyectosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.ngAfterViewInit();
     this.obtenerCodigosProyectos();
     this.obtenerUsuarios();
     this.configurarDatasource();
@@ -1655,53 +1656,54 @@ thumbLabel6 = false;
   
   expandedDetail = false;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('paginator', { static: true }) paginator!: MatPaginator;
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    console.log("Paginator (antes de la inicialización):", this.paginator);
     
-    console.log("DATOS TRAIDOS:" ,this.ProyectoyproductoService.getProductosDelUsuario())
+    // Esperar la llamada a la API para cargar los datos
     forkJoin([
       this.ProyectoyproductoService.getProductosDelUsuario(),
       this.ProyectoyproductoService.getProyectosDelUsuario()
     ]).subscribe(([productos, proyectos]) => {
-
-      this.allProyectosData = proyectos;
-      this.allProductosData = productos;
-      // Ajustar los datos de los productos para asegurarse de que tengan todas las propiedades definidas en la interfaz Producto
+      // Ajustar los datos de productos
       const productosAjustados = productos.reverse().map(producto => ({
         ...producto,
         tipo: 'Producto',
-        id:producto.id,
-        tituloProducto: producto.tituloProducto || '', // Asegurar que todas las propiedades definidas en la interfaz Producto estén presentes
+        id: producto.id,
+        tituloProducto: producto.tituloProducto || '',
         fecha: producto.fecha || '',
         estadoProducto: producto.estadoProceso || '', 
-        etapa: this.estadosProductos.find(p => p.id === producto.estadoProducto).estado,
+        etapa: this.estadosProductos.find(p => p.id === producto.estadoProducto)?.estado || '',
         tipologiaProducto: producto.tipologiaProducto || '',
         observacion: producto.observacion,
         investigador: producto.investigador,
       }));
       
-      // Convertir los datos de proyectos a la misma estructura que productos
-      const proyectosAjustados = proyectos.reverse().map(proyecto => ({
-        ...proyecto,
-        tituloProducto: proyecto.titulo,
-        etapa: this.estadosProyectos.find(p => p.id === proyecto.estado).estado,
-        id: proyecto.codigo,
-        fecha: proyecto.fecha,
-        estadoProceso: proyecto.estadoProceso,
-        tipo: 'Proyecto',
-        observacion: proyecto.observacion,
-        investigador: proyecto.investigador,
-        // Añadir las demás propiedades según sea necesario
-      }));
-    
-      // Concatenar los datos ajustados de proyectos con los datos de productos
-      const combinedData = [...proyectosAjustados, ...productosAjustados];
-      
-      // Asignar los datos combinados a dataSource
-      this.dataSource.data = combinedData;
-    });
+         // Ajustar los datos de proyectos
+    const proyectosAjustados = proyectos.reverse().map(proyecto => ({
+      ...proyecto,
+      tituloProducto: proyecto.titulo,
+      etapa: this.estadosProyectos.find(p => p.id === proyecto.estado)?.estado || '',
+      id: proyecto.codigo,
+      fecha: proyecto.fecha,
+      estadoProceso: proyecto.estadoProceso,
+      tipo: 'Proyecto',
+      observacion: proyecto.observacion,
+      investigador: proyecto.investigador,
+    }));
+    // Combinar los datos
+    const combinedData = [...proyectosAjustados, ...productosAjustados];
+    console.log("Datos combinados: ", combinedData);
+    // Asignar datos combinados al dataSource
+    this.dataSource.data = combinedData;
+    // Usar setTimeout para garantizar que el paginator esté disponible
+    setTimeout(() => {
+      this.dataSource.paginator = this.paginator;
+      console.log("Paginator (después de la inicialización):", this.paginator);
+      console.log("Datos para la tabla:", this.dataSource.data);
+    }, 100); // Aumenta el tiempo si es necesario
+  });
   }
   
   accionUno(element: any) {
