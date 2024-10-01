@@ -26,7 +26,7 @@ export class NavbarComponent {
       apellidos: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
       correo: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@unbosque\.edu\.co$/)]],
       tipodocumento: ['', [Validators.required]],
-      numerodocumento: ['', [Validators.required,Validators.pattern(/^[0-9]+$/), Validators.minLength(9)]],
+      numerodocumento: ['', [Validators.required,Validators.pattern(/^[0-9]+$/), Validators.minLength(7)]],
       contrasena: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)]],
       confirmarContrasena: ['', [Validators.required]],
     });
