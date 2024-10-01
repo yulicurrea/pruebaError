@@ -44,10 +44,10 @@ export class NavbarComponent {
   login(): void {
     console.log('Formulario válido:', this.loginForm.valid); // Verificar si el formulario es válido
 
-  // Verificar si el formulario es inválido
+    // Verificar si el formulario es inválido
     if (this.loginForm.invalid) {
-      this.showWarningMessage(); // Mostrar mensaje de advertencia
-      return; // Salir del método si el formulario no es válido
+        this.showWarningMessage(); // Mostrar mensaje de advertencia por campos vacíos
+        return; // Salir del método si el formulario no es válido
     }
   
     const correo = this.loginForm.get('correo')?.value;
@@ -55,70 +55,72 @@ export class NavbarComponent {
   
     // Validar el correo
     if (!this.isEmailValid(correo)) {
-      Swal.fire({
-        title: 'Correo no válido',
-        text: 'Por favor, verifica que tu correo no sea solo números y tenga el formato correcto.',
-        icon: 'warning',
-        confirmButtonText: 'Aceptar'
-      });
-      return;
+        Swal.fire({
+            title: 'Correo no válido',
+            text: 'Por favor, verifica que tu correo no sea solo números y tenga el formato correcto.',
+            icon: 'warning',
+            confirmButtonText: 'Aceptar'
+        });
+        return; // Salir del método si el correo no es válido
     }
-      this.autenticacionService.login(correo, contrasena).subscribe(
+  
+    // Si el formulario y el correo son válidos, proceder a iniciar sesión
+    this.autenticacionService.login(correo, contrasena).subscribe(
         (response) => {
-          console.log('Respuesta del servidor:', response);
-          
-          const token = response.token.numerodocumento;
-          const rolInvestigador = response.token.rolinvestigador;
-          const estado = response.token.estado;
-          const userData = response.user_data;
-  
-          localStorage.setItem('token', token);
-          this.autenticacionService.guardarDatosUsuario(userData);
-  
-          // Verificar el rol del investigador y su estado
-          if (rolInvestigador === 'Investigador') {
-            if (estado) {
-              window.location.href = 'https://prueba-error.vercel.app/investigadores/perfil';
+            console.log('Respuesta del servidor:', response);
+            
+            const token = response.token.numerodocumento;
+            const rolInvestigador = response.token.rolinvestigador;
+            const estado = response.token.estado;
+            const userData = response.user_data;
+
+            localStorage.setItem('token', token);
+            this.autenticacionService.guardarDatosUsuario(userData);
+
+            // Verificar el rol del investigador y su estado
+            if (rolInvestigador === 'Investigador') {
+                if (estado) {
+                    window.location.href = 'https://prueba-error.vercel.app/investigadores/perfil';
+                } else {
+                    console.log('El investigador no está activo');
+                    Swal.fire({
+                        title: 'Usuario Inactivo !!!',
+                        text: 'Contacta al administrador para activar tu usuario',
+                        icon: 'warning',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            } else if (rolInvestigador === 'Administrador') {
+                window.location.href = 'https://prueba-error.vercel.app/administrador/perfil';
             } else {
-              console.log('El investigador no está activo');
-              Swal.fire({
-                title: 'Usuario Inactivo !!!',
-                text: 'Contacta al administrador para activar tu usuario',
-                icon: 'warning',
-                confirmButtonText: 'Aceptar'
-              });
+                console.log("Rol estudiante");
             }
-          } else if (rolInvestigador === 'Administrador') {
-            window.location.href = 'https://prueba-error.vercel.app/administrador/perfil';
-          } else {
-            console.log("Rol estudiante");
-          }
         },
         (error) => {
-          console.error('Error al iniciar sesión:', error);
-          Swal.fire({
-            title: 'Error de inicio de sesión',
-            text: 'Correo o contraseña incorrectos. Inténtalo de nuevo.',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-          });
+            console.error('Error al iniciar sesión:', error);
+            Swal.fire({
+                title: 'Error de inicio de sesión',
+                text: 'Correo o contraseña incorrectos. Inténtalo de nuevo.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
         }
-      );
-    }
-  
-  
-  private isEmailValid(email: string): boolean {
+    );
+}
+
+private isEmailValid(email: string): boolean {
     console.log('Validando email:', email); // Verificar qué email se está validando
     const onlyNumbersPattern = /^\d+$/; // Solo números
     return email.includes('@') && !onlyNumbersPattern.test(email);
-  }
+}
 
-  showWarningMessage() {
+showWarningMessage() {
     this.snackBar.open('Por favor, completa todos los campos requeridos correctamente.', 'Cerrar', {
-      duration: 5000,
-      panelClass: ['warning-snackbar'] // Puedes definir estilos específicos si lo deseas
+        duration: 5000,
+        panelClass: ['warning-snackbar'] // Puedes definir estilos específicos si lo deseas
     });
-  }
+}
+
    //metodo que abre el digalogo que contiene el formulario de restablecer contraseña
    openResetPasswordDialog() {
     const dialogRef = this.dialog.open(ResetPasswordDialogComponent);
