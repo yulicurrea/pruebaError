@@ -43,22 +43,26 @@ export class NavbarComponent {
 
   login(): void {
     console.log('Formulario válido:', this.loginForm.valid); // Verificar si el formulario es válido
+
+  // Verificar si el formulario es inválido
+    if (this.loginForm.invalid) {
+      this.showWarningMessage(); // Mostrar mensaje de advertencia
+      return; // Salir del método si el formulario no es válido
+    }
   
-    if (this.loginForm.valid) {
-      const correo = this.loginForm.get('correo')?.value;
-      const contrasena = this.loginForm.get('contrasena')?.value;
+    const correo = this.loginForm.get('correo')?.value;
+    const contrasena = this.loginForm.get('contrasena')?.value;
   
-      // Validar el correo
-      if (!this.isEmailValid(correo)) {
-        Swal.fire({
-          title: 'Correo no válido',
-          text: 'Por favor, verifica que tu correo no sea solo números y tenga el formato correcto.',
-          icon: 'warning',
-          confirmButtonText: 'Aceptar'
-        });
-        return;
-      }
-  
+    // Validar el correo
+    if (!this.isEmailValid(correo)) {
+      Swal.fire({
+        title: 'Correo no válido',
+        text: 'Por favor, verifica que tu correo no sea solo números y tenga el formato correcto.',
+        icon: 'warning',
+        confirmButtonText: 'Aceptar'
+      });
+      return;
+    }
       this.autenticacionService.login(correo, contrasena).subscribe(
         (response) => {
           console.log('Respuesta del servidor:', response);
@@ -101,12 +105,19 @@ export class NavbarComponent {
         }
       );
     }
-  }
+  
   
   private isEmailValid(email: string): boolean {
     console.log('Validando email:', email); // Verificar qué email se está validando
     const onlyNumbersPattern = /^\d+$/; // Solo números
     return email.includes('@') && !onlyNumbersPattern.test(email);
+  }
+
+  showWarningMessage() {
+    this.snackBar.open('Por favor, completa todos los campos requeridos correctamente.', 'Cerrar', {
+      duration: 5000,
+      panelClass: ['warning-snackbar'] // Puedes definir estilos específicos si lo deseas
+    });
   }
    //metodo que abre el digalogo que contiene el formulario de restablecer contraseña
    openResetPasswordDialog() {
