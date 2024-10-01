@@ -1659,6 +1659,8 @@ thumbLabel6 = false;
   @ViewChild('paginator', { static: true }) paginator!: MatPaginator;
 
   ngAfterViewInit() {
+    console.log("DATOS TRAIDOS:" ,this.ProyectoyproductoService.getProductosDelUsuario())
+
     console.log("Paginator (antes de la inicialización):", this.paginator);
     
     // Esperar la llamada a la API para cargar los datos
