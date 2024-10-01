@@ -42,83 +42,85 @@ export class NavbarComponent {
   loginForm: FormGroup;
 
   login(): void {
-    console.log('Formulario válido:', this.loginForm.valid); // Verificar si el formulario es válido
+    console.log('Formulario válido:', this.loginForm.valid);
 
-    // Verificar si el formulario es inválido
     if (this.loginForm.invalid) {
-        console.log('Formulario inválido, mostrando mensaje de advertencia.'); // Registro adicional
-        this.showWarningMessage(); // Mostrar mensaje de advertencia
-        return; // Salir del método si el formulario no es válido
+      console.log('Formulario inválido, mostrando mensaje de advertencia.');
+      this.showWarningMessage();
+      return;
     }
-  
+
     const correo = this.loginForm.get('correo')?.value;
     const contrasena = this.loginForm.get('contrasena')?.value;
-  
+
     // Validar el correo
     if (!this.isEmailValid(correo)) {
-        console.log('Correo no válido:', correo); // Registro para verificar el correo
-        Swal.fire({
-            title: 'Correo no válido',
-            text: 'Por favor, verifica que tu correo no sea solo números y tenga el formato correcto.',
-            icon: 'warning',
-            confirmButtonText: 'Aceptar'
-        });
-        return; // Salir del método si el correo no es válido
+      console.log('Correo no válido:', correo);
+      console.log('Intentando mostrar alerta de correo no válido');
+      Swal.fire({
+        title: 'Correo no válido',
+        text: 'Por favor, verifica que tu correo no sea solo números y tenga el formato correcto.',
+        icon: 'warning',
+        confirmButtonText: 'Aceptar'
+      });
+      return;
     }
-  
-    console.log('Formulario y correo válidos, procediendo a iniciar sesión...'); // Registro adicional
+
+    console.log('Formulario y correo válidos, procediendo a iniciar sesión...');
 
     // Si el formulario y el correo son válidos, proceder a iniciar sesión
     this.autenticacionService.login(correo, contrasena).subscribe(
-        (response) => {
-            console.log('Respuesta del servidor:', response);
-            
-            const token = response.token.numerodocumento;
-            const rolInvestigador = response.token.rolinvestigador;
-            const estado = response.token.estado;
-            const userData = response.user_data;
+      (response) => {
+        console.log('Respuesta del servidor:', response);
+        
+        const token = response.token.numerodocumento;
+        const rolInvestigador = response.token.rolinvestigador;
+        const estado = response.token.estado;
+        const userData = response.user_data;
 
-            localStorage.setItem('token', token);
-            this.autenticacionService.guardarDatosUsuario(userData);
+        localStorage.setItem('token', token);
+        this.autenticacionService.guardarDatosUsuario(userData);
 
-            // Verificar el rol del investigador y su estado
-            if (rolInvestigador === 'Investigador') {
-                if (estado) {
-                    window.location.href = 'https://prueba-error.vercel.app/investigadores/perfil';
-                } else {
-                    console.log('El investigador no está activo');
-                    Swal.fire({
-                        title: 'Usuario Inactivo !!!',
-                        text: 'Contacta al administrador para activar tu usuario',
-                        icon: 'warning',
-                        confirmButtonText: 'Aceptar'
-                    });
-                }
-            } else if (rolInvestigador === 'Administrador') {
-                window.location.href = 'https://prueba-error.vercel.app/administrador/perfil';
-            } else {
-                console.log("Rol estudiante");
-            }
-        },
-        (error) => {
-            console.error('Error al iniciar sesión:', error);
+        // Verificar el rol del investigador y su estado
+        if (rolInvestigador === 'Investigador') {
+          if (estado) {
+            window.location.href = 'https://prueba-error.vercel.app/investigadores/perfil';
+          } else {
+            console.log('El investigador no está activo');
             Swal.fire({
-                title: 'Error de inicio de sesión',
-                text: 'Correo o contraseña incorrectos. Inténtalo de nuevo.',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
+              title: 'Usuario Inactivo !!!',
+              text: 'Contacta al administrador para activar tu usuario',
+              icon: 'warning',
+              confirmButtonText: 'Aceptar'
             });
+          }
+        } else if (rolInvestigador === 'Administrador') {
+          window.location.href = 'https://prueba-error.vercel.app/administrador/perfil';
+        } else {
+          console.log("Rol estudiante");
         }
+      },
+      (error) => {
+        console.error('Error al iniciar sesión:', error);
+        Swal.fire({
+          title: 'Error de inicio de sesión',
+          text: 'Correo o contraseña incorrectos. Inténtalo de nuevo.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+      }
     );
-}
+  }
 
-private isEmailValid(email: string): boolean {
-    console.log('Validando email:', email); // Verificar qué email se está validando
-    const onlyNumbersPattern = /^\d+$/; // Solo números
-    const isValid = email.includes('@') && !onlyNumbersPattern.test(email);
-    console.log('Email es válido:', isValid); // Verificar el resultado de la validación
+  private isEmailValid(email: string): boolean {
+    console.log('Validando email:', email);
+    if (!email) return false; // Si el email está vacío, no es válido
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const onlyNumbersPattern = /^\d+$/;
+    const isValid = emailPattern.test(email) && !onlyNumbersPattern.test(email);
+    console.log('Email es válido:', isValid);
     return isValid;
-}
+  }
 
 showWarningMessage() {
     this.snackBar.open('Por favor, completa todos los campos requeridos correctamente.', 'Cerrar', {
