@@ -45,7 +45,15 @@ export class NavbarComponent {
     if (this.loginForm.valid) {
       const correo = this.loginForm.get('correo')?.value;
       const contrasena = this.loginForm.get('contrasena')?.value;
-      console.log('Contraseña enviada al backend:', contrasena);
+      if (!this.isEmailValid(correo)) {
+        Swal.fire({
+          title: 'Correo no válido',
+          text: 'Por favor, verifica que tu correo no sea solo números y tenga el formato correcto.',
+          icon: 'warning',
+          confirmButtonText: 'Aceptar'
+        });
+        return;
+      }
       
       this.autenticacionService.login(correo, contrasena).subscribe(
         (response) => {
@@ -96,6 +104,11 @@ export class NavbarComponent {
         }
       );
     }
+  }
+  private isEmailValid(email: string): boolean {
+    // Validar que el correo no sea solo números
+    const onlyNumbersPattern = /^\d+$/; // Solo números
+    return email.includes('@') && !onlyNumbersPattern.test(email);
   }
   
    //metodo que abre el digalogo que contiene el formulario de restablecer contraseña
