@@ -46,7 +46,8 @@ export class NavbarComponent {
 
     // Verificar si el formulario es inválido
     if (this.loginForm.invalid) {
-        this.showWarningMessage(); // Mostrar mensaje de advertencia por campos vacíos
+        console.log('Formulario inválido, mostrando mensaje de advertencia.'); // Registro adicional
+        this.showWarningMessage(); // Mostrar mensaje de advertencia
         return; // Salir del método si el formulario no es válido
     }
   
@@ -55,6 +56,7 @@ export class NavbarComponent {
   
     // Validar el correo
     if (!this.isEmailValid(correo)) {
+        console.log('Correo no válido:', correo); // Registro para verificar el correo
         Swal.fire({
             title: 'Correo no válido',
             text: 'Por favor, verifica que tu correo no sea solo números y tenga el formato correcto.',
@@ -64,6 +66,8 @@ export class NavbarComponent {
         return; // Salir del método si el correo no es válido
     }
   
+    console.log('Formulario y correo válidos, procediendo a iniciar sesión...'); // Registro adicional
+
     // Si el formulario y el correo son válidos, proceder a iniciar sesión
     this.autenticacionService.login(correo, contrasena).subscribe(
         (response) => {
@@ -111,7 +115,9 @@ export class NavbarComponent {
 private isEmailValid(email: string): boolean {
     console.log('Validando email:', email); // Verificar qué email se está validando
     const onlyNumbersPattern = /^\d+$/; // Solo números
-    return email.includes('@') && !onlyNumbersPattern.test(email);
+    const isValid = email.includes('@') && !onlyNumbersPattern.test(email);
+    console.log('Email es válido:', isValid); // Verificar el resultado de la validación
+    return isValid;
 }
 
 showWarningMessage() {
@@ -120,6 +126,7 @@ showWarningMessage() {
         panelClass: ['warning-snackbar'] // Puedes definir estilos específicos si lo deseas
     });
 }
+
 
    //metodo que abre el digalogo que contiene el formulario de restablecer contraseña
    openResetPasswordDialog() {
