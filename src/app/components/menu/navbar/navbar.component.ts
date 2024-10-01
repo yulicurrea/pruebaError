@@ -54,18 +54,6 @@ export class NavbarComponent {
     const contrasena = this.loginForm.get('contrasena')?.value;
 
     // Validar el correo
-    if (!this.isEmailValid(correo)) {
-      console.log('Correo no válido:', correo);
-      console.log('Intentando mostrar alerta de correo no válido');
-      Swal.fire({
-        title: 'Correo no válido',
-        text: 'Por favor, verifica que tu correo no sea solo números y tenga el formato correcto.',
-        icon: 'warning',
-        confirmButtonText: 'Aceptar'
-      });
-      return;
-    }
-
     console.log('Formulario y correo válidos, procediendo a iniciar sesión...');
 
     // Si el formulario y el correo son válidos, proceder a iniciar sesión
@@ -112,15 +100,6 @@ export class NavbarComponent {
     );
   }
 
-  private isEmailValid(email: string): boolean {
-    console.log('Validando email:', email);
-    if (!email) return false; // Si el email está vacío, no es válido
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const onlyNumbersPattern = /^\d+$/;
-    const isValid = emailPattern.test(email) && !onlyNumbersPattern.test(email);
-    console.log('Email es válido:', isValid);
-    return isValid;
-  }
 
 showWarningMessage() {
     this.snackBar.open('Por favor, verifica que tu correo tenga el formato correcto.', 'Cerrar', {
