@@ -42,9 +42,13 @@ export class NavbarComponent {
   loginForm: FormGroup;
 
   login(): void {
+    console.log('Formulario válido:', this.loginForm.valid); // Verificar si el formulario es válido
+  
     if (this.loginForm.valid) {
       const correo = this.loginForm.get('correo')?.value;
       const contrasena = this.loginForm.get('contrasena')?.value;
+  
+      // Validar el correo
       if (!this.isEmailValid(correo)) {
         Swal.fire({
           title: 'Correo no válido',
@@ -54,28 +58,24 @@ export class NavbarComponent {
         });
         return;
       }
-      
+  
       this.autenticacionService.login(correo, contrasena).subscribe(
         (response) => {
           console.log('Respuesta del servidor:', response);
-  
-          // Obtener el token y los datos del investigador del objeto de respuesta
+          
           const token = response.token.numerodocumento;
           const rolInvestigador = response.token.rolinvestigador;
           const estado = response.token.estado;
-          const userData = response.user_data; // Datos del perfil del usuario
-
+          const userData = response.user_data;
+  
           localStorage.setItem('token', token);
-          this.autenticacionService.guardarDatosUsuario(userData); // Guardar los datos del usuario en el LocalStorage
-
+          this.autenticacionService.guardarDatosUsuario(userData);
   
           // Verificar el rol del investigador y su estado
           if (rolInvestigador === 'Investigador') {
             if (estado) {
-              // Si el investigador está activo, redirigir a la URL del perfil del investigador
               window.location.href = 'https://prueba-error.vercel.app/investigadores/perfil';
             } else {
-              // Si el investigador está inactivo
               console.log('El investigador no está activo');
               Swal.fire({
                 title: 'Usuario Inactivo !!!',
@@ -83,34 +83,31 @@ export class NavbarComponent {
                 icon: 'warning',
                 confirmButtonText: 'Aceptar'
               });
-              // Aquí podrías mostrar un mensaje al usuario o tomar otra acción
             }
           } else if (rolInvestigador === 'Administrador') {
-            // Si es un administrador, redirigir a la URL del perfil del administrador
             window.location.href = 'https://prueba-error.vercel.app/administrador/perfil';
           } else {
-            // Manejar otros roles si es necesario
-            console.log("Rol estudiante")
+            console.log("Rol estudiante");
           }
         },
         (error) => {
           console.error('Error al iniciar sesión:', error);
-            Swal.fire({
-              title: 'Error de inicio de sesión',
-              text: 'Correo o contraseña incorrectos. Inténtalo de nuevo.',
-              icon: 'error',
-              confirmButtonText: 'Aceptar'
+          Swal.fire({
+            title: 'Error de inicio de sesión',
+            text: 'Correo o contraseña incorrectos. Inténtalo de nuevo.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
           });
         }
       );
     }
   }
+  
   private isEmailValid(email: string): boolean {
-    // Validar que el correo no sea solo números
+    console.log('Validando email:', email); // Verificar qué email se está validando
     const onlyNumbersPattern = /^\d+$/; // Solo números
     return email.includes('@') && !onlyNumbersPattern.test(email);
   }
-  
    //metodo que abre el digalogo que contiene el formulario de restablecer contraseña
    openResetPasswordDialog() {
     const dialogRef = this.dialog.open(ResetPasswordDialogComponent);
