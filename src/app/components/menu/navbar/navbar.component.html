@@ -142,7 +142,7 @@
                 <input type="text" matInput autocomplete="off" formControlName="numerodocumento">
                 <mat-error *ngIf="registroForm.get('numerodocumento')?.hasError('required')">El número de documento es requerido</mat-error>
                 <mat-error *ngIf="registroForm.get('numerodocumento')?.hasError('pattern')">Solo se permiten números</mat-error>
-                <mat-error *ngIf="registroForm.get('numerodocumento')?.hasError('minlength')">Debe tener al menos 9 dígitos</mat-error>
+                <mat-error *ngIf="registroForm.get('numerodocumento')?.hasError('minlength')">Debe tener al menos 7 dígitos</mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline">
                 <mat-label>Contraseña</mat-label>
