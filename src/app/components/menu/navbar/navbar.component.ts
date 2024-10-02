@@ -102,7 +102,7 @@ export class NavbarComponent {
 
 
 showWarningMessage() {
-    this.snackBar.open('Por favor, verifica que tu correo tenga el formato correcto.', 'Cerrar', {
+    this.snackBar.open('Por favor, verifica que su correo tenga el formato correcto.', 'Cerrar', {
         duration: 5000,
         panelClass: ['warning-snackbar'] // Puedes definir estilos específicos si lo deseas
     });
