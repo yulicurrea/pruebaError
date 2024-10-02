@@ -548,7 +548,7 @@
                   </div> 
                   <div class="custom-input-container">
                     <label for="codigo">Estado inicio semestre</label>
-                    <input matInput id="codigo" placeholder="Ingrese el estado inicio de semestre"  formControlName="estadoProdIniSemestre">
+                    <input matInput id="codigo" placeholder="Ingrese el estado inicial de semestre"  formControlName="estadoProdIniSemestre">
                   </div> 
                   <div class="custom-input-container">
                     <label for="codigo">Observaciones</label>
@@ -1000,8 +1000,12 @@
             
             <div class="titulo">
               <div class="custom-input-container">
-                <label for="codigo">Origen</label>
-                <input matInput id="codigo" placeholder="Ingrese el Origen" required formControlName="origen">
+                <label for="origenValue">Origen</label>
+                    <mat-select id="origenValue" placeholder="Seleccione el origen" formControlName="origen">
+                      <mat-option *ngFor="let data of origenData" [value]="data.value">
+                        {{data.viewValue}}
+                      </mat-option>
+                    </mat-select>
               </div>
               <div class="custom-input-container">
                 <label for="codigo">publicación</label>
