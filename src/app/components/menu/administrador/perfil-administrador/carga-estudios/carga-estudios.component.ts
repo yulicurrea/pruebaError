@@ -66,15 +66,15 @@ export class CargaEstudiosComponent implements OnInit{
 
     if(this.type === 'Pregrado'){
       this.firstFormGroup = this.formBuilder.group({
-        titulo: ['', [Validators.required, Validators.pattern('[A-Za-z ]+')]],
+        titulo: ['', [Validators.required, Validators.pattern('[A-Za-zÁÉÍÓÚáéíóúÑñ]+')]],
         fecha: ['', [Validators.required]],
-        institucion: ['', [Validators.required, Validators.pattern('[A-Za-z ]+')]],
+        institucion: ['', [Validators.required, Validators.pattern('[A-Za-zÁÉÍÓÚáéíóúÑñ]+')]],
       });
     } else {
       this.secondFormGroup = this.formBuilder.group({
-        titulo2: ['', [Validators.required, Validators.pattern('[A-Za-z ]+')]],
+        titulo2: ['', [Validators.required, Validators.pattern('[A-Za-zÁÉÍÓÚáéíóúÑñ]+')]],
         fecha2: ['', [Validators.required]],
-        institucion2: ['', [Validators.required, Validators.pattern('[A-Za-z ]+')]],
+        institucion2: ['', [Validators.required, Validators.pattern('[A-Za-zÁÉÍÓÚáéíóúÑñ]+')]],
         tipo2: ['', [Validators.required]],
       });
     }
