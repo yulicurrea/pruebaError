@@ -71,11 +71,11 @@ export class PerfilAdministradorComponent  implements OnInit {
   ) { 
     this.firstFormGroup = this.formBuilder.group({
       numerodocumento: [{ value: '', disabled: true }, Validators.required],
-      nombre: [{ value: '', disabled: this.inputDeshabilitado }, [Validators.required, Validators.pattern('[A-Za-z ]+')]],
-      apellidos: [{ value: '', disabled: this.inputDeshabilitado }, [Validators.required, Validators.pattern('[A-Za-z ]+')]],
+      nombre: [{ value: '', disabled: this.inputDeshabilitado }, [Validators.required, Validators.pattern('[A-Za-zÁÉÍÓÚáéíóúÑñ]+')]],
+      apellidos: [{ value: '', disabled: this.inputDeshabilitado }, [Validators.required, Validators.pattern('[A-Za-zÁÉÍÓÚáéíóúÑñ]+')]],
       correo: [{ value: '', disabled: this.inputDeshabilitado },[ Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@unbosque\.edu\.co')]],
       tipodocumento: [{ value: '', disabled: this.inputDeshabilitado }, Validators.required],
-      escalofonodocente: [{ value: '', disabled: this.inputDeshabilitado }, [Validators.required, Validators.pattern('[A-Za-z ]+')]],
+      escalofonodocente: [{ value: '', disabled: this.inputDeshabilitado }, [Validators.required, Validators.pattern('[A-Za-zÁÉÍÓÚáéíóúÑñ]+')]],
       horasestricto: [{ value: '', disabled: this.inputDeshabilitado }, [Validators.required, Validators.pattern('^[0-9]*$')]],
       horasformacion: [{ value: '', disabled: this.inputDeshabilitado }, [Validators.required, Validators.pattern('^[0-9]*$')]],
       lineainvestigacion: [{ value: '', disabled: this.inputDeshabilitado },Validators.required],
