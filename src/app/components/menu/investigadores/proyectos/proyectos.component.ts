@@ -203,8 +203,8 @@ export class ProyectosComponent implements OnInit {
       porcentajeEjecucionCorte: [0],
       entidadPostulo: this.formBuilder.group({
         id: [''],
-        nombreInstitucion: ['',[ Validators.pattern(/^[a-zA-Z\s]*$/)]],
-        nombreGrupo: ['',[ Validators.pattern(/^[a-zA-Z\s]*$/)]],
+        nombreInstitucion: ['',[ Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]*$/)]],
+        nombreGrupo: ['',[ Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]*$/)]],
       }),
       financiacion: this.formBuilder.group({
         id: [''],
