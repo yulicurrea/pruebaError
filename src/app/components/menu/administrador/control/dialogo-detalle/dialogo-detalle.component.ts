@@ -112,12 +112,17 @@ export class DialogoDetalleComponent implements OnInit {
     private estudiantesService: EstudiantesService,
     private AutenticacionService:AutenticacionService,
   ) { 
-  }  
+  }   
   async ngOnInit(): Promise<void> {
+    console.log('Dialog Data:', this.dialogData);
+    
     this.title = this.dialogData.title;
     this.buttonTitle = this.dialogData.buttonTitle;
     this.type = this.dialogData.type;
     this.data = this.dialogData.data;
+    console.log('Data:', this.data); // Debug: Verifica data
+
+    
     this.estadosProyectoData = this.dialogData.estadosProyectoData;
     this.isEdit = this.dialogData.isEdit;
 
@@ -152,6 +157,7 @@ export class DialogoDetalleComponent implements OnInit {
         porcentajeEjecucionFinCorte: [this.data?.porcentajeEjecucionFinCorte,[Validators.required]],
       });
 
+      console.log('Form Group Value:', this.firstFormGroup.value);
       
       this.firstFormGroup.controls['investigador'].setValue(this.data?.investigador);
       this.firstFormGroup.controls['coinvestigador'].setValue(this.data?.coinvestigador);
@@ -159,7 +165,6 @@ export class DialogoDetalleComponent implements OnInit {
       this.firstFormGroup.controls['estadoProceso'].setValue(this.data?.estadoProceso);
       this.firstFormGroup.controls['estudiantesProyecto'].setValue(this.data?.estudiantes);
       this.firstFormGroup.controls['participantesExternos'].setValue(this.data?.participantesExternos);
-
     } else {
       this.obtenerCuartilEsperado();
       this.obtenerEstadoProducto();

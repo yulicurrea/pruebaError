@@ -215,7 +215,7 @@
         </table> <!-- Esta etiqueta debe estar aquí -->
         
         <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10]" showFirstLastButtons aria-label="Select page of periodic elements">
-        </mat-paginator>
+        </mat-paginator>        
       </div>
     </mat-tab>
     <!-- nuevo -->
@@ -227,22 +227,27 @@
           <form [formGroup]="firstFormGroup">
             <div class="titulo">
               <div class="custom-input-container">
-                <label for="codigo">Código del proyecto</label>
+                <label for="codigo">Código del proyecto <span class="required" title="Este campo es obligatorio">*</span></label>
                 <input matInput id="codigo" placeholder="Ingrese el código" required formControlName="codigo" (blur)="verificarCodigo()">
                 <div *ngIf="codigoExistente" style="color: red;">
                   {{ mensajeError }}
                 </div>
               </div>                                          
               <div class="custom-input-container">
-                <label for="codigo">Titulo</label>
+                <label for="codigo">Titulo <span class="required" title="Este campo es obligatorio">*</span></label>
                 <input matInput id="titulo" placeholder="Ingrese el titulo" required formControlName="titulo">
               </div> 
               <div class="custom-input-container">
-                <label for="codigo">Grupo de investigación</label>
-                <input matInput id="grupoInvestigacionPro" placeholder="Grupo de investigación" required formControlName="grupoInvestigacionPro">
+                <label for="grupoInvestigacionPro">Grupo de investigación 
+                  <span class="required" title="Este campo es obligatorio">*</span> 
+                </label>
+                <mat-select id="grupoInvestigacionPro" placeholder="Seleccione un grupo" formControlName="grupoInvestigacionPro" required>
+                  <mat-option *ngFor="let grupo of gruposInvestigacion" [value]="grupo.nombre">
+                    {{ grupo.nombre }}
+                  </mat-option>
+                </mat-select>
               </div>
-           
-          
+              
             </div>
             <div class="titulo">
               <div class="custom-input-container">
@@ -273,7 +278,7 @@
               </div>
             
               <div class="custom-input-container">
-                <label for="unidadAcademica">Unidad académica</label>
+                <label for="unidadAcademica">Unidad académica <span class="required" title="Este campo es obligatorio">*</span></label>
                 <mat-select id="unidadAcademica" placeholder="Seleccione la unidad academica" formControlName="unidadAcademica">
                   <mat-option *ngFor="let data of unidadAcademicaData" [value]="data.value">
                     {{data.viewValue}}
@@ -282,13 +287,13 @@
               </div>
             
               <div class="custom-input-container">
-                <label for="area">Área</label>
+                <label for="area">Área <span class="required" title="Este campo es obligatorio">*</span></label>
                 <input matInput id="area" placeholder="Ingrese el área" required formControlName="area">
               </div>
             </div>
             <div class="titulo">
               <div class="custom-input-container">
-                <label for="origenValue">Origen</label>
+                <label for="origenValue">Origen <span class="required" title="Este campo es obligatorio">*</span></label>
                 <mat-select id="origenValue" placeholder="Seleccione el origen" formControlName="origen">
                   <mat-option *ngFor="let data of origenData" [value]="data.value">
                     {{data.viewValue}}
@@ -296,7 +301,7 @@
                 </mat-select>
               </div>
               <div class="custom-input-container">
-                <label for="nivelRiesgoValue">Nivel de riesgo</label>
+                <label for="nivelRiesgoValue">Nivel de riesgo<span class="required" title="Este campo es obligatorio">*</span></label>
                 <mat-select id="nivelRiesgoValue" placeholder="Seleccione el nivel de riesgo" formControlName="nivelRiesgoEtico">
                   <mat-option *ngFor="let data of nivelRiesgoEticoData" [value]="data.value">
                     {{data.viewValue}}
@@ -304,7 +309,7 @@
                 </mat-select>
               </div>
               <div class="custom-input-container">
-                <label for="modalidadValue">Modalidad</label>
+                <label for="modalidadValue">Modalidad<span class="required" title="Este campo es obligatorio">*</span></label>
                 <mat-select id="modalidadValue" placeholder="Seleccione la modalidad" formControlName="modalidadProyecto">
                   <mat-option *ngFor="let data of modalidadData" [value]="data.value">
                     {{data.viewValue}}
@@ -315,12 +320,12 @@
             </div>
             <div class="titulo">
               <div class="custom-input-container">
-                <label for="codigo">Convocatoria</label>
+                <label for="codigo">Convocatoria<span class="required" title="Este campo es obligatorio">*</span></label>
                 <input matInput id="convocatoria" placeholder="Ingrese la convocatoria" required formControlName="convocatoria">
               </div>
               
               <div class="custom-input-container">
-                <label for="codigo">Línea de investigación</label>
+                <label for="codigo">Línea de investigación<span class="required" title="Este campo es obligatorio">*</span></label>
                 <mat-select id="lineaInvestigacion" placeholder="Seleccione la línea de investigación" formControlName="lineaInvestigacion">
                     <mat-option *ngFor="let data of lineaInvestigacionData" [value]="data.value">
                       {{data.viewValue}}
@@ -418,21 +423,21 @@
             <span style="display:inline-block; width: 150px;"></span>
             <div class="titulo">
               <div class="custom-input-container form-field-spacing" appearance="fill">
-                <label for="codigo">Instalación</label>
+                <label for="codigo">Instalación<span class="required" title="Este campo es obligatorio">*</span></label>
                 <input matInput formControlName="instalacion" autocomplete="off" placeholder="instalacion">
               </div>
               <div class="custom-input-container form-field-spacing" appearance="fill">
-                <label for="codigo">Municipio</label>
+                <label for="codigo">Municipio<span class="required" title="Este campo es obligatorio">*</span></label>
                 <input matInput formControlName="municipio" autocomplete="off" placeholder="municipio">
               </div>
             </div>
             <div class="titulo">
               <div class="custom-input-container form-field-spacing" appearance="fill">
-                <label for="codigo">País</label>
+                <label for="codigo">País<span class="required" title="Este campo es obligatorio">*</span></label>
                 <input matInput formControlName="pais" autocomplete="off" placeholder="pais">
               </div>
               <div class="custom-input-container form-field-spacing" appearance="fill">
-                <label for="codigo">Departamento</label>
+                <label for="codigo">Departamento<span class="required" title="Este campo es obligatorio">*</span></label>
                 <input matInput formControlName="departamento" autocomplete="off" placeholder="departamento">
               </div>
             </div>
@@ -548,7 +553,7 @@
                   </div> 
                   <div class="custom-input-container">
                     <label for="codigo">Estado inicio semestre</label>
-                    <input matInput id="codigo" placeholder="Ingrese el estado inicial de semestre"  formControlName="estadoProdIniSemestre">
+                    <input matInput id="codigo" placeholder="Ingrese el estado inicio de semestre"  formControlName="estadoProdIniSemestre">
                   </div> 
                   <div class="custom-input-container">
                     <label for="codigo">Observaciones</label>
@@ -676,7 +681,7 @@
                             </div> 
                             <div class="custom-input-container">
                               <label for="codigo">ISBN</label>
-                              <input matInput id="codigo" placeholder="Ingrese el ISBN"  formControlName="isbn">
+                              <input matInput id="codigo" placeholder="Ingrese ISBN"  formControlName="isbn">
                             </div>
                           </div>
                           <div class="titulo">
@@ -688,7 +693,7 @@
                             </div>          
                             <div class="custom-input-container">
                               <label for="codigo">Editorial</label>
-                              <input matInput id="codigo" placeholder="Ingrese la Editorial"  formControlName="editorial">
+                              <input matInput id="codigo" placeholder="Ingrese editorial"  formControlName="editorial">
                             </div>   
                           </div>
                       </div>
@@ -708,7 +713,7 @@
                         <div class="titulo">
                           <div class="custom-input-container">
                             <label for="codigo">ISBN</label>
-                            <input matInput id="codigo" placeholder="Ingrese el ISBN"  formControlName="isbn">
+                            <input matInput id="codigo" placeholder="Ingrese ISBN"  formControlName="isbn">
                           </div> 
                           <div class="custom-input-container form-field-spacing" appearance="fill">
                             <label for="codigo">Fecha</label>
@@ -720,7 +725,7 @@
                         <div class="titulo">
                           <div class="custom-input-container">
                             <label for="codigo">Editorial</label>
-                            <input matInput id="codigo" placeholder="Ingrese la Editorial"  formControlName="editorial">
+                            <input matInput id="codigo" placeholder="Ingrese editorial"  formControlName="editorial">
                           </div> 
                           <div class="custom-input-container">
                             <label for="codigo">Lugar de publicación</label>
@@ -734,11 +739,11 @@
                         <div class="titulo">
                           <div class="custom-input-container">
                             <label for="codigo">Tipo de registro</label>
-                            <input matInput id="codigo" placeholder="Ingrese el tipo de registro"  formControlName="tiporegistro">
+                            <input matInput id="codigo" placeholder="Ingrese tipo de registro"  formControlName="tiporegistro">
                           </div>
                           <div class="custom-input-container">
                             <label for="codigo">Número</label>
-                            <input matInput id="codigo" placeholder="Ingrese el número"  formControlName="numero">
+                            <input matInput id="codigo" placeholder="Ingrese número"  formControlName="numero">
                           </div>
                         </div>
                         <div class="titulo">
@@ -750,7 +755,7 @@
                           </div>
                           <div class="custom-input-container">
                             <label for="codigo">País</label>
-                            <input matInput id="codigo" placeholder="Ingrese el Pais"  formControlName="pais">
+                            <input matInput id="codigo" placeholder="Ingrese el pais"  formControlName="pais">
                           </div>
                         </div>
                       </div>
@@ -760,7 +765,7 @@
                         <div class="titulo">
                           <div class="custom-input-container">
                             <label for="codigo">Institución financiera</label>
-                            <input matInput id="codigo" placeholder="Ingrese la institución"  formControlName="insitutofinanciador">
+                            <input matInput id="codigo" placeholder="Ingrese la institución financiera"  formControlName="insitutofinanciador">
                           </div>
                           <div class="custom-input-container form-field-spacing" appearance="fill">
                             <label for="codigo">Fecha</label>
@@ -770,7 +775,7 @@
                           </div>    
                           <div class="custom-input-container">
                             <label for="codigo">País</label>
-                            <input matInput id="codigo" placeholder="Ingrese el País"  formControlName="pais">
+                            <input matInput id="codigo" placeholder="Ingrese el pais"  formControlName="pais">
                           </div>
                         </div>
                       </div>
@@ -794,7 +799,7 @@
                         <div class="titulo">
                           <div class="custom-input-container">
                             <label for="codigo">Numero de participantes internos</label>
-                            <input matInput id="codigo" placeholder="Ingrese # participantes internos"  formControlName="numparticinerno">
+                            <input matInput id="codigo" placeholder="Ingrese # participantes internos" formControlName="numparticinerno">
                           </div>
                           <div class="custom-input-container">
                             <label for="codigo">Numero de participantes externos</label>
@@ -816,7 +821,7 @@
                         <div class="titulo">
                           <div class="custom-input-container">
                             <label for="codigo">Nombre de la entidad que otorga</label>
-                            <input matInput id="codigo" placeholder="Ingrese el nombre de la entidad"  formControlName="nombentidadotorgada">
+                            <input matInput id="codigo" placeholder="Ingrese # de la entidad"  formControlName="nombentidadotorgada">
                           </div>
                           <div class="custom-input-container form-field-spacing" appearance="fill">
                             <label for="codigo">Fecha</label>
@@ -850,15 +855,15 @@
                         <div class="titulo">
                           <div class="custom-input-container">
                             <label for="codigo">Nombre de la entidad</label>
-                            <input matInput id="codigo" placeholder="Ingrese la  entidad"  formControlName="nombreEntidad">
+                            <input matInput id="codigo" placeholder="Ingrese nombre de la entidad"  formControlName="nombreEntidad">
                           </div> 
                           <div class="custom-input-container">
                             <label for="codigo">Formato</label>
-                            <input matInput id="codigo" placeholder="Ingrese el formato"  formControlName="formato">
+                            <input matInput id="codigo" placeholder="Ingrese formato"  formControlName="formato">
                           </div>
                           <div class="custom-input-container">
                             <label for="codigo">Medio</label>
-                            <input matInput id="codigo" placeholder="Ingrese el medio"  formControlName="medio">
+                            <input matInput id="codigo" placeholder="Ingrese el Medio"  formControlName="medio">
                           </div>
                         </div>
                       </div>
@@ -868,11 +873,11 @@
                         <div class="titulo">
                           <div class="custom-input-container">
                             <label for="codigo">Nombre de la entidad</label>
-                            <input matInput id="codigo" placeholder="Ingrese la entidad"  formControlName="nombreEntidad">
+                            <input matInput id="codigo" placeholder="Ingrese nombre de la entidad"  formControlName="nombreEntidad">
                          </div>
                          <div class="custom-input-container">
                           <label for="codigo">Año</label>
-                          <input matInput id="codigo" placeholder="Ingrese el año"  formControlName="año">
+                          <input matInput id="codigo" placeholder="Ingrese Año"  formControlName="año">
                         </div>
                         </div>
                         <div class="titulo">
@@ -883,7 +888,7 @@
                           <div class="titulo">
                             <div class="custom-input-container">
                               <label for="codigo">Número</label>
-                              <input matInput id="codigo" placeholder="Ingrese el numero del contrato"  formControlName="numero">
+                              <input matInput id="codigo" placeholder="Ingrese el número"  formControlName="numero">
                            </div>
                            <div class="custom-input-container">
                             <label for="codigo">Nombre</label>
@@ -899,11 +904,11 @@
                         <div class="titulo">
                           <div class="custom-input-container">
                             <label for="codigo">Nombre de la entidad</label>
-                            <input matInput id="codigo" placeholder="Ingrese la entidad"  formControlName="nombreEntidad">
+                            <input matInput id="codigo" placeholder="Ingrese nombre de la entidad"  formControlName="nombreEntidad">
                           </div>
                           <div class="custom-input-container">
                             <label for="codigo">Pagina web</label>
-                            <input matInput id="codigo" placeholder="Ingrese la pagina web"  formControlName="paginaWeb">
+                            <input matInput id="codigo" placeholder="Ingrese pagina web"  formControlName="paginaWeb">
                           </div>
                         </div>
                       </div>
@@ -920,11 +925,11 @@
                           </div>
                           <div class="custom-input-container">
                             <label for="codigo">Reconocimiento</label>
-                            <input matInput id="codigo" placeholder="Ingrese el Reconocimiento"  formControlName="reconocimientos">
+                            <input matInput id="codigo" placeholder="Ingrese el reconocimiento"  formControlName="reconocimientos">
                           </div>
                           <div class="custom-input-container">
                             <label for="codigo">Número de paginas</label>
-                            <input matInput id="codigo" placeholder="Ingrese el # paginas"  formControlName="numeroPaginas">
+                            <input matInput id="codigo" placeholder="Ingrese # paginas"  formControlName="numeroPaginas">
                           </div>
                         </div>
                       </div>
@@ -940,7 +945,7 @@
                           </div>                          
                           <div class="custom-input-container">
                             <label for="codigo">Institución</label>
-                            <input matInput id="codigo" placeholder="Ingrese la institucion" formControlName="institucion">
+                            <input matInput id="codigo" placeholder="Ingrese la institución"  formControlName="institucion">
                           </div>
                         </div>
                       </div>
@@ -949,11 +954,11 @@
                       <div class="titulo">
                         <div class="custom-input-container">
                           <label for="codigo">Investigación curso</label>
-                          <input matInput id="codigo" placeholder="Ingrese investigacion en curso"  formControlName="proyectoCursoProducto">
+                          <input matInput id="codigo" placeholder="Ingrese investigación en curso" formControlName="proyectoCursoProducto">
                         </div>
                         <div class="custom-input-container">
                           <label for="codigo">Investigación formulado</label>
-                          <input matInput id="codigo" placeholder="Ingrese investigación formulada"  formControlName="proyectoFormuladoProducto">
+                          <input matInput id="codigo" placeholder="Ingrese investigacion"  formControlName="proyectoFormuladoProducto">
                         </div>
                         <div class="custom-input-container">
                           <label for="codigo">RSU</label>
@@ -977,7 +982,7 @@
 
             <div class="titulo">
               <div class="custom-input-container ">
-                <label for="codigo">Código proyecto</label>
+                <label for="codigo">Código proyecto <span class="required" title="Este campo es obligatorio">*</span></label>
                 <mat-select formControlName="codigo" multiple>
                   <mat-option *ngFor="let codigo of codigosProyectosExistentes" [value]="codigo">
                     {{ codigo }}
@@ -985,43 +990,43 @@
                 </mat-select>
               </div>              
               <div class="custom-input-container">
-                <label for="codigoProducto">Código del producto</label>
+                <label for="codigoProducto">Código del producto <span class="required" title="Este campo es obligatorio">*</span></label>
                 <input matInput id="codigoProducto" placeholder="Ingrese el código"  required formControlName="id" (blur)="verificarIds()">
                 <div *ngIf="idExistente" style="color: red;">
                   {{ mensajeErrorId }}
                 </div>
               </div>
               <div class="custom-input-container">
-                <label for="codigo">Titulo</label>
-                <input matInput id="codigo" placeholder="Ingrese titulo" required formControlName="tituloProducto">
+                <label for="codigo">Titulo <span class="required" title="Este campo es obligatorio">*</span></label>
+                <input matInput id="codigo" placeholder="Ingrese el titulo" required formControlName="tituloProducto">
               </div> 
              
             </div>
             
             <div class="titulo">
               <div class="custom-input-container">
-                <label for="origenValue">Origen</label>
-                    <mat-select id="origenValue" placeholder="Seleccione el origen" formControlName="origen">
-                      <mat-option *ngFor="let data of origenData" [value]="data.value">
-                        {{data.viewValue}}
-                      </mat-option>
-                    </mat-select>
+                <label for="origenValue">Origen <span class="required" title="Este campo es obligatorio">*</span></label>
+                <mat-select id="origenValue" placeholder="Seleccione el origen" formControlName="origen">
+                  <mat-option *ngFor="let data of origenData" [value]="data.value">
+                    {{data.viewValue}}
+                  </mat-option>
+                </mat-select>
               </div>
               <div class="custom-input-container">
-                <label for="codigo">publicación</label>
-                <input matInput id="codigo" placeholder="Ingrese el nombre de la publicación" required formControlName="publicacion">
+                <label for="codigo">publicación<span class="required" title="Este campo es obligatorio">*</span></label>
+                <input matInput id="codigo" placeholder="Ingrese la publicación" required formControlName="publicacion">
               </div>
               <div class="custom-input-container">
-                <label for="codigo">Estado inicio semestre</label>
-                <input matInput id="codigo" placeholder="Ingrese el estado inicial del semestre" required formControlName="estadoProdIniSemestre">
+                <label for="codigo">Estado inicio semestre<span class="required" title="Este campo es obligatorio">*</span></label>
+                <input matInput id="codigo" placeholder="Ingrese estado incial del semestre" required formControlName="estadoProdIniSemestre">
               </div>
               
             </div>
             
             <div class="titulo">
               <div class="custom-input-container">
-                <label for="codigo">Observaciones</label>
-                <input matInput id="codigo" placeholder="Ingrese observaciones" required formControlName="observaciones">
+                <label for="codigo">Observaciones <span class="required" title="Este campo es obligatorio">*</span></label>
+                <input matInput id="codigo" placeholder="Ingrese las observaciones" required formControlName="observaciones">
               </div>
               <div class="custom-input-container form-field-spacing" appearance="fill">
                 <label for="codigo">Coinvestigadores</label>
@@ -1120,7 +1125,7 @@
                       <div class="titulo">
                         <div class="custom-input-container">
                           <label for="codigo">Nombre de la publicación</label>
-                          <input matInput id="codigo" placeholder="Ingrese nombre de la publicación"  formControlName="nombrepublicacion">
+                          <input matInput id="codigo" placeholder="Ingrese el nombre"  formControlName="nombrepublicacion">
                         </div> 
                         <div class="custom-input-container">
                           <label for="codigo">ISBN</label>
@@ -1168,11 +1173,11 @@
                     <div class="titulo">
                       <div class="custom-input-container">
                         <label for="codigo">Editorial</label>
-                        <input matInput id="codigo" placeholder="Ingrese la editorial"  formControlName="editorial">
+                        <input matInput id="codigo" placeholder="Ingrese editorial"  formControlName="editorial">
                       </div> 
                       <div class="custom-input-container">
                         <label for="codigo">Lugar de publicación</label>
-                        <input matInput id="codigo" placeholder="Ingrese lugar de publicación"  formControlName="luegarpublicacion">
+                        <input matInput id="codigo" placeholder="Ingrese lugar de la publicacion"  formControlName="luegarpublicacion">
                       </div>
                     </div>
                   </div>
@@ -1182,7 +1187,7 @@
                     <div class="titulo">
                       <div class="custom-input-container">
                         <label for="codigo">Tipo de registro</label>
-                        <input matInput id="codigo" placeholder="Ingrese el tipo de registro"  formControlName="tiporegistro">
+                        <input matInput id="codigo" placeholder="Ingrese tipo de registro"  formControlName="tiporegistro">
                       </div>
                       <div class="custom-input-container">
                         <label for="codigo">Número</label>
@@ -1198,7 +1203,7 @@
                       </div>
                       <div class="custom-input-container">
                         <label for="codigo">País</label>
-                        <input matInput id="codigo" placeholder="Ingrese el país"  formControlName="pais">
+                        <input matInput id="codigo" placeholder="Ingrese el pais"  formControlName="pais">
                       </div>
                     </div>
                   </div>
@@ -1208,7 +1213,7 @@
                     <div class="titulo">
                       <div class="custom-input-container">
                         <label for="codigo">Institución financiera</label>
-                        <input matInput id="codigo" placeholder="Ingrese institución financiera"  formControlName="insitutofinanciador">
+                        <input matInput id="codigo" placeholder="Ingrese la institución financiera"  formControlName="insitutofinanciador">
                       </div>
                       <div class="custom-input-container form-field-spacing" appearance="fill">
                         <label for="codigo">Fecha</label>
@@ -1264,7 +1269,7 @@
                     <div class="titulo">
                       <div class="custom-input-container">
                         <label for="codigo">Nombre de la entidad que otorga</label>
-                        <input matInput id="codigo" placeholder="Ingrese nombre de la entidad"  formControlName="nombentidadotorgada">
+                        <input matInput id="codigo" placeholder="Ingrese el nombre de la entidad"  formControlName="nombentidadotorgada">
                       </div>
                       <div class="custom-input-container form-field-spacing" appearance="fill">
                         <label for="codigo">Fecha</label>
@@ -1292,21 +1297,21 @@
                       </div>                       
                       <div formGroupName="licencia" class="custom-input-container">
                           <label for="codigo">Licencia</label>
-                          <input matInput id="codigo" placeholder="Ingrese licencia"  formControlName="nombre">
+                          <input matInput id="codigo" placeholder="Ingrese la licencia"  formControlName="nombre">
                        </div>
                     </div>
                     <div class="titulo">
                       <div class="custom-input-container">
                         <label for="codigo">Nombre de la entidad</label>
-                        <input matInput id="codigo" placeholder="Ingrese la entidad"  formControlName="nombreEntidad">
+                        <input matInput id="codigo" placeholder="Ingrese el nombre de la entidad"  formControlName="nombreEntidad">
                       </div> 
                       <div class="custom-input-container">
                         <label for="codigo">Formato</label>
-                        <input matInput id="codigo" placeholder="Ingrese formato"  formControlName="formato">
+                        <input matInput id="codigo" placeholder="Ingrese el formato"  formControlName="formato">
                       </div>
                       <div class="custom-input-container">
                         <label for="codigo">Medio</label>
-                        <input matInput id="codigo" placeholder="Ingrese el Medio"  formControlName="medio">
+                        <input matInput id="codigo" placeholder="Ingrese el medio"  formControlName="medio">
                       </div>
                     </div>
                   </div>
@@ -1316,7 +1321,7 @@
                     <div class="titulo">
                       <div class="custom-input-container">
                         <label for="codigo">Nombre de la entidad</label>
-                        <input matInput id="codigo" placeholder="Ingrese la entidad"  formControlName="nombreEntidad">
+                        <input matInput id="codigo" placeholder="Ingrese el nombre de la entidad"  formControlName="nombreEntidad">
                      </div>
                      <div class="custom-input-container">
                       <label for="codigo">Año</label>
@@ -1331,7 +1336,7 @@
                       <div class="titulo">
                         <div class="custom-input-container">
                           <label for="codigo">Número</label>
-                          <input matInput id="codigo" placeholder="Ingrese número"  formControlName="numero">
+                          <input matInput id="codigo" placeholder="Ingrese el numero"  formControlName="numero">
                        </div>
                        <div class="custom-input-container">
                         <label for="codigo">Nombre</label>
@@ -1347,11 +1352,11 @@
                     <div class="titulo">
                       <div class="custom-input-container">
                         <label for="codigo">Nombre de la entidad</label>
-                        <input matInput id="codigo" placeholder="Ingrese la entiedad"  formControlName="nombreEntidad">
+                        <input matInput id="codigo" placeholder="Ingrese el nombre de la entidad"  formControlName="nombreEntidad">
                       </div>
                       <div class="custom-input-container">
                         <label for="codigo">Pagina web</label>
-                        <input matInput id="codigo" placeholder="Ingrese pagina web"  formControlName="paginaWeb">
+                        <input matInput id="codigo" placeholder="Ingrese la pagina web"  formControlName="paginaWeb">
                       </div>
                     </div>
                   </div>
@@ -1368,7 +1373,7 @@
                       </div>
                       <div class="custom-input-container">
                         <label for="codigo">Reconocimiento</label>
-                        <input matInput id="codigo" placeholder="Ingrese  reconocimiento" formControlName="reconocimientos">
+                        <input matInput id="codigo" placeholder="Ingrese el reconocimiento"  formControlName="reconocimientos">
                       </div>
                       <div class="custom-input-container">
                         <label for="codigo">Número de paginas</label>
@@ -1401,7 +1406,7 @@
                     </div>
                     <div class="custom-input-container">
                       <label for="codigo">Investigación formulado</label>
-                      <input matInput id="codigo" placeholder="Ingrese la investigacion formulada"  formControlName="proyectoFormuladoProducto">
+                      <input matInput id="codigo" placeholder="Ingrese la investigación"  formControlName="proyectoFormuladoProducto">
                     </div>
                     <div class="custom-input-container">
                       <label for="codigo">RSU</label>

@@ -131,6 +131,11 @@ input.ng-invalid {
   .anchoGuardar{
     width: 150px;
   }
+  .required {
+    color: red;
+    font-weight: bold;
+  }
+  
 
   .custom-chip-list-container {
     margin-bottom: 20px;

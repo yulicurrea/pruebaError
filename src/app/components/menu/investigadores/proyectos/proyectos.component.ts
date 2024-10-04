@@ -164,6 +164,7 @@ export class ProyectosComponent implements OnInit {
   estadosProductos: any[] = [];
   codigosProyectosExistentes: string[] = []; 
   codigosProyectosFiltrados: string[] = [];
+  gruposInvestigacion: any[] = [];
   searchTerm: string = '';
 
   @ViewChild('investigatorInput')
@@ -469,6 +470,21 @@ export class ProyectosComponent implements OnInit {
     });
     this.rolControl = this.form.get('rol') as FormControl;
     this.horasEstrictosControl = this.form.get('horasEstrictos') as FormControl;
+    this.ProyectoyproductoService.getGruposInvestigacion().subscribe(
+      (response) => {
+        this.gruposInvestigacion = response; 
+        console.log('Grupos de investigación:', this.gruposInvestigacion);
+      },
+      (error) => {
+        console.error('Error al obtener los grupos de investigación:', error);
+      }
+    );
+    
+    // Escuchar cambios en el FormControl
+    this.firstFormGroup.get('grupoInvestigacionPro')?.valueChanges.subscribe((valor) => {
+      console.log('Valor seleccionado:', valor);
+    });
+    
   }
 
   //mostrar todos los proyectos existenetes
@@ -1925,4 +1941,3 @@ thumbLabel6 = false;
   }
   
 }
-
