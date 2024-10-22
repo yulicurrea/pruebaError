@@ -332,15 +332,34 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         }
         break; 
       } 
-      default: {        
-        if(data == undefined){
-          filter = this.investigadoresData;
+      default: {  // Relacionar Investigadores con Proyectos y Productos      
+        if(data == undefined) {
+          // Asociar cada investigador con sus proyectos y productos
+          filter = this.investigadoresData.map(investigador => {
+            const proyectosRelacionados = this.proyectosData.filter(p => p.investigadorId === investigador.id);
+            const productosRelacionados = this.productosData.filter(pr => pr.investigadorId === investigador.id);
+            
+            return {
+              ...investigador,
+              proyectos: proyectosRelacionados.map(p => p.nombre).join(', '), // concatenar nombres de proyectos
+              productos: productosRelacionados.map(pr => pr.nombre).join(', ') // concatenar nombres de productos
+            };
+          });
         } else {
-          filter = this.investigadoresData.filter(x => x.numerodocumento == data.numerodocumento);
+          const investigador = this.investigadoresData.find(x => x.numerodocumento == data.numerodocumento);
+          const proyectosRelacionados = this.proyectosData.filter(p => p.investigadorId === investigador.id);
+          const productosRelacionados = this.productosData.filter(pr => pr.investigadorId === investigador.id);
+  
+          filter = [{
+            ...investigador,
+            proyectos: proyectosRelacionados.map(p => p.nombre).join(', '),
+            productos: productosRelacionados.map(pr => pr.nombre).join(', ')
+          }];
         }
         break; 
       } 
-    } 
+    }
+  
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, tipo);
