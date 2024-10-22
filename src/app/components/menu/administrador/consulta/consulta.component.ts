@@ -351,8 +351,8 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
           });
         } else {
           const investigador = this.investigadoresData.find(x => x.numerodocumento == data.numerodocumento);
-          const proyectosRelacionados = this.proyectosData.filter(p => p.investigadorId === investigador.numerodocumento);
-          const productosRelacionados = this.productosData.filter(pr => pr.investigadorId === investigador.numerodocumento);
+          const proyectosRelacionados = this.proyectosData.filter(p => p.investigadorId === investigador.proyectosData);
+          const productosRelacionados = this.productosData.filter(pr => pr.investigadorId === investigador.productosData);
   
           console.log(`Proyectos relacionados con ${investigador.nombre}:`, proyectosRelacionados);
           console.log(`Productos relacionados con ${investigador.nombre}:`, productosRelacionados);
