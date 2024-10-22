@@ -338,34 +338,34 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
           filter = this.investigadoresData.map(investigador => {
             const proyectosRelacionados = this.proyectosData.filter(p => p.investigadorId === investigador.numerodocumento);
             const productosRelacionados = this.productosData.filter(pr => pr.investigadorId === investigador.numerodocumento);
-  
-            // Depuración para ver los proyectos y productos filtrados
+    
             console.log(`Proyectos relacionados con ${investigador.nombre}:`, proyectosRelacionados);
             console.log(`Productos relacionados con ${investigador.nombre}:`, productosRelacionados);
-  
+    
             return {
               ...investigador,
-              proyectos: proyectosRelacionados.map(p => p.nombre).join(', ') || 'Sin proyectos', // concatenar nombres de proyectos
-              productos: productosRelacionados.map(pr => pr.nombre).join(', ') || 'Sin productos' // concatenar nombres de productos
+              proyectos: proyectosRelacionados.map(p => p.titulo).join(', ') || 'Sin proyectos', // Cambié 'nombre' por 'titulo'
+              productos: productosRelacionados.map(pr => pr.tituloProducto).join(', ') || 'Sin productos' // Cambié 'nombre' por 'tituloProducto'
             };
           });
         } else {
           const investigador = this.investigadoresData.find(x => x.numerodocumento == data.numerodocumento);
-          const proyectosRelacionados = this.proyectosData.filter(p => p.investigadorId === investigador.proyectosData);
-          const productosRelacionados = this.productosData.filter(pr => pr.investigadorId === investigador.productosData);
-  
+          const proyectosRelacionados = this.proyectosData.filter(p => p.investigadorId === investigador.numerodocumento);
+          const productosRelacionados = this.productosData.filter(pr => pr.investigadorId === investigador.numerodocumento);
+    
           console.log(`Proyectos relacionados con ${investigador.nombre}:`, proyectosRelacionados);
           console.log(`Productos relacionados con ${investigador.nombre}:`, productosRelacionados);
-  
+    
           filter = [{
             ...investigador,
-            proyectos: proyectosRelacionados.map(p => p.nombre).join(', ') || 'Sin proyectos',
-            productos: productosRelacionados.map(pr => pr.nombre).join(', ') || 'Sin productos'
+            proyectos: proyectosRelacionados.map(p => p.titulo).join(', ') || 'Sin proyectos',
+            productos: productosRelacionados.map(pr => pr.tituloProducto).join(', ') || 'Sin productos'
           }];
         }
-        console.log('Investigadores con proyectos/productos:', filter); // Depuración
+        console.log('Investigadores con proyectos/productos:', filter);
         break; 
       } 
+     
     }
   
     console.log('Datos exportados:', filter); // Depuración final
