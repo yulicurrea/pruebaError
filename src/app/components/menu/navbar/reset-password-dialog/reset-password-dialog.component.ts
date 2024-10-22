@@ -20,9 +20,23 @@ import { MatDialogRef } from '@angular/material/dialog';
         <button mat-button type="button" (click)="closeDialog()">Cancelar</button>
         <button type="submit" mat-raised-button color="primary" [disabled]="isLoading || resetInProgress">Enviar</button>
       </mat-dialog-actions>
-      <div *ngIf="isLoading">Cargando...</div> <!-- Mensaje de carga -->
+      <div *ngIf="isLoading" class="loading-message">
+        <i class="fas fa-spinner fa-spin"></i> Cargando... <!-- Icono de carga -->
+      </div>
     </form>
   `,
+  styles: [`
+    .loading-message {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 16px;
+      color: #1976d2; /* Color del texto */
+    }
+    .loading-message i {
+      margin-right: 5px; /* Espaciado entre el icono y el texto */
+    }
+  `]
 })
 export class ResetPasswordDialogComponent {
   resetPasswordForm: FormGroup;
@@ -41,7 +55,7 @@ export class ResetPasswordDialogComponent {
       this.isLoading = true; // Iniciar carga
       this.resetInProgress = true; // Evitar nuevos envíos
       const correo = this.resetPasswordForm.get('correo')?.value;
-      
+
       this.authService.resetPassword(correo).subscribe(
         () => {
           this.isLoading = false; // Finalizar carga
