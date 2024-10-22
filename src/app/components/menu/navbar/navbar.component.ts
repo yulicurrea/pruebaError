@@ -72,7 +72,7 @@ export class NavbarComponent {
         // Verificar el rol del investigador y su estado
         if (rolInvestigador === 'Investigador') {
           if (estado) {
-            window.location.href = 'https://prueba-error.vercel.app/investigadores/perfil';
+            window.location.href = 'https://osiris-bioaxis.vercel.app/investigadores/perfil';
           } else {
             console.log('El investigador no está activo');
             Swal.fire({
@@ -83,7 +83,7 @@ export class NavbarComponent {
             });
           }
         } else if (rolInvestigador === 'Administrador') {
-          window.location.href = 'https://prueba-error.vercel.app/administrador/perfil';
+          window.location.href = 'https://osiris-bioaxis.vercel.app/administrador/perfil';
         } else {
           console.log("Rol estudiante");
         }
