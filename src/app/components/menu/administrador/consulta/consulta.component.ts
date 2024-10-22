@@ -335,39 +335,34 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         if (data == undefined) {
           filter = this.investigadoresData.map(investigador => {
             // Buscar proyectos asociados al investigador
-            const proyectos = this.proyectosData.filter(proyecto => {
-              // Verificar si el ID existe antes de comparar
-              if (!proyecto.investigadorId || !investigador.id) {
-                console.log('ID faltante:', { proyecto, investigador });
-                return false;
-              }
-              // Convertir a string para comparación consistente
-              return String(proyecto.investigadorId) === String(investigador.id);
-            });
+            const proyectos = this.proyectosData.filter(proyecto => 
+              String(proyecto.investigadorId) === String(investigador.id)
+            );
   
             // Buscar productos asociados al investigador
-            const productos = this.productosData.filter(producto => {
-              // Verificar si el ID existe antes de comparar
-              if (!producto.investigadorId || !investigador.id) {
-                console.log('ID faltante:', { producto, investigador });
-                return false;
-              }
-              // Convertir a string para comparación consistente
-              return String(producto.investigadorId) === String(investigador.id);
-            });
+            const productos = this.productosData.filter(producto => 
+              String(producto.investigadorId) === String(investigador.id)
+            );
   
-            // Log para depuración más detallado
-            console.log(`Investigador ID ${investigador.id}:`);
-            console.log('- Proyectos encontrados:', proyectos.length);
-            console.log('- Productos encontrados:', productos.length);
+            // Log para ver la estructura de los datos
+            console.log('Ejemplo de proyecto:', proyectos[0]);
+            console.log('Ejemplo de producto:', productos[0]);
   
             return {
               ...investigador,
               proyectos: proyectos.length > 0 ? 
-                proyectos.map(p => p.nombre || 'Nombre no disponible').join(', ') : 
+                proyectos.map(p => {
+                  // Verificar todas las posibles propiedades donde podría estar el nombre
+                  const nombreProyecto = p.nombre || p.title || p.name || p.nombreProyecto;
+                  return nombreProyecto;
+                }).filter(Boolean).join(', ') : 
                 'Sin proyectos',
               productos: productos.length > 0 ? 
-                productos.map(p => p.nombre || 'Nombre no disponible').join(', ') : 
+                productos.map(p => {
+                  // Verificar todas las posibles propiedades donde podría estar el nombre
+                  const nombreProducto = p.nombre || p.title || p.name || p.nombreProducto;
+                  return nombreProducto;
+                }).filter(Boolean).join(', ') : 
                 'Sin productos'
             };
           });
@@ -385,10 +380,16 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
               return {
                 ...investigador,
                 proyectos: proyectos.length > 0 ? 
-                  proyectos.map(p => p.nombre || 'Nombre no disponible').join(', ') : 
+                  proyectos.map(p => {
+                    const nombreProyecto = p.nombre || p.title || p.name || p.nombreProyecto;
+                    return nombreProyecto;
+                  }).filter(Boolean).join(', ') : 
                   'Sin proyectos',
                 productos: productos.length > 0 ? 
-                  productos.map(p => p.nombre || 'Nombre no disponible').join(', ') : 
+                  productos.map(p => {
+                    const nombreProducto = p.nombre || p.title || p.name || p.nombreProducto;
+                    return nombreProducto;
+                  }).filter(Boolean).join(', ') : 
                   'Sin productos'
               };
             });
@@ -397,8 +398,9 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
       } 
     }
   
-    console.log('Datos a exportar:', filter); // Logging más descriptivo
+    console.log('Datos a exportar:', filter);
     
+
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, tipo);
