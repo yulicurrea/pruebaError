@@ -331,7 +331,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         }
         break; 
       } 
-      default: { // Para Investigadores
+      default: { // Para el caso de Investigadores
         if (data == undefined) {
           filter = this.investigadoresData.map(investigador => {
             // Buscar proyectos asociados al investigador
@@ -346,10 +346,14 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
               return producto.investigadorId === investigador.id;
             });
   
+            // Log para depuración
+            console.log('Proyectos:', proyectos);
+            console.log('Productos:', productos);
+  
             return {
               ...investigador,
-              proyectos: proyectos.length > 0 ? proyectos.map(p => p.nombre).join(', ') : 'N/A',
-              productos: productos.length > 0 ? productos.map(p => p.nombre).join(', ') : 'N/A'
+              proyectos: proyectos.length > 0 ? proyectos.map(p => p.nombre).join(', ') : 'Sin proyectos',
+              productos: productos.length > 0 ? productos.map(p => p.nombre).join(', ') : 'Sin productos'
             };
           });
         } else {
@@ -359,8 +363,8 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
   
             return {
               ...investigador,
-              proyectos: proyectos.length > 0 ? proyectos.map(p => p.nombre).join(', ') : 'N/A',
-              productos: productos.length > 0 ? productos.map(p => p.nombre).join(', ') : 'N/A'
+              proyectos: proyectos.length > 0 ? proyectos.map(p => p.nombre).join(', ') : 'Sin proyectos',
+              productos: productos.length > 0 ? productos.map(p => p.nombre).join(', ') : 'Sin productos'
             };
           });
         }
@@ -368,6 +372,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
       } 
     }
   
+    console.log('Filtro final:', filter); // Para depuración
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, tipo);
