@@ -25,6 +25,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class ResetPasswordDialogComponent {
   resetPasswordForm: FormGroup;
+  isLoading = false; // Variable para controlar el estado de carga
 
   constructor(private fb: FormBuilder, private authService: AutenticacionService, private dialogRef: MatDialogRef<ResetPasswordDialogComponent>) {
     this.resetPasswordForm = this.fb.group({
@@ -37,6 +38,7 @@ export class ResetPasswordDialogComponent {
       const correo = this.resetPasswordForm.get('correo')?.value;
       this.authService.resetPassword(correo).subscribe(
         () => {
+          this.isLoading = false; // Finalizar carga
           Swal.fire({
             icon: 'success',
             title: '¡Éxito!',
@@ -45,6 +47,7 @@ export class ResetPasswordDialogComponent {
           this.dialogRef.close();
         },
         (error) => {
+          this.isLoading = false; // Finalizar carga
           Swal.fire({
             icon: 'error',
             title: 'Error',
