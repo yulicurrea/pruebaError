@@ -336,8 +336,8 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         if(data == undefined) {
           // Asociar cada investigador con sus proyectos y productos
           filter = this.investigadoresData.map(investigador => {
-            const proyectosRelacionados = this.proyectosData.filter(p => p.investigadorId === investigador.id);
-            const productosRelacionados = this.productosData.filter(pr => pr.investigadorId === investigador.id);
+            const proyectosRelacionados = this.proyectosData.filter(p => p.investigadorId === investigador.numerodocumento);
+            const productosRelacionados = this.productosData.filter(pr => pr.investigadorId === investigador.numerodocumento);
   
             // Depuración para ver los proyectos y productos filtrados
             console.log(`Proyectos relacionados con ${investigador.nombre}:`, proyectosRelacionados);
@@ -351,8 +351,8 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
           });
         } else {
           const investigador = this.investigadoresData.find(x => x.numerodocumento == data.numerodocumento);
-          const proyectosRelacionados = this.proyectosData.filter(p => p.investigadorId === investigador.id);
-          const productosRelacionados = this.productosData.filter(pr => pr.investigadorId === investigador.id);
+          const proyectosRelacionados = this.proyectosData.filter(p => p.investigadorId === investigador.numerodocumento);
+          const productosRelacionados = this.productosData.filter(pr => pr.investigadorId === investigador.numerodocumento);
   
           console.log(`Proyectos relacionados con ${investigador.nombre}:`, proyectosRelacionados);
           console.log(`Productos relacionados con ${investigador.nombre}:`, productosRelacionados);
