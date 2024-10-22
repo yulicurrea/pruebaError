@@ -343,43 +343,38 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
             console.log('ID del investigador:', investigador.id);
             console.log('Nombre del investigador:', investigador.nombre);
   
-            // Buscar proyectos asociados al investigador
+            // Filtrar proyectos asociados al investigador
             const proyectos = this.proyectosData.filter(proyecto => {
               console.log('Comparando proyecto:', {
                 investigadorId: investigador.id,
                 proyectoInvestigadorId: proyecto.investigadorId,
                 coincide: String(proyecto.investigadorId) === String(investigador.id)
               });
-              return proyecto.investigadorId && String(proyecto.investigadorId) === String(investigador.id);
+              return String(proyecto.investigadorId) === String(investigador.id);
             });
   
-            // Buscar productos asociados al investigador
+            // Filtrar productos asociados al investigador
             const productos = this.productosData.filter(producto => {
               console.log('Comparando productos:', {
                 investigadorId: investigador.id,
                 productoInvestigadorId: producto.investigadorId,
                 coincide: String(producto.investigadorId) === String(investigador.id)
               });
-              return producto.investigadorId && String(producto.investigadorId) === String(investigador.id);
+              return String(producto.investigadorId) === String(investigador.id);
             });
   
             console.log('Proyectos encontrados:', proyectos);
             console.log('Productos encontrados:', productos);
   
+            // Verificar si los proyectos y productos están correctamente vinculados al investigador
             return {
-              ...investigador,
-              proyectos: proyectos.length > 0 ? 
-                proyectos.map(p => {
-                  console.log('Proyecto completo:', p);
-                  return p.titulo || 'Sin título';
-                }).join(', ') : 'Sin proyectos',
-              productos: productos.length > 0 ? 
-                productos.map(p => {
-                  console.log('Producto completo:', p);
-                  return p.titulo || 'Sin título';
-                }).join(', ') : 'Sin productos'
+              id: investigador.id,
+              nombre: investigador.nombre,
+              proyectos: proyectos.length > 0 ? proyectos.map(p => p.titulo || 'Sin título').join(', ') : 'Sin proyectos',
+              productos: productos.length > 0 ? productos.map(p => p.titulo || 'Sin título').join(', ') : 'Sin productos'
             };
           });
+  
         } else {
           console.log('Buscando investigador específico:', data.numerodocumento);
           
@@ -387,34 +382,20 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
             .filter(x => String(x.numerodocumento) === String(data.numerodocumento))
             .map(investigador => {
               console.log('Investigador encontrado:', investigador);
-              console.log('Todos los proyectos disponibles:', this.proyectosData);
   
               const proyectos = this.proyectosData.filter(proyecto => {
-                const coincide = String(proyecto.investigadorId) === String(investigador.id);
-                console.log('Comparando proyecto:', {
-                  investigadorId: investigador.id,
-                  proyectoInvestigadorId: proyecto.investigadorId,
-                  coincide
-                });
-                return proyecto.investigadorId && coincide;
+                return String(proyecto.investigadorId) === String(investigador.id);
               });
   
               const productos = this.productosData.filter(producto => {
-                const coincide = String(producto.investigadorId) === String(investigador.id);
-                console.log('Comparando producto:', {
-                  investigadorId: investigador.id,
-                  productoInvestigadorId: producto.investigadorId,
-                  coincide
-                });
-                return producto.investigadorId && coincide;
+                return String(producto.investigadorId) === String(investigador.id);
               });
   
               return {
-                ...investigador,
-                proyectos: proyectos.length > 0 ? 
-                  proyectos.map(p => p.titulo).join(', ') : 'Sin proyectos',
-                productos: productos.length > 0 ? 
-                  productos.map(p => p.titulo).join(', ') : 'Sin productos'
+                id: investigador.id,
+                nombre: investigador.nombre,
+                proyectos: proyectos.length > 0 ? proyectos.map(p => p.titulo).join(', ') : 'Sin proyectos',
+                productos: productos.length > 0 ? productos.map(p => p.titulo).join(', ') : 'Sin productos'
               };
             });
         }
@@ -423,6 +404,11 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
     }
   
     try {
+      if (filter.length === 0) {
+        console.error('No se encontraron datos para exportar.');
+        return;
+      }
+  
       const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, tipo);
@@ -431,7 +417,6 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
       console.error('Error al generar Excel:', error);
     }
   }
-  
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
     const dialogRef = this.dialog.open(DialogoEstadisticaComponent, {
       data: {
