@@ -336,43 +336,69 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
           filter = this.investigadoresData.map(investigador => {
             // Buscar proyectos asociados al investigador
             const proyectos = this.proyectosData.filter(proyecto => {
-              console.log(`Investigador: ${investigador.id} -> Proyecto: ${proyecto.investigadorId}`);
-              return proyecto.investigadorId === investigador.id;
+              // Verificar si el ID existe antes de comparar
+              if (!proyecto.investigadorId || !investigador.id) {
+                console.log('ID faltante:', { proyecto, investigador });
+                return false;
+              }
+              // Convertir a string para comparación consistente
+              return String(proyecto.investigadorId) === String(investigador.id);
             });
   
             // Buscar productos asociados al investigador
             const productos = this.productosData.filter(producto => {
-              console.log(`Investigador: ${investigador.id} -> Producto: ${producto.investigadorId}`);
-              return producto.investigadorId === investigador.id;
+              // Verificar si el ID existe antes de comparar
+              if (!producto.investigadorId || !investigador.id) {
+                console.log('ID faltante:', { producto, investigador });
+                return false;
+              }
+              // Convertir a string para comparación consistente
+              return String(producto.investigadorId) === String(investigador.id);
             });
   
-            // Log para depuración
-            console.log('Proyectos:', proyectos);
-            console.log('Productos:', productos);
+            // Log para depuración más detallado
+            console.log(`Investigador ID ${investigador.id}:`);
+            console.log('- Proyectos encontrados:', proyectos.length);
+            console.log('- Productos encontrados:', productos.length);
   
             return {
               ...investigador,
-              proyectos: proyectos.length > 0 ? proyectos.map(p => p.nombre).join(', ') : 'Sin proyectos',
-              productos: productos.length > 0 ? productos.map(p => p.nombre).join(', ') : 'Sin productos'
+              proyectos: proyectos.length > 0 ? 
+                proyectos.map(p => p.nombre || 'Nombre no disponible').join(', ') : 
+                'Sin proyectos',
+              productos: productos.length > 0 ? 
+                productos.map(p => p.nombre || 'Nombre no disponible').join(', ') : 
+                'Sin productos'
             };
           });
         } else {
-          filter = this.investigadoresData.filter(x => x.numerodocumento == data.numerodocumento).map(investigador => {
-            const proyectos = this.proyectosData.filter(proyecto => proyecto.investigadorId === investigador.id);
-            const productos = this.productosData.filter(producto => producto.investigadorId === investigador.id);
+          filter = this.investigadoresData
+            .filter(x => String(x.numerodocumento) === String(data.numerodocumento))
+            .map(investigador => {
+              const proyectos = this.proyectosData.filter(proyecto => 
+                String(proyecto.investigadorId) === String(investigador.id)
+              );
+              const productos = this.productosData.filter(producto => 
+                String(producto.investigadorId) === String(investigador.id)
+              );
   
-            return {
-              ...investigador,
-              proyectos: proyectos.length > 0 ? proyectos.map(p => p.nombre).join(', ') : 'Sin proyectos',
-              productos: productos.length > 0 ? productos.map(p => p.nombre).join(', ') : 'Sin productos'
-            };
-          });
+              return {
+                ...investigador,
+                proyectos: proyectos.length > 0 ? 
+                  proyectos.map(p => p.nombre || 'Nombre no disponible').join(', ') : 
+                  'Sin proyectos',
+                productos: productos.length > 0 ? 
+                  productos.map(p => p.nombre || 'Nombre no disponible').join(', ') : 
+                  'Sin productos'
+              };
+            });
         }
         break; 
       } 
     }
   
-    console.log('Filtro final:', filter); // Para depuración
+    console.log('Datos a exportar:', filter); // Logging más descriptivo
+    
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, tipo);
