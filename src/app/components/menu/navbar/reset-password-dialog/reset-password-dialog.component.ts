@@ -31,7 +31,7 @@ import { MatDialogRef } from '@angular/material/dialog';
       align-items: center;
       margin-top: 10px;
       font-size: 16px;
-      color: #1976d2; /* Color del texto */
+      color: #6AABA0; /* Color del texto */
     }
     .loading-message i {
       margin-right: 5px; /* Espaciado entre el icono y el texto */
