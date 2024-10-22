@@ -331,16 +331,25 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         }
         break; 
       } 
-      default: { // Para el caso de Investigadores
+      default: { // Para Investigadores
         if (data == undefined) {
           filter = this.investigadoresData.map(investigador => {
-            const proyectos = this.proyectosData.filter(proyecto => proyecto.investigadorId === investigador.id);
-            const productos = this.productosData.filter(producto => producto.investigadorId === investigador.id);
+            // Buscar proyectos asociados al investigador
+            const proyectos = this.proyectosData.filter(proyecto => {
+              console.log(`Investigador: ${investigador.id} -> Proyecto: ${proyecto.investigadorId}`);
+              return proyecto.investigadorId === investigador.id;
+            });
+  
+            // Buscar productos asociados al investigador
+            const productos = this.productosData.filter(producto => {
+              console.log(`Investigador: ${investigador.id} -> Producto: ${producto.investigadorId}`);
+              return producto.investigadorId === investigador.id;
+            });
   
             return {
               ...investigador,
-              proyectos: proyectos.map(p => p.nombre).join(', '), // Combina los nombres de proyectos en un solo campo
-              productos: productos.map(p => p.nombre).join(', ')   // Combina los nombres de productos en un solo campo
+              proyectos: proyectos.length > 0 ? proyectos.map(p => p.nombre).join(', ') : 'N/A',
+              productos: productos.length > 0 ? productos.map(p => p.nombre).join(', ') : 'N/A'
             };
           });
         } else {
@@ -350,14 +359,15 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
   
             return {
               ...investigador,
-              proyectos: proyectos.map(p => p.nombre).join(', '),
-              productos: productos.map(p => p.nombre).join(', ')
+              proyectos: proyectos.length > 0 ? proyectos.map(p => p.nombre).join(', ') : 'N/A',
+              productos: productos.length > 0 ? productos.map(p => p.nombre).join(', ') : 'N/A'
             };
           });
         }
         break; 
       } 
     }
+  
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, tipo);
