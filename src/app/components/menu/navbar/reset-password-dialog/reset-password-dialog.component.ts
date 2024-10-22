@@ -35,6 +35,7 @@ export class ResetPasswordDialogComponent {
 //Valida el formulario y llama al servicio de autenticación para enviar la solicitud de restablecimiento de contraseña
   resetPassword() {
     if (this.resetPasswordForm.valid) {
+      this.isLoading = true; // Iniciar carga
       const correo = this.resetPasswordForm.get('correo')?.value;
       this.authService.resetPassword(correo).subscribe(
         () => {
