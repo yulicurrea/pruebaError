@@ -356,16 +356,18 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
             productos: productosRelacionados.map(pr => pr.nombre).join(', ')
           }];
         }
+        console.log('Investigadores:', filter); // Depuración
         break; 
       } 
     }
+  
+    console.log('Datos exportados:', filter); // Depuración final
   
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, tipo);
     XLSX.writeFile(wb, `Reporte${tipo}.xls`);
   }
-  
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
     const dialogRef = this.dialog.open(DialogoEstadisticaComponent, {
       data: {
