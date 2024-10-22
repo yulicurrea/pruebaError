@@ -331,15 +331,33 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         }
         break; 
       } 
-      default: {        
-        if(data == undefined){
-          filter = this.investigadoresData;
+      default: { // Para el caso de Investigadores
+        if (data == undefined) {
+          filter = this.investigadoresData.map(investigador => {
+            const proyectos = this.proyectosData.filter(proyecto => proyecto.investigadorId === investigador.id);
+            const productos = this.productosData.filter(producto => producto.investigadorId === investigador.id);
+  
+            return {
+              ...investigador,
+              proyectos: proyectos.map(p => p.nombre).join(', '), // Combina los nombres de proyectos en un solo campo
+              productos: productos.map(p => p.nombre).join(', ')   // Combina los nombres de productos en un solo campo
+            };
+          });
         } else {
-          filter = this.investigadoresData.filter(x => x.numerodocumento == data.numerodocumento);
+          filter = this.investigadoresData.filter(x => x.numerodocumento == data.numerodocumento).map(investigador => {
+            const proyectos = this.proyectosData.filter(proyecto => proyecto.investigadorId === investigador.id);
+            const productos = this.productosData.filter(producto => producto.investigadorId === investigador.id);
+  
+            return {
+              ...investigador,
+              proyectos: proyectos.map(p => p.nombre).join(', '),
+              productos: productos.map(p => p.nombre).join(', ')
+            };
+          });
         }
         break; 
       } 
-    } 
+    }
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, tipo);
