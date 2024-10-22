@@ -332,17 +332,21 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         }
         break; 
       } 
-      default: {  // Relacionar Investigadores con Proyectos y Productos      
+      default: {  // Relacionar Investigadores con Proyectos y Productos
         if(data == undefined) {
           // Asociar cada investigador con sus proyectos y productos
           filter = this.investigadoresData.map(investigador => {
             const proyectosRelacionados = this.proyectosData.filter(p => p.investigadorId === investigador.id);
             const productosRelacionados = this.productosData.filter(pr => pr.investigadorId === investigador.id);
-            
+  
+            // Depuración para ver los proyectos y productos filtrados
+            console.log(`Proyectos relacionados con ${investigador.nombre}:`, proyectosRelacionados);
+            console.log(`Productos relacionados con ${investigador.nombre}:`, productosRelacionados);
+  
             return {
               ...investigador,
-              proyectos: proyectosRelacionados.map(p => p.nombre).join(', '), // concatenar nombres de proyectos
-              productos: productosRelacionados.map(pr => pr.nombre).join(', ') // concatenar nombres de productos
+              proyectos: proyectosRelacionados.map(p => p.nombre).join(', ') || 'Sin proyectos', // concatenar nombres de proyectos
+              productos: productosRelacionados.map(pr => pr.nombre).join(', ') || 'Sin productos' // concatenar nombres de productos
             };
           });
         } else {
@@ -350,13 +354,16 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
           const proyectosRelacionados = this.proyectosData.filter(p => p.investigadorId === investigador.id);
           const productosRelacionados = this.productosData.filter(pr => pr.investigadorId === investigador.id);
   
+          console.log(`Proyectos relacionados con ${investigador.nombre}:`, proyectosRelacionados);
+          console.log(`Productos relacionados con ${investigador.nombre}:`, productosRelacionados);
+  
           filter = [{
             ...investigador,
-            proyectos: proyectosRelacionados.map(p => p.nombre).join(', '),
-            productos: productosRelacionados.map(pr => pr.nombre).join(', ')
+            proyectos: proyectosRelacionados.map(p => p.nombre).join(', ') || 'Sin proyectos',
+            productos: productosRelacionados.map(pr => pr.nombre).join(', ') || 'Sin productos'
           }];
         }
-        console.log('Investigadores:', filter); // Depuración
+        console.log('Investigadores con proyectos/productos:', filter); // Depuración
         break; 
       } 
     }
