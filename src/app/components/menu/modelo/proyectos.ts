@@ -160,6 +160,8 @@ export interface EntregableAdministrativo {
 }
 export interface Coinvestigador {
   id?: string;
+  nombre?:string;
+  apellidos?:string;
   coinvestigador?: string;
   correo?: string;
 }

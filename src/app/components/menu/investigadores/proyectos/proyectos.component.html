@@ -257,9 +257,9 @@
                     <mat-chip-row
                       *ngFor="let investigator of activeInvestigators; let i = index; trackBy: trackByFn"
                       (removed)="remove(investigator)">
-                      {{ investigator.correo }}
+                      {{ investigator.nombre }} {{ investigator.apellidos }}
                       <button matChipRemove
-                        [attr.aria-label]="'remove ' + investigator.correo"
+                        [attr.aria-label]="'remove ' + investigator.nombre + investigator.apellidos"
                         (click)="removeCoinvestigador(investigator)">
                         <mat-icon>cancel</mat-icon>
                       </button>
@@ -568,9 +568,9 @@
                         <mat-chip-row
                           *ngFor="let investigator of activeInvestigators; let i = index; trackBy: trackByFn"
                           (removed)="remove(investigator)">
-                          {{ investigator.correo }}
+                          {{ investigator.nombre }} {{ investigator.apellidos }}
                           <button matChipRemove
-                            [attr.aria-label]="'remove ' + investigator.correo"
+                            [attr.aria-label]="'remove ' + investigator.nombre + investigator.apellidos"
                             (click)="removeCoinvestigador(investigator)">
                             <mat-icon>cancel</mat-icon>
                           </button>
