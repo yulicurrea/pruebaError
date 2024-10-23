@@ -333,52 +333,95 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         break; 
       } 
       default: {  // Relacionar Investigadores con Proyectos y Productos
-        if (data == undefined) {
-          // Asociar cada investigador con sus proyectos y productos
+        if (data === undefined) {
+          // Procesar todos los investigadores
           filter = this.investigadoresData.map(investigador => {
-            // Verifica que el campo relacionado entre proyectos y productos sea correcto
-            const proyectosRelacionados = this.proyectosData.filter(p => p.investigadorId === investigador.numerodocumento);
-            const productosRelacionados = this.productosData.filter(pr => pr.investigadorId === investigador.numerodocumento);
-    
-            // Depuración para ver los proyectos y productos filtrados
-            console.log(`Proyectos relacionados con ${investigador.nombre}:`, proyectosRelacionados);
-            console.log(`Productos relacionados con ${investigador.nombre}:`, productosRelacionados);
-    
-            return {
-              ...investigador,
-              proyectos: proyectosRelacionados.map(p => p.titulo || p.nombre).join(', ') || 'Sin proyectos', // Usamos 'titulo' o 'nombre'
-              productos: productosRelacionados.map(pr => pr.tituloProducto || pr.nombreProducto).join(', ') || 'Sin productos' // Usamos 'tituloProducto' o 'nombreProducto'
-            };
+            try {
+              // Usar toString() para asegurar la comparación correcta
+              const investigadorId = investigador.numerodocumento.toString();
+              
+              const proyectosRelacionados = this.proyectosData.filter(p => 
+                p.investigadorId?.toString() === investigadorId
+              );
+              
+              const productosRelacionados = this.productosData.filter(pr => 
+                pr.investigadorId?.toString() === investigadorId
+              );
+
+              // Función auxiliar para obtener el título
+              const getTitulo = (item: any) => {
+                return item.titulo || item.nombre || item.tituloProducto || 
+                       item.nombreProducto || 'Sin título';
+              };
+
+              return {
+                numerodocumento: investigador.numerodocumento,
+                nombre: investigador.nombre,
+                correo: investigador.correo,
+                proyectos: proyectosRelacionados.length > 0 
+                  ? proyectosRelacionados.map(p => getTitulo(p)).join('; ')
+                  : 'Sin proyectos',
+                productos: productosRelacionados.length > 0
+                  ? productosRelacionados.map(pr => getTitulo(pr)).join('; ')
+                  : 'Sin productos',
+                totalProyectos: proyectosRelacionados.length,
+                totalProductos: productosRelacionados.length
+              };
+            } catch (error) {
+              console.error(`Error procesando investigador ${investigador.nombre}:`, error);
+              return {
+                ...investigador,
+                proyectos: 'Error al procesar proyectos',
+                productos: 'Error al procesar productos',
+                totalProyectos: 0,
+                totalProductos: 0
+              };
+            }
           });
         } else {
-          // Para un investigador específico
-          const investigador = this.investigadoresData.find(x => x.numerodocumento == data.numerodocumento);
-          const proyectosRelacionados = this.proyectosData.filter(p => p.investigadorId === investigador.numerodocumento);
-          const productosRelacionados = this.productosData.filter(pr => pr.investigadorId === investigador.numerodocumento);
-    
-          console.log(`Proyectos relacionados con ${investigador.nombre}:`, proyectosRelacionados);
-          console.log(`Productos relacionados con ${investigador.nombre}:`, productosRelacionados);
-    
-          filter = [{
-            ...investigador,
-            proyectos: proyectosRelacionados.map(p => p.titulo || p.nombre).join(', ') || 'Sin proyectos',
-            productos: productosRelacionados.map(pr => pr.tituloProducto || pr.nombreProducto).join(', ') || 'Sin productos'
-          }];
+          // Procesar un investigador específico
+          const investigador = this.investigadoresData.find(x => 
+            x.numerodocumento.toString() === data.numerodocumento.toString()
+          );
+
+          if (investigador) {
+            const investigadorId = investigador.numerodocumento.toString();
+            
+            const proyectosRelacionados = this.proyectosData.filter(p => 
+              p.investigadorId?.toString() === investigadorId
+            );
+            
+            const productosRelacionados = this.productosData.filter(pr => 
+              pr.investigadorId?.toString() === investigadorId
+            );
+
+            filter = [{
+              ...investigador,
+              proyectos: proyectosRelacionados.map(p => p.titulo || p.nombre).join('; ') || 'Sin proyectos',
+              productos: productosRelacionados.map(pr => pr.tituloProducto || pr.nombreProducto).join('; ') || 'Sin productos',
+              totalProyectos: proyectosRelacionados.length,
+              totalProductos: productosRelacionados.length
+            }];
+          }
         }
-    
-        console.log('Investigadores con proyectos/productos:', filter); // Depuración final
-        break; 
+        break;
       }
-    
     }
-  
-    console.log('Datos exportados:', filter); // Depuración final
-  
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, tipo);
-    XLSX.writeFile(wb, `Reporte${tipo}.xls`);
-  }
+
+    if (filter.length === 0) {
+      console.warn('No se encontraron datos para exportar');
+      return;
+    }
+
+    try {
+      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, tipo);
+      XLSX.writeFile(wb, `Reporte_${tipo}_${new Date().toISOString().split('T')[0]}.xlsx`);
+    } catch (error) {
+      console.error('Error al exportar a Excel:', error);
+    }
+}
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
     const dialogRef = this.dialog.open(DialogoEstadisticaComponent, {
       data: {
