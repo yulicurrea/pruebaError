@@ -1031,8 +1031,8 @@
               <div class="custom-input-container form-field-spacing" appearance="fill">
                 <label for="codigo">Coinvestigadores</label>
                 <mat-select formControlName="coinvestigadoresProducto" multiple>
-                  <mat-option *ngFor="let data of usuariosData" [value]="data.correo">
-                    {{data.correo}}
+                  <mat-option *ngFor="let data of usuariosData" [value]="data.nombre + data.apellidos">
+                    {{data.nombre}}{{data.apellidos}}
                   </mat-option>
                 </mat-select>
               </div>              
