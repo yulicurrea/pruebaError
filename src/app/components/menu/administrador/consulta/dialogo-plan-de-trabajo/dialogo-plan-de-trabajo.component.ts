@@ -16,7 +16,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { forkJoin, Observable, catchError, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { AutenticacionService } from '../../../services/autenticacion';
-import { MatSnackBar } from '@angular/material/snack-bar';  // <- Importa MatSnackBar
+import Swal from 'sweetalert2'; // <- Importa SweetAlert2
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -67,8 +67,7 @@ export class DialogoPlanDeTrabajoComponent implements OnInit {
     private ProyectoyproductoService: ProyectoyproductoService,
     private investigadorService: InvestigadorService,
     private AutenticacionService: AutenticacionService,
-    private readonly dialogRef: MatDialogRef<DialogoPlanDeTrabajoComponent>,
-    private snackBar: MatSnackBar  // <- Agregar aquí
+    private readonly dialogRef: MatDialogRef<DialogoPlanDeTrabajoComponent>
   ) { 
     this.registroForm = this.formBuilder.group({
       titulo: ['', [Validators.required]],
@@ -122,18 +121,33 @@ export class DialogoPlanDeTrabajoComponent implements OnInit {
       ).subscribe(
         () => {
           console.log('Todas las notificaciones han sido enviadas');
-          this.snackBar.open('Plan de trabajo registrado exitosamente', 'Cerrar', { duration: 3000 }); // Mostrar mensaje
-          setTimeout(() => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Registro exitoso',
+            text: 'El plan de trabajo ha sido registrado exitosamente',
+            showConfirmButton: true,
+            timer: 3000
+          }).then(() => {
             this.registroForm.reset();
             this.dialogRef.close(true);
-          }, 3000); // Cerrar después de 3 segundos para permitir que el usuario vea el mensaje
+          });
         },
         (error) => {
           console.error('Error en el proceso:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un problema al registrar el plan de trabajo',
+          });
         }
       );
     } else {
       console.error('Formulario inválido. Verifica los campos.');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Formulario inválido',
+        text: 'Por favor, completa todos los campos requeridos',
+      });
     }
   }
 

@@ -67,7 +67,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
 
   expandedDetail = false;
   expandedDetailProducto = false;
-
+ 
 
   estadosProyectos: any[] = [];
   estadosProductos: any[] = [];
