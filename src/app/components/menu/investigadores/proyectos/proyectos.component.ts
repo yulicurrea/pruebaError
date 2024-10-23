@@ -787,7 +787,7 @@ export class ProyectosComponent implements OnInit {
       this.proyecto.coinvestigadores = this.proyecto.coinvestigadores.filter(
         (c) =>
           c.coinvestigador !==
-          `${investigador.correo}`
+          `${investigador.nombre}${investigador.apellidos}`
       );
     }
   }
