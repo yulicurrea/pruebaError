@@ -369,7 +369,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
               };
             } catch (error) {
               console.error(`Error procesando investigador ${investigador.nombre}:`, error);
-              return {
+              return {  
                 ...investigador,
                 proyectos: 'Error al procesar proyectos',
                 productos: 'Error al procesar productos',
