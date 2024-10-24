@@ -312,7 +312,6 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
     );
   }
 
- 
   exportAsXLSX(data: any = undefined, tipo: string): void {
     let filter: any[] = [];
     switch(tipo) { 
@@ -333,36 +332,17 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         break; 
       } 
       default: {        
-        // Agregar encabezados solo una vez
-        filter.push({
-          tipodocumento: 'Tipo Documento',
-          numerodocumento: 'Número Documento',
-          nombre: 'Nombre',
-          apellidos: 'Apellidos',
-          correo: 'Correo',
-          codigoProyecto: 'Código Proyecto',
-          tituloProyecto: 'Título Proyecto',
-          idProducto: 'ID Producto',
-          tituloProducto: 'Título Producto'
-        });
-
         if(data == undefined) {
           const investigadores = [...this.investigadoresData];
 
-          // Organizar los datos de los investigadores
           investigadores.forEach(inv => {
             const nombreCompleto = `${inv.nombre} ${inv.apellidos}`;
-            console.log('Buscando proyectos y productos para:', nombreCompleto);
             
-            // Obtener proyectos del investigador
-            const proyectosInv = this.proyectosData
-              .filter(p => p.investigador === nombreCompleto);
+            // Obtener proyectos y productos del investigador
+            const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto);
+            const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto);
 
-            // Obtener productos del investigador
-            const productosInv = this.productosData
-              .filter(p => p.investigador === nombreCompleto);
-
-            // Si no hay proyectos ni productos
+            // Si no hay proyectos o productos, agregar una fila vacía con texto aclaratorio
             if (proyectosInv.length === 0 && productosInv.length === 0) {
               filter.push({
                 tipodocumento: inv.tipodocumento,
@@ -377,86 +357,46 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
               });
             }
 
-            // Agregar proyectos y productos en columnas separadas
-            proyectosInv.forEach((p, index) => {
+            // Agregar proyectos y productos en columnas separadas, asegurando que el investigador se muestre una sola vez
+            const maxLength = Math.max(proyectosInv.length, productosInv.length);
+            
+            for (let i = 0; i < maxLength; i++) {
               filter.push({
-                tipodocumento: index === 0 ? inv.tipodocumento : '', // Mostrar solo en la primera fila
-                numerodocumento: index === 0 ? inv.numerodocumento : '',
-                nombre: index === 0 ? inv.nombre : '',
-                apellidos: index === 0 ? inv.apellidos : '',
-                correo: index === 0 ? inv.correo : '',
-                codigoProyecto: p.codigo,
-                tituloProyecto: p.titulo,
-                idProducto: '',
-                tituloProducto: ''
+                tipodocumento: i === 0 ? inv.tipodocumento : '', // Mostrar investigador solo en la primera fila
+                numerodocumento: i === 0 ? inv.numerodocumento : '',
+                nombre: i === 0 ? inv.nombre : '',
+                apellidos: i === 0 ? inv.apellidos : '',
+                correo: i === 0 ? inv.correo : '',
+                codigoProyecto: proyectosInv[i]?.codigo || '',
+                tituloProyecto: proyectosInv[i]?.titulo || '',
+                idProducto: productosInv[i]?.id || '',
+                tituloProducto: productosInv[i]?.tituloProducto || ''
               });
-            });
-
-            productosInv.forEach((p, index) => {
-              filter.push({
-                tipodocumento: index === 0 ? inv.tipodocumento : '', // Mostrar solo en la primera fila
-                numerodocumento: index === 0 ? inv.numerodocumento : '',
-                nombre: index === 0 ? inv.nombre : '',
-                apellidos: index === 0 ? inv.apellidos : '',
-                correo: index === 0 ? inv.correo : '',
-                codigoProyecto: '',
-                tituloProyecto: '',
-                idProducto: p.id,
-                tituloProducto: p.tituloProducto
-              });
-            });
+            }
           });
         } else {
           const investigador = this.investigadoresData.filter(x => x.numerodocumento == data.numerodocumento);
           
           investigador.forEach(inv => {
             const nombreCompleto = `${inv.nombre} ${inv.apellidos}`;
-            const proyectosInv = this.proyectosData
-              .filter(p => p.investigador === nombreCompleto);
-            const productosInv = this.productosData
-              .filter(p => p.investigador === nombreCompleto);
+            const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto);
+            const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto);
             
-            if (proyectosInv.length === 0 && productosInv.length === 0) {
+            const maxLength = Math.max(proyectosInv.length, productosInv.length);
+            
+            for (let i = 0; i < maxLength; i++) {
               filter.push({
-                tipodocumento: inv.tipodocumento,
-                numerodocumento: inv.numerodocumento,
-                nombre: inv.nombre,
-                apellidos: inv.apellidos,
-                correo: inv.correo,
-                codigoProyecto: 'Sin proyectos',
-                tituloProyecto: '',
-                idProducto: 'Sin productos',
-                tituloProducto: ''
+                tipodocumento: i === 0 ? inv.tipodocumento : '', // Mostrar investigador solo en la primera fila
+                numerodocumento: i === 0 ? inv.numerodocumento : '',
+                nombre: i === 0 ? inv.nombre : '',
+                apellidos: i === 0 ? inv.apellidos : '',
+                correo: i === 0 ? inv.correo : '',
+                codigoProyecto: proyectosInv[i]?.codigo || '',
+                tituloProyecto: proyectosInv[i]?.titulo || '',
+                idProducto: productosInv[i]?.id || '',
+                tituloProducto: productosInv[i]?.tituloProducto || ''
               });
             }
-
-            proyectosInv.forEach((p, index) => {
-              filter.push({
-                tipodocumento: index === 0 ? inv.tipodocumento : '', // Mostrar solo en la primera fila
-                numerodocumento: index === 0 ? inv.numerodocumento : '',
-                nombre: index === 0 ? inv.nombre : '',
-                apellidos: index === 0 ? inv.apellidos : '',
-                correo: index === 0 ? inv.correo : '',
-                codigoProyecto: p.codigo,
-                tituloProyecto: p.titulo,
-                idProducto: '',
-                tituloProducto: ''
-              });
-            });
-
-            productosInv.forEach((p, index) => {
-              filter.push({
-                tipodocumento: index === 0 ? inv.tipodocumento : '', // Mostrar solo en la primera fila
-                numerodocumento: index === 0 ? inv.numerodocumento : '',
-                nombre: index === 0 ? inv.nombre : '',
-                apellidos: index === 0 ? inv.apellidos : '',
-                correo: index === 0 ? inv.correo : '',
-                codigoProyecto: '',
-                tituloProyecto: '',
-                idProducto: p.id,
-                tituloProducto: p.tituloProducto
-              });
-            });
           });
         }
         break; 
