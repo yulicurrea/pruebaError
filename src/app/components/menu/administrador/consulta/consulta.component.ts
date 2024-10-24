@@ -130,6 +130,10 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
     const persona = lista.find(u => u.numerodocumento === id || u.id === id);
     return persona ? `${persona.nombre} ${persona.apellidos}` : String(id);  
   }
+  getNombreCompleto2(id: string | number, lista: any[]): string {
+    const persona = lista.find(u => u.numerodocumento === id || u.id === id);
+    return persona ? `${persona.nombres} ${persona.apellidos}` : String(id);  
+  }
 
   obtenerProyectos() {
     forkJoin({
@@ -169,8 +173,8 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
               ? data.coinvestigador.map((id: string | number) => this.getNombreCompleto(id, usuarios)).join(', ')
               : this.getNombreCompleto(data.coinvestigador, usuarios),
             estudiantes: Array.isArray(data.estudiantes) 
-              ? data.estudiantes.map((id: string | number) => this.getNombreCompleto(id, estudiantes)).join(', ')
-              : this.getNombreCompleto(data.estudiantes, estudiantes),
+              ? data.estudiantes.map((id: string | number) => this.getNombreCompleto2(id, estudiantes)).join(', ')
+              : this.getNombreCompleto2(data.estudiantes, estudiantes),
             participantesExternos: Array.isArray(data.participantesExternos) 
               ? data.participantesExternos.map((id: string | number) => this.getNombreCompleto(id, participantesExternos)).join(', ')
               :this.getNombreCompleto(data.participantesExternos, participantesExternos),
@@ -237,8 +241,8 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
               ? data.coinvestigador.map((id: string | number) => this.getNombreCompleto(id, usuarios)).join(', ')
               : this.getNombreCompleto(data.coinvestigador, usuarios),
             estudiantes: Array.isArray(data.estudiantes) 
-              ? data.estudiantes.map((id: string | number) => this.getNombreCompleto(id, estudiantes)).join(', ')
-              : this.getNombreCompleto(data.estudiantes, estudiantes),
+              ? data.estudiantes.map((id: string | number) => this.getNombreCompleto2(id, estudiantes)).join(', ')
+              : this.getNombreCompleto2(data.estudiantes, estudiantes),
             participantesExternos: Array.isArray(data.participantesExternos) 
               ? data.participantesExternos.map((id: string | number) => this.getNombreCompleto(id, participantesExternos)).join(', ')
               :this.getNombreCompleto(data.participantesExternos, participantesExternos),
