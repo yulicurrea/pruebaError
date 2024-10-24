@@ -334,61 +334,82 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
       } 
       default: {        
         if(data == undefined){
+          console.log('Datos de investigadores:', this.investigadoresData);
+          console.log('Datos de proyectos:', this.proyectosData);
+          console.log('Datos de productos:', this.productosData);
+          
           // Crear una copia de los datos de investigadores
           const investigadores = [...this.investigadoresData];
           
           // Para cada investigador, agregar sus proyectos y productos como columnas adicionales
           filter = investigadores.map(inv => {
+            // Verificar la estructura del investigador
+            console.log('Procesando investigador:', inv);
+            
             // Obtener proyectos del investigador
             const proyectosInv = this.proyectosData
-              .filter(p => p.investigadorId === inv.numerodocumento)
-              .map(p => p.nombre || p.titulo)
+              .filter(p => {
+                console.log('Comparando:', p.investigadorId, inv.numerodocumento);
+                return p.investigadorId === inv.numerodocumento;
+              })
+              .map(p => p.nombre || p.titulo || p.descripcion)
               .join(', ');
+            
+            console.log('Proyectos encontrados:', proyectosInv);
             
             // Obtener productos del investigador
             const productosInv = this.productosData
-              .filter(p => p.investigadorId === inv.numerodocumento)
-              .map(p => p.nombre || p.titulo)
+              .filter(p => {
+                console.log('Comparando producto:', p.investigadorId, inv.numerodocumento);
+                return p.investigadorId === inv.numerodocumento;
+              })
+              .map(p => p.nombre || p.titulo || p.descripcion)
               .join(', ');
             
+            console.log('Productos encontrados:', productosInv);
+            
             // Retornar investigador con sus proyectos y productos
-            return {
+            const resultado = {
               ...inv,
-              proyectos: proyectosInv,
-              productos: productosInv
+              proyectos: proyectosInv || 'Sin proyectos',
+              productos: productosInv || 'Sin productos'
             };
+            
+            console.log('Resultado final para investigador:', resultado);
+            return resultado;
           });
         } else {
-          // Filtrar por un investigador específico y agregar sus proyectos y productos
           const investigador = this.investigadoresData.filter(x => x.numerodocumento == data.numerodocumento);
           
           filter = investigador.map(inv => {
             const proyectosInv = this.proyectosData
               .filter(p => p.investigadorId === inv.numerodocumento)
-              .map(p => p.nombre || p.titulo)
+              .map(p => p.nombre || p.titulo || p.descripcion)
               .join(', ');
             
             const productosInv = this.productosData
               .filter(p => p.investigadorId === inv.numerodocumento)
-              .map(p => p.nombre || p.titulo)
+              .map(p => p.nombre || p.titulo || p.descripcion)
               .join(', ');
             
             return {
               ...inv,
-              proyectos: proyectosInv,
-              productos: productosInv
+              proyectos: proyectosInv || 'Sin proyectos',
+              productos: productosInv || 'Sin productos'
             };
           });
         }
         break; 
       } 
     } 
+    
+    console.log('Datos finales a exportar:', filter);
+    
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, tipo);
     XLSX.writeFile(wb, `Reporte${tipo}.xls`);
   }
-  
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
     const dialogRef = this.dialog.open(DialogoEstadisticaComponent, {
       data: {
