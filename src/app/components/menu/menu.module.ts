@@ -18,11 +18,14 @@ import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 @NgModule({ declarations: [
         MenuComponent,
         NavbarComponent,
     ], imports: [CommonModule,
         MenuRoutingModule,
+        MatTooltipModule,
         SharedModule,
         MatCheckboxModule,
         MatCardModule,

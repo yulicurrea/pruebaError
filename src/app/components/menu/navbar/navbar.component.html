@@ -1,7 +1,10 @@
 <mat-card class="example-card">
   <div class="login">
     <img src="./assets/img/login.png" width="150">
-    <h3>Inicio de Sesión</h3>
+    <h3 matTooltip="Para iniciar sesión, primero debe haberse registrado en el sistema">
+      Inicio de Sesión
+    </h3>
+    
     <form [formGroup]="loginForm">
       <mat-form-field class="ancho" appearance="outline">
         <mat-label>Correo Institucional</mat-label>
@@ -106,10 +109,10 @@
     </mat-tab>
     
     <!-- Pestaña de Registro -->
-    <mat-tab label="Registro">
+    <mat-tab label="Registrarse">
       <div class="tab-content">
         <div class="registro-container">
-          <h2>Ingrese sus datos</h2>
+          <h2>Regístrate</h2>
           <form [formGroup]="registroForm">
             <div class="reg">
               <mat-form-field appearance="outline">
