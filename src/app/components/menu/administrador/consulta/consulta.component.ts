@@ -333,19 +333,21 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         break; 
       } 
       default: {        
-        if(data == undefined){
+        // Agregar encabezados solo una vez
+        filter.push({
+          tipodocumento: 'Tipo Documento',
+          numerodocumento: 'Número Documento',
+          nombre: 'Nombre',
+          apellidos: 'Apellidos',
+          correo: 'Correo',
+          codigoProyecto: 'Código Proyecto',
+          tituloProyecto: 'Título Proyecto',
+          idProducto: 'ID Producto',
+          tituloProducto: 'Título Producto'
+        });
+
+        if(data == undefined) {
           const investigadores = [...this.investigadoresData];
-          
-          // Crear una fila de encabezados
-          filter.push({
-            tipodocumento: 'Tipo Documento',
-            numerodocumento: 'Número Documento',
-            nombre: 'Nombre',
-            apellidos: 'Apellidos',
-            correo: 'Correo',
-            proyectos: 'Proyectos',
-            productos: 'Productos'
-          });
 
           // Organizar los datos de los investigadores
           investigadores.forEach(inv => {
@@ -354,23 +356,54 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
             
             // Obtener proyectos del investigador
             const proyectosInv = this.proyectosData
-              .filter(p => p.investigador === nombreCompleto)
-              .map(p => `${p.codigo}: ${p.titulo}`).join('; ') || 'Sin proyectos';
-            
+              .filter(p => p.investigador === nombreCompleto);
+
             // Obtener productos del investigador
             const productosInv = this.productosData
-              .filter(p => p.investigador === nombreCompleto)
-              .map(p => `${p.id}: ${p.tituloProducto}`).join('; ') || 'Sin productos';
-            
-            // Agregar una fila por investigador con sus proyectos y productos
-            filter.push({
-              tipodocumento: inv.tipodocumento,
-              numerodocumento: inv.numerodocumento,
-              nombre: inv.nombre,
-              apellidos: inv.apellidos,
-              correo: inv.correo,
-              proyectos: proyectosInv,
-              productos: productosInv
+              .filter(p => p.investigador === nombreCompleto);
+
+            // Si no hay proyectos ni productos
+            if (proyectosInv.length === 0 && productosInv.length === 0) {
+              filter.push({
+                tipodocumento: inv.tipodocumento,
+                numerodocumento: inv.numerodocumento,
+                nombre: inv.nombre,
+                apellidos: inv.apellidos,
+                correo: inv.correo,
+                codigoProyecto: 'Sin proyectos',
+                tituloProyecto: '',
+                idProducto: 'Sin productos',
+                tituloProducto: ''
+              });
+            }
+
+            // Agregar proyectos y productos en columnas separadas
+            proyectosInv.forEach((p, index) => {
+              filter.push({
+                tipodocumento: index === 0 ? inv.tipodocumento : '', // Mostrar solo en la primera fila
+                numerodocumento: index === 0 ? inv.numerodocumento : '',
+                nombre: index === 0 ? inv.nombre : '',
+                apellidos: index === 0 ? inv.apellidos : '',
+                correo: index === 0 ? inv.correo : '',
+                codigoProyecto: p.codigo,
+                tituloProyecto: p.titulo,
+                idProducto: '',
+                tituloProducto: ''
+              });
+            });
+
+            productosInv.forEach((p, index) => {
+              filter.push({
+                tipodocumento: index === 0 ? inv.tipodocumento : '', // Mostrar solo en la primera fila
+                numerodocumento: index === 0 ? inv.numerodocumento : '',
+                nombre: index === 0 ? inv.nombre : '',
+                apellidos: index === 0 ? inv.apellidos : '',
+                correo: index === 0 ? inv.correo : '',
+                codigoProyecto: '',
+                tituloProyecto: '',
+                idProducto: p.id,
+                tituloProducto: p.tituloProducto
+              });
             });
           });
         } else {
@@ -379,22 +412,50 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
           investigador.forEach(inv => {
             const nombreCompleto = `${inv.nombre} ${inv.apellidos}`;
             const proyectosInv = this.proyectosData
-              .filter(p => p.investigador === nombreCompleto)
-              .map(p => `${p.codigo}: ${p.titulo}`).join('; ') || 'Sin proyectos';
-            
+              .filter(p => p.investigador === nombreCompleto);
             const productosInv = this.productosData
-              .filter(p => p.investigador === nombreCompleto)
-              .map(p => `${p.id}: ${p.tituloProducto}`).join('; ') || 'Sin productos';
+              .filter(p => p.investigador === nombreCompleto);
             
-            // Agregar una fila por investigador con sus proyectos y productos
-            filter.push({
-              tipodocumento: inv.tipodocumento,
-              numerodocumento: inv.numerodocumento,
-              nombre: inv.nombre,
-              apellidos: inv.apellidos,
-              correo: inv.correo,
-              proyectos: proyectosInv,
-              productos: productosInv
+            if (proyectosInv.length === 0 && productosInv.length === 0) {
+              filter.push({
+                tipodocumento: inv.tipodocumento,
+                numerodocumento: inv.numerodocumento,
+                nombre: inv.nombre,
+                apellidos: inv.apellidos,
+                correo: inv.correo,
+                codigoProyecto: 'Sin proyectos',
+                tituloProyecto: '',
+                idProducto: 'Sin productos',
+                tituloProducto: ''
+              });
+            }
+
+            proyectosInv.forEach((p, index) => {
+              filter.push({
+                tipodocumento: index === 0 ? inv.tipodocumento : '', // Mostrar solo en la primera fila
+                numerodocumento: index === 0 ? inv.numerodocumento : '',
+                nombre: index === 0 ? inv.nombre : '',
+                apellidos: index === 0 ? inv.apellidos : '',
+                correo: index === 0 ? inv.correo : '',
+                codigoProyecto: p.codigo,
+                tituloProyecto: p.titulo,
+                idProducto: '',
+                tituloProducto: ''
+              });
+            });
+
+            productosInv.forEach((p, index) => {
+              filter.push({
+                tipodocumento: index === 0 ? inv.tipodocumento : '', // Mostrar solo en la primera fila
+                numerodocumento: index === 0 ? inv.numerodocumento : '',
+                nombre: index === 0 ? inv.nombre : '',
+                apellidos: index === 0 ? inv.apellidos : '',
+                correo: index === 0 ? inv.correo : '',
+                codigoProyecto: '',
+                tituloProyecto: '',
+                idProducto: p.id,
+                tituloProducto: p.tituloProducto
+              });
             });
           });
         }
@@ -409,6 +470,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
     XLSX.utils.book_append_sheet(wb, ws, tipo);
     XLSX.writeFile(wb, `Reporte${tipo}.xls`);
 }
+
 
 
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
