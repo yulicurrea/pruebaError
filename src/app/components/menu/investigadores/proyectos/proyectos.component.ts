@@ -113,14 +113,13 @@ export class ProyectosComponent implements OnInit {
   //mostrar los coinvestigadores que hay
   separatorKeysCodes: number[] = [13, 188];
   investigatorCtrl = new FormControl('');
-  filteredInvestigators!: Observable<{ nombre: string; apellidos:string;}[]>;
-  activeInvestigators: { nombre: string; apellidos: string; }[] = [];
+  filteredInvestigators!: Observable<{ correo: string; }[]>;
+  activeInvestigators: { correo: string; }[] = [];
   selectedInvestigators: string[] = [];
   proyecto: Proyecto = {};
   usuarioSesion!: UsuarioSesion; 
   dataSources = new MatTableDataSource<any>(); 
   dataSourceses = new MatTableDataSource<any>(); 
-  dataSourcesDetail = new MatTableDataSource<any>([]);
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
   origenData: any[] = [
     {value: 'nacional', viewValue: 'nacional'},
@@ -696,11 +695,9 @@ export class ProyectosComponent implements OnInit {
       usersAdmin.forEach(element => {
         this.usuariosAdmin.push(element.numerodocumento);
       });
-      this.usuariosData = data.filter(x => x.nombre + x.apellidos !== this.usuarioSesion.nombre ,this.usuarioSesion.apellidos);
-      const activeInvestigators = data.filter(x => x.nombre + x.apellidos!== this.usuarioSesion.nombre ,this.usuarioSesion.apellidos).map((investigador) => ({
-        nombre: investigador.nombre,
-        apellidos:investigador.apellidos,
-
+      this.usuariosData = data.filter(x => x.correo !== this.usuarioSesion.correo);
+      const activeInvestigators = data.filter(x => x.correo !== this.usuarioSesion.correo).map((investigador) => ({
+        correo: investigador.correo,
       }));
 
       this.filteredInvestigators = this.investigatorCtrl.valueChanges.pipe(
@@ -768,12 +765,10 @@ export class ProyectosComponent implements OnInit {
   }
 
   addCoinvestigador(investigador: {
-    nombre: string;
-    apellidos: string;
+    correo: string;
   }) {
     const newCoinvestigador: Coinvestigador = {
-      nombre: investigador.nombre,
-      apellidos: investigador.apellidos,
+      correo: investigador.correo,
     };
     if (!this.proyecto.coinvestigadores) {
       this.proyecto.coinvestigadores = [newCoinvestigador];
@@ -782,17 +777,17 @@ export class ProyectosComponent implements OnInit {
     }
   }
 
-  removeCoinvestigador(investigador: { nombre: string , apellidos:string}) {
+  removeCoinvestigador(investigador: { correo: string }) {
     if (this.proyecto.coinvestigadores) {
       this.proyecto.coinvestigadores = this.proyecto.coinvestigadores.filter(
         (c) =>
           c.coinvestigador !==
-          `${investigador.nombre}${investigador.apellidos}`
+          `${investigador.correo}`
       );
     }
   }
 
-  private _filter(value: string): { nombre: string, apellidos:string }[] {
+  private _filter(value: string): { correo: string }[] {
     const filterValue = value.toLowerCase();
 
     if (!filterValue) {
@@ -802,28 +797,28 @@ export class ProyectosComponent implements OnInit {
     // Filtrar investigadores activos que no estén en la lista de investigadores seleccionados
     const filteredActiveInvestigators = this.activeInvestigators.filter(
       (investigador) =>
-        `${investigador.nombre.toLowerCase()}`.includes(filterValue) ||
-        `${investigador.apellidos.toLowerCase()}`.includes(filterValue)
-        
+        `${investigador.correo.toLowerCase()}`.includes(
+          filterValue
+        )
     );
 
     // Filtrar investigadores seleccionables que no estén ya seleccionados
     return filteredActiveInvestigators.filter(
       (investigador) =>
         !this.selectedInvestigators.includes(
-          `${investigador.nombre}${investigador.apellidos}`
+          `${investigador.correo}`
         )
     );
   }
 
   trackByFn(
     index: number,
-    item: { nombre: string, apellidos:string }
+    item: { correo: string }
   ): number {
     return index;
   }
 
-  remove(investigador: { nombre: string , apellidos:string}): void {
+  remove(investigador: { correo: string }): void {
     const index = this.activeInvestigators.indexOf(investigador);
 
     if (index >= 0) {
@@ -834,28 +829,25 @@ export class ProyectosComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
-      const [nombre,apellidos] = value;
-      this.activeInvestigators.push({ nombre,apellidos });
+      const [correo] = value;
+      this.activeInvestigators.push({ correo });
     }
     event.chipInput!.clear();
     this.investigatorCtrl.setValue(null);
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    const investigador: { nombre: string; apellidos: string; }= event.option.value;
+    const correo = event.option.value.correo;
     // Verificar si el investigador ya está en activeInvestigators
     const investigadorExistente = this.activeInvestigators.find(
       (investigador) =>
-        investigador.nombre ==investigador.nombre && investigador.apellidos === investigador.apellidos
-
+        investigador.correo === correo
     );
 
     if (!investigadorExistente) {
       // Agregar el investigador seleccionado solo si no está en la lista
-      this.activeInvestigators.push({ 
-        nombre: investigador.nombre,
-        apellidos: investigador.apellidos, });
-      this.selectedInvestigators.push(`${investigador.nombre} ${investigador.apellidos}`);
+      this.activeInvestigators.push({ correo });
+      this.selectedInvestigators.push(`${correo}`);
     }
 
     this.investigatorInput.nativeElement.value = '';
@@ -865,10 +857,9 @@ export class ProyectosComponent implements OnInit {
   displayInvestigator(investigator: Investigador): string {
     if (
       investigator &&
-      investigator.nombre &&
-      investigator.apellidos 
+      investigator.correo
     ) {
-      return `${investigator.nombre}${investigator.apellidos}`;
+      return `${investigator.correo}`;
     } else {
       return '';
     }
@@ -1687,7 +1678,6 @@ thumbLabel6 = false;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    this.dataSourceses.paginator = this.paginator1;
     
     console.log("DATOS TRAIDOS:" ,this.ProyectoyproductoService.getProductosDelUsuario())
     forkJoin([
@@ -1752,8 +1742,7 @@ thumbLabel6 = false;
     this.investigatorService.getmostrarPyP().subscribe((data: Person[]) => {
         const userData = this.AutenticacionService.obtenerDatosUsuario();
         const userId = userData ? userData.numerodocumento : '';
-        this.dataSourceses.data = this.transformData(data, userId); // Asigna los datos transformados
-        this.dataSourceses.paginator = this.paginator1; 
+        this.data = this.transformData(data, userId);
     });
   }
 
@@ -1834,17 +1823,11 @@ thumbLabel6 = false;
           this.selection.select(row);
         });
   }
-  loadDetailData(element: any): any[] {
-    // Aquí deberías transformar o filtrar los datos según sea necesario para la tabla expandida
-    return element.productos || []; // Suponiendo que tienes un arreglo de productos en el elemento
-  }
+
   toggleRow(element: any): void {
-    console.log('Elemento expandido:', element); // Para depuración
     this.expandedElements = this.expandedElements === element ? null : element;
     if (this.expandedElements) {
-      this.selectedPlanId = this.expandedElements.id; 
-      this.dataSourcesDetail.data = this.loadDetailData(element); // Implementa este método
-      this.dataSourcesDetail.paginator = this.paginator2; // Para la tabla expandida // Guarda el ID del plan seleccionado
+      this.selectedPlanId = this.expandedElements.id;  // Guarda el ID del plan seleccionado
     } else {
       this.selectedPlanId = ' ';
     }
