@@ -105,7 +105,7 @@
                     </table>
                     
                     <!-- Pagination Controls -->
-                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons>
+                    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons>
                     </mat-paginator>
                     <button mat-raised-button  style="background-color: #6AABA0; color: white;" class="save-button" (click)="guardar()">Guardar</button>
                   </div>
