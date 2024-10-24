@@ -121,7 +121,7 @@ export class ProyectosComponent implements OnInit {
   dataSources = new MatTableDataSource<any>(); 
   dataSourceses = new MatTableDataSource<any>();
   dataSourceses2 = new MatTableDataSource<any>();
-  dataSource = new MatTableDataSource<any>();
+  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
   origenData: any[] = [
     {value: 'nacional', viewValue: 'nacional'},
     {value: 'internacional', viewValue: 'internacional'},
@@ -436,6 +436,7 @@ export class ProyectosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
     this.ngAfterViewInit();
     this.obtenerCodigosProyectos();
     this.obtenerUsuarios();
@@ -1541,10 +1542,15 @@ thumbLabel6 = false;
     this.investigatorService.getmostrarPyP().subscribe((data: Person[]) => {
         const userData = this.AutenticacionService.obtenerDatosUsuario();
         const userId = userData ? userData.numerodocumento : '';
-        this.dataSourceses2.data = this.transformData(data, userId);  // Asignar los datos a dataSourceses2
-        // Asegúrate de asignar el paginador después de tener los datos
-        this.dataSourceses2.paginator = this.paginator2;
-
+        // Asignar los datos transformados
+      this.dataSourceses2.data = this.transformData(data, userId);
+      
+      // Reasignar el paginador después de cargar los datos
+      setTimeout(() => {
+        if (this.paginator2) {
+          this.dataSourceses2.paginator = this.paginator2;
+        }
+      });
     });
   }
 
@@ -1604,12 +1610,17 @@ thumbLabel6 = false;
     if (data && data.length > 0) {
       this.idConfiguracion = data[0].id;
     }
-    this.dataSourceses.data = data;
-    this.dataSourceses.paginator = this.paginator1;
-
-    
-  });
-  }
+     // Asignar los datos
+     this.dataSourceses.data = data;
+      
+     // Reasignar el paginador después de cargar los datos
+     setTimeout(() => {
+       if (this.paginator1) {
+         this.dataSourceses.paginator = this.paginator1;
+       }
+     });
+   });
+ }
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -1741,5 +1752,13 @@ thumbLabel6 = false;
       } 
     });
   }
-  
+  refreshPaginators() {
+    if (this.paginator1) {
+      this.dataSourceses.paginator = this.paginator1;
+    }
+    if (this.paginator2) {
+      this.dataSourceses2.paginator = this.paginator2;
+    }
+  }
+
 }
