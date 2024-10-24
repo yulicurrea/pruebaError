@@ -231,12 +231,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Producto Asociado</th>
-                                <td>
-                                    {{data?.producto == null ? 'no aplica' : data?.producto }}
-                                </td>
-                            </tr>
-                            <tr>
                                 <th>Observación Admin</th>
                                 <td>
                                     {{data?.observacion.length > 0 ? data?.observacion : 'no aplica' }}
@@ -245,6 +239,40 @@
                             <tr>
                                 <th>Fecha Actualización</th>
                                 <td>{{data?.updated_at | date:'medium'}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: center;">
+                                    <strong> Propuesta producto </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Tipo producto</th>
+                                <mat-form-field>
+                                  <mat-select formControlName="tipoProducto">
+                                    <mat-option *ngFor="let tipo of tipoProductoData" [value]="tipo.id">
+                                      {{ tipo.estado }} <!-- Muestra el nombre del producto -->
+                                    </mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </tr>                              
+                            <tr>
+                                <th>Cantidad de producto</th>
+                                <td>
+                                    <mat-form-field class="form-field-spacing" appearance="fill">
+                                        <input matInput placeholder="" required formControlName="cantidadProducto">
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: center;">
+                                    <strong> Producto </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Producto Asociado</th>
+                                <td>
+                                    {{data?.producto == null ? 'no aplica' : data?.producto }}
+                                </td>
                             </tr>
                         </tbody>
                     </table>

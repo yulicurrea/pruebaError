@@ -258,6 +258,10 @@ export class ProyectoyproductoService {
   getCategoria(): Observable<any[]> {
     return this.http.get<any[]>(`${this.categoria}`);
   }
+  private tipoProducto = 'https://prueba-error-back1.vercel.app/tipoProducto';
+  getTipoProducto(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.tipoProducto}`);
+  }
   //Plan de trabajo
   private configplanTrabajo = 'https://prueba-error-back1.vercel.app/ConfiguracionPlanTrabajo';
   

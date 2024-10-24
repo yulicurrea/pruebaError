@@ -190,13 +190,16 @@ export interface ubicacionProyecto{
   pais?: string;
   departamento?: string;
 }
+export interface tipoProducto{
+  id?: string;
+  estado?:string;
+}
 export interface Proyecto {
   codigo?: string;
   fecha?: Date | string;
   titulo?: string;
   investigador?: string;
   unidadAcademica?: string;
-  producto?: Producto;
   coinvestigadores?: Coinvestigador[];
   area?: string;
   porcentajeEjecucionCorte?: number;
@@ -219,6 +222,8 @@ export interface Proyecto {
   estudiantes?: Estudiante[];
   participantesExternos?: ParticipanteExterno[];
   estado?: string;
+  tipoProducto?: tipoProducto;
+  cantidadProducto?: string;
 }
 
 export interface Estudiante {
