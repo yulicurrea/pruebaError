@@ -334,66 +334,76 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
       } 
       default: {        
         if(data == undefined){
-          console.log('Datos de investigadores:', this.investigadoresData);
-          console.log('Datos de proyectos:', this.proyectosData);
-          console.log('Datos de productos:', this.productosData);
-          
           // Crear una copia de los datos de investigadores
           const investigadores = [...this.investigadoresData];
           
-          // Para cada investigador, agregar sus proyectos y productos como columnas adicionales
+          // Para cada investigador, agregar sus proyectos y productos
           filter = investigadores.map(inv => {
-            // Verificar la estructura del investigador
-            console.log('Procesando investigador:', inv);
+            // Construir el nombre completo del investigador
+            const nombreCompleto = `${inv.nombre} ${inv.apellidos}`;
+            console.log('Buscando proyectos y productos para:', nombreCompleto);
             
             // Obtener proyectos del investigador
             const proyectosInv = this.proyectosData
-              .filter(p => {
-                console.log('Comparando:', p.investigadorId, inv.numerodocumento);
-                return p.investigadorId === inv.numerodocumento;
-              })
-              .map(p => p.nombre || p.titulo || p.descripcion)
-              .join(', ');
-            
-            console.log('Proyectos encontrados:', proyectosInv);
+              .filter(p => p.investigador === nombreCompleto)
+              .map(p => ({
+                codigo: p.codigo,
+                titulo: p.titulo
+              }));
             
             // Obtener productos del investigador
             const productosInv = this.productosData
-              .filter(p => {
-                console.log('Comparando producto:', p.investigadorId, inv.numerodocumento);
-                return p.investigadorId === inv.numerodocumento;
-              })
-              .map(p => p.nombre || p.titulo || p.descripcion)
-              .join(', ');
+              .filter(p => p.investigador === nombreCompleto)
+              .map(p => ({
+                id: p.id,
+                titulo: p.tituloProducto
+              }));
             
-            console.log('Productos encontrados:', productosInv);
+            // Formatear proyectos y productos para el Excel
+            const proyectosStr = proyectosInv.length > 0 
+              ? proyectosInv.map(p => `${p.codigo}: ${p.titulo}`).join('; ')
+              : 'Sin proyectos';
+            
+            const productosStr = productosInv.length > 0
+              ? productosInv.map(p => `${p.id}: ${p.titulo}`).join('; ')
+              : 'Sin productos';
+            
+            console.log('Proyectos encontrados:', proyectosInv.length);
+            console.log('Productos encontrados:', productosInv.length);
             
             // Retornar investigador con sus proyectos y productos
-            const resultado = {
-              ...inv,
-              proyectos: proyectosInv || 'Sin proyectos',
-              productos: productosInv || 'Sin productos'
+            return {
+              tipodocumento: inv.tipodocumento,
+              numerodocumento: inv.numerodocumento,
+              nombre: inv.nombre,
+              apellidos: inv.apellidos,
+              correo: inv.correo,
+              proyectos: proyectosStr,
+              productos: productosStr
             };
-            
-            console.log('Resultado final para investigador:', resultado);
-            return resultado;
           });
         } else {
           const investigador = this.investigadoresData.filter(x => x.numerodocumento == data.numerodocumento);
           
           filter = investigador.map(inv => {
+            const nombreCompleto = `${inv.nombre} ${inv.apellidos}`;
+            
             const proyectosInv = this.proyectosData
-              .filter(p => p.investigadorId === inv.numerodocumento)
-              .map(p => p.nombre || p.titulo || p.descripcion)
-              .join(', ');
+              .filter(p => p.investigador === nombreCompleto)
+              .map(p => `${p.codigo}: ${p.titulo}`).join('; ');
             
             const productosInv = this.productosData
-              .filter(p => p.investigadorId === inv.numerodocumento)
-              .map(p => p.nombre || p.titulo || p.descripcion)
-              .join(', ');
+              .filter(p => p.investigador === nombreCompleto)
+              .map(p => `${p.id}: ${p.tituloProducto}`).join('; ');
             
             return {
-              ...inv,
+              tipodocumento: inv.tipodocumento,
+              numerodocumento: inv.numerodocumento,
+              nombre: inv.nombre,
+              apellidos: inv.apellidos,
+              correo: inv.correo,
+              estado: inv.estado,
+              horasestricto:inv.horasestricto,
               proyectos: proyectosInv || 'Sin proyectos',
               productos: productosInv || 'Sin productos'
             };
@@ -410,6 +420,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
     XLSX.utils.book_append_sheet(wb, ws, tipo);
     XLSX.writeFile(wb, `Reporte${tipo}.xls`);
   }
+
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
     const dialogRef = this.dialog.open(DialogoEstadisticaComponent, {
       data: {
