@@ -128,11 +128,15 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
 
   getNombreCompleto(id: string | number, lista: any[]): string {
     const persona = lista.find(u => u.numerodocumento === id || u.id === id);
+
+    // Imprimir los datos que estás procesando para depuración
+    console.log('ID buscado:', id);
+    console.log('Persona encontrada:', persona);
+  
     if (!persona) {
       return String(id);  
     }
   
-    // Verificamos si tiene la propiedad "nombres" o "nombre"
     const nombre = persona.nombres || persona.nombre;
     const apellidos = persona.apellidos || '';
   
