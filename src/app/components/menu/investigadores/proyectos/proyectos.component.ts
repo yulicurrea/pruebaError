@@ -120,6 +120,7 @@ export class ProyectosComponent implements OnInit {
   usuarioSesion!: UsuarioSesion; 
   dataSources = new MatTableDataSource<any>(); 
   dataSourceses = new MatTableDataSource<any>(); 
+  dataSourcesDetail = new MatTableDataSource<any>([]);
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
   origenData: any[] = [
     {value: 'nacional', viewValue: 'nacional'},
@@ -1686,6 +1687,7 @@ thumbLabel6 = false;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSourceses.paginator = this.paginator1;
     
     console.log("DATOS TRAIDOS:" ,this.ProyectoyproductoService.getProductosDelUsuario())
     forkJoin([
@@ -1750,7 +1752,8 @@ thumbLabel6 = false;
     this.investigatorService.getmostrarPyP().subscribe((data: Person[]) => {
         const userData = this.AutenticacionService.obtenerDatosUsuario();
         const userId = userData ? userData.numerodocumento : '';
-        this.data = this.transformData(data, userId);
+        this.dataSourceses.data = this.transformData(data, userId); // Asigna los datos transformados
+        this.dataSourceses.paginator = this.paginator1; 
     });
   }
 
@@ -1831,12 +1834,17 @@ thumbLabel6 = false;
           this.selection.select(row);
         });
   }
-
+  loadDetailData(element: any): any[] {
+    // Aquí deberías transformar o filtrar los datos según sea necesario para la tabla expandida
+    return element.productos || []; // Suponiendo que tienes un arreglo de productos en el elemento
+  }
   toggleRow(element: any): void {
     console.log('Elemento expandido:', element); // Para depuración
     this.expandedElements = this.expandedElements === element ? null : element;
     if (this.expandedElements) {
-      this.selectedPlanId = this.expandedElements.id;  // Guarda el ID del plan seleccionado
+      this.selectedPlanId = this.expandedElements.id; 
+      this.dataSourcesDetail.data = this.loadDetailData(element); // Implementa este método
+      this.dataSourcesDetail.paginator = this.paginator2; // Para la tabla expandida // Guarda el ID del plan seleccionado
     } else {
       this.selectedPlanId = ' ';
     }
