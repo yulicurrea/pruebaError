@@ -113,9 +113,9 @@ export class ProyectosComponent implements OnInit {
   //mostrar los coinvestigadores que hay
   separatorKeysCodes: number[] = [13, 188];
   investigatorCtrl = new FormControl('');
-  filteredInvestigators!: Observable<{ correo: string; }[]>;
-  activeInvestigators: { correo: string; }[] = [];
-  selectedInvestigators: string[] = [];
+  filteredInvestigators!: Observable< Investigador []>;
+  activeInvestigators: Investigador[] = [];
+  selectedInvestigators: Investigador[] = [];
   proyecto: Proyecto = {};
   usuarioSesion!: UsuarioSesion; 
   dataSources = new MatTableDataSource<any>(); 
@@ -697,7 +697,8 @@ export class ProyectosComponent implements OnInit {
       });
       this.usuariosData = data.filter(x => x.correo !== this.usuarioSesion.correo);
       const activeInvestigators = data.filter(x => x.correo !== this.usuarioSesion.correo).map((investigador) => ({
-        correo: investigador.correo,
+        nombre: investigador.nombre,
+        apellidos: investigador.apellidos
       }));
 
       this.filteredInvestigators = this.investigatorCtrl.valueChanges.pipe(
@@ -764,11 +765,10 @@ export class ProyectosComponent implements OnInit {
     });
   }
 
-  addCoinvestigador(investigador: {
-    correo: string;
-  }) {
+  addCoinvestigador(investigador: Investigador) {
     const newCoinvestigador: Coinvestigador = {
-      correo: investigador.correo,
+      nombre: investigador.nombre,
+      apellidos: investigador.apellidos
     };
     if (!this.proyecto.coinvestigadores) {
       this.proyecto.coinvestigadores = [newCoinvestigador];
@@ -777,49 +777,40 @@ export class ProyectosComponent implements OnInit {
     }
   }
 
-  removeCoinvestigador(investigador: { correo: string }) {
+  removeCoinvestigador(investigador: Investigador) {
     if (this.proyecto.coinvestigadores) {
       this.proyecto.coinvestigadores = this.proyecto.coinvestigadores.filter(
-        (c) =>
-          c.coinvestigador !==
-          `${investigador.correo}`
+        (c) => 
+          c.nombre !== investigador.nombre || 
+          c.apellidos !== investigador.apellidos
       );
     }
   }
 
-  private _filter(value: string): { correo: string }[] {
+  private _filter(value: string): Investigador[] {
     const filterValue = value.toLowerCase();
 
     if (!filterValue) {
-      return this.activeInvestigators.slice(); // Devuelve una copia de todos los investigadores activos si no hay entrada de usuario
+      return this.activeInvestigators.slice();
     }
 
-    // Filtrar investigadores activos que no estén en la lista de investigadores seleccionados
-    const filteredActiveInvestigators = this.activeInvestigators.filter(
+    return this.activeInvestigators.filter(
       (investigador) =>
-        `${investigador.correo.toLowerCase()}`.includes(
-          filterValue
-        )
-    );
-
-    // Filtrar investigadores seleccionables que no estén ya seleccionados
-    return filteredActiveInvestigators.filter(
-      (investigador) =>
-        !this.selectedInvestigators.includes(
-          `${investigador.correo}`
+        `${investigador.nombre} ${investigador.apellidos}`
+          .toLowerCase()
+          .includes(filterValue) &&
+        !this.selectedInvestigators.some(
+          selected => selected.nombre === investigador.nombre && 
+                     selected.apellidos === investigador.apellidos
         )
     );
   }
 
-  trackByFn(
-    index: number,
-    item: { correo: string }
-  ): number {
-    return index;
-  }
-
-  remove(investigador: { correo: string }): void {
-    const index = this.activeInvestigators.indexOf(investigador);
+  remove(investigador: Investigador): void {
+    const index = this.activeInvestigators.findIndex(
+      inv => inv.nombre === investigador.nombre && 
+             inv.apellidos === investigador.apellidos
+    );
 
     if (index >= 0) {
       this.activeInvestigators.splice(index, 1);
@@ -829,25 +820,26 @@ export class ProyectosComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
-      const [correo] = value;
-      this.activeInvestigators.push({ correo });
+      const [nombre, apellidos] = value.split(' ');
+      if (nombre && apellidos) {
+        this.activeInvestigators.push({ nombre, apellidos });
+      }
     }
     event.chipInput!.clear();
     this.investigatorCtrl.setValue(null);
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    const correo = event.option.value.correo;
-    // Verificar si el investigador ya está en activeInvestigators
+    const investigador: Investigador = event.option.value;
     const investigadorExistente = this.activeInvestigators.find(
-      (investigador) =>
-        investigador.correo === correo
+      (inv) => 
+        inv.nombre === investigador.nombre && 
+        inv.apellidos === investigador.apellidos
     );
 
     if (!investigadorExistente) {
-      // Agregar el investigador seleccionado solo si no está en la lista
-      this.activeInvestigators.push({ correo });
-      this.selectedInvestigators.push(`${correo}`);
+      this.activeInvestigators.push(investigador);
+      this.selectedInvestigators.push(investigador);
     }
 
     this.investigatorInput.nativeElement.value = '';
@@ -855,16 +847,18 @@ export class ProyectosComponent implements OnInit {
   }
 
   displayInvestigator(investigator: Investigador): string {
-    if (
-      investigator &&
-      investigator.correo
-    ) {
-      return `${investigator.correo}`;
-    } else {
-      return '';
+    if (investigator) {
+      return `${investigator.nombre} ${investigator.apellidos}`;
     }
+    return '';
   }
 
+  trackByFn(
+    index: number,
+    investigator: Investigador
+  ): number {
+    return index;
+  }
   //subir archivo proyecto
   selectedFileProyecto: File = null!;
 

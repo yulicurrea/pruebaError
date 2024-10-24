@@ -163,7 +163,7 @@ export interface Coinvestigador {
   nombre?:string;
   apellidos?:string;
   coinvestigador?: string;
-  correo?: string;
+  
 }
 
 export interface financiacion{
