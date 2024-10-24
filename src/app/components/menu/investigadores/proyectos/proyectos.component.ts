@@ -35,7 +35,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSliderModule } from '@angular/material/slider';
-import { MatSort } from '@angular/material/sort';
 
 import { CommonModule } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -121,7 +120,6 @@ export class ProyectosComponent implements OnInit {
   usuarioSesion!: UsuarioSesion; 
   dataSources = new MatTableDataSource<any>(); 
   dataSourceses = new MatTableDataSource<any>(); 
-  datas = new MatTableDataSource<any>(); 
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
   origenData: any[] = [
     {value: 'nacional', viewValue: 'nacional'},
@@ -1676,14 +1674,9 @@ thumbLabel6 = false;
 
   @ViewChild('paginator', { static: true }) paginator!: MatPaginator;
 
-  @ViewChild('mainPaginator') mainPaginator!: MatPaginator;
-  @ViewChild('detailPaginator') detailPaginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+
 
   ngAfterViewInit() {
-    this.dataSourceses.paginator = this.mainPaginator;
-    this.dataSourceses.sort = this.sort;
-    this.datas.paginator = this.detailPaginator;
     this.dataSource.paginator = this.paginator;
     
     console.log("DATOS TRAIDOS:" ,this.ProyectoyproductoService.getProductosDelUsuario())
@@ -1814,18 +1807,6 @@ thumbLabel6 = false;
     this.dataSourceses.data = data;
     this.dataSourceses.paginator = this.paginator;
   });
-  }
-  configurarFiltros() {
-    // Configurar filtro para la tabla principal
-    this.SearchService.getSearchQuery().subscribe(query => {
-      this.dataSourceses.filter = query.trim().toLowerCase();
-    });
-
-    // Personalizar la función de filtrado si es necesario
-    this.dataSourceses.filterPredicate = (datas: any, filter: string) => {
-      return datas.titulo.toLowerCase().includes(filter) ||
-             datas.fecha.toLowerCase().includes(filter);
-    };
   }
 
   isAllSelected() {
