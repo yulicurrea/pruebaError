@@ -1833,6 +1833,7 @@ thumbLabel6 = false;
   }
 
   toggleRow(element: any): void {
+    console.log('Elemento expandido:', element); // Para depuración
     this.expandedElements = this.expandedElements === element ? null : element;
     if (this.expandedElements) {
       this.selectedPlanId = this.expandedElements.id;  // Guarda el ID del plan seleccionado
