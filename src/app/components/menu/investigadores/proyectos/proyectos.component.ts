@@ -1541,9 +1541,9 @@ thumbLabel6 = false;
     this.investigatorService.getmostrarPyP().subscribe((data: Person[]) => {
         const userData = this.AutenticacionService.obtenerDatosUsuario();
         const userId = userData ? userData.numerodocumento : '';
-        this.data = this.transformData(data, userId);
-        this.dataSourceses2.paginator = this.paginator2;  // Asigna el segundo paginador
-
+        this.dataSourceses2.data = this.transformData(data, userId);  // Asignar los datos a dataSourceses2
+        // Asegúrate de asignar el paginador después de tener los datos
+        this.dataSourceses2.paginator = this.paginator2;
 
     });
   }
