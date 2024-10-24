@@ -40,10 +40,10 @@
             
             <!-- Row Detail Column -->
             <ng-container matColumnDef="expandedDetail">
-              <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+              <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumn.length">
                 <div class="expanded-row-detail" *ngIf="expandedElements === element">
                   <div class="inner-table-container mat-elevation-z8">
-                    <table mat-table [dataSource]="element.data" matSort>
+                    <table mat-table [dataSource]="data" matSort>
                       
                       <!-- Checkbox Column -->
                       <ng-container matColumnDef="select">
@@ -66,21 +66,21 @@
                       <!-- Título Proyecto Column -->
                       <ng-container matColumnDef="titulo">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Título proyecto</th>
-                        <td mat-cell *matCellDef="let row">{{row.titulo}}</td> <!-- Cambié element por row aquí -->
+                        <td mat-cell *matCellDef="let element">{{element.titulo}}</td>
                       </ng-container>
-                    
+    
                       <!-- Título Producto Column -->
                       <ng-container matColumnDef="tituloproducto">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Título producto</th>
-                        <td mat-cell *matCellDef="let row">{{row.tituloproducto || ''}}</td> <!-- Cambié element por row aquí -->
+                        <td mat-cell *matCellDef="let element">{{element.tituloproducto || ''}}</td>
                       </ng-container>
-                    
+    
                       <!-- Rol Column -->
                       <ng-container matColumnDef="rol">
                         <th mat-header-cell *matHeaderCellDef>Rol en producto</th>
-                        <td mat-cell *matCellDef="let row">
+                        <td mat-cell *matCellDef="let element">
                           <mat-form-field appearance="outline">
-                            <mat-select [(value)]="row.rol" [disabled]="!row.isSelected"> <!-- Cambié element por row aquí -->
+                            <mat-select [(value)]="element.rol" [disabled]="!element.isSelected">
                               <mat-option *ngFor="let rol of typerol" [value]="rol">
                                 {{ rol }}
                               </mat-option>
@@ -88,25 +88,26 @@
                           </mat-form-field>
                         </td>
                       </ng-container>
-                    
+    
                       <!-- HorasEstricto Column -->
                       <ng-container matColumnDef="horasestricto">
                         <th mat-header-cell *matHeaderCellDef>Horas Estricto</th>
-                        <td mat-cell *matCellDef="let row">
+                        <td mat-cell *matCellDef="let element">
                           <mat-form-field appearance="outline">
-                            <input matInput type="number" [(ngModel)]="row.horasestricto" min="0" step="1" [disabled]="!row.isSelected"> <!-- Cambié element por row aquí -->
+                            <input matInput type="number" [(ngModel)]="element.horasestricto" min="0" step="1" [disabled]="!element.isSelected">
                           </mat-form-field>
                         </td>
                       </ng-container>
-                    
+    
                       <!-- Header and Row Definitions -->
-                      <tr mat-header-row *matHeaderRowDef="displayedColumnas"></tr> <!-- Asegúrate de que expandedDisplayedColumns esté definido -->
-                      <tr mat-row *matRowDef="let row; columns: displayedColumnas;"></tr> <!-- Cambié row aquí -->
+                      <tr mat-header-row *matHeaderRowDef="displayedColumnas"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumnas;"></tr>
                     </table>
                     
                     <!-- Pagination Controls -->
-                    <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
-                    <button mat-raised-button style="background-color: #6AABA0; color: white;" class="save-button" (click)="guardar()">Guardar</button>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons>
+                    </mat-paginator>
+                    <button mat-raised-button  style="background-color: #6AABA0; color: white;" class="save-button" (click)="guardar()">Guardar</button>
                   </div>
                 </div>
               </td>
