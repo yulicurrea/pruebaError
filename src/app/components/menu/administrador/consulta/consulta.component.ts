@@ -343,10 +343,8 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
             nombre: 'Nombre',
             apellidos: 'Apellidos',
             correo: 'Correo',
-            codigoProyecto: 'Código Proyecto',
-            tituloProyecto: 'Título Proyecto',
-            idProducto: 'ID Producto',
-            tituloProducto: 'Título Producto'
+            proyectos: 'Proyectos',
+            productos: 'Productos'
           });
 
           // Organizar los datos de los investigadores
@@ -355,53 +353,24 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
             console.log('Buscando proyectos y productos para:', nombreCompleto);
             
             // Obtener proyectos del investigador
-            const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto);
-            // Obtener productos del investigador
-            const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto);
+            const proyectosInv = this.proyectosData
+              .filter(p => p.investigador === nombreCompleto)
+              .map(p => `${p.codigo}: ${p.titulo}`).join('; ') || 'Sin proyectos';
             
-            // Si no hay proyectos ni productos
-            if (proyectosInv.length === 0 && productosInv.length === 0) {
-              filter.push({
-                tipodocumento: inv.tipodocumento,
-                numerodocumento: inv.numerodocumento,
-                nombre: inv.nombre,
-                apellidos: inv.apellidos,
-                correo: inv.correo,
-                codigoProyecto: 'Sin proyectos',
-                tituloProyecto: '',
-                idProducto: 'Sin productos',
-                tituloProducto: ''
-              });
-            }
-
-            // Agregar proyectos
-            proyectosInv.forEach(p => {
-              filter.push({
-                tipodocumento: inv.tipodocumento,
-                numerodocumento: inv.numerodocumento,
-                nombre: inv.nombre,
-                apellidos: inv.apellidos,
-                correo: inv.correo,
-                codigoProyecto: p.codigo,
-                tituloProyecto: p.titulo,
-                idProducto: '', // Dejar vacío si solo hay proyecto
-                tituloProducto: ''
-              });
-            });
-
-            // Agregar productos
-            productosInv.forEach(p => {
-              filter.push({
-                tipodocumento: inv.tipodocumento,
-                numerodocumento: inv.numerodocumento,
-                nombre: inv.nombre,
-                apellidos: inv.apellidos,
-                correo: inv.correo,
-                codigoProyecto: '', // Dejar vacío si solo hay producto
-                tituloProyecto: '',
-                idProducto: p.id,
-                tituloProducto: p.tituloProducto
-              });
+            // Obtener productos del investigador
+            const productosInv = this.productosData
+              .filter(p => p.investigador === nombreCompleto)
+              .map(p => `${p.id}: ${p.tituloProducto}`).join('; ') || 'Sin productos';
+            
+            // Agregar una fila por investigador con sus proyectos y productos
+            filter.push({
+              tipodocumento: inv.tipodocumento,
+              numerodocumento: inv.numerodocumento,
+              nombre: inv.nombre,
+              apellidos: inv.apellidos,
+              correo: inv.correo,
+              proyectos: proyectosInv,
+              productos: productosInv
             });
           });
         } else {
@@ -409,49 +378,23 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
           
           investigador.forEach(inv => {
             const nombreCompleto = `${inv.nombre} ${inv.apellidos}`;
-            const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto);
-            const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto);
+            const proyectosInv = this.proyectosData
+              .filter(p => p.investigador === nombreCompleto)
+              .map(p => `${p.codigo}: ${p.titulo}`).join('; ') || 'Sin proyectos';
             
-            if (proyectosInv.length === 0 && productosInv.length === 0) {
-              filter.push({
-                tipodocumento: inv.tipodocumento,
-                numerodocumento: inv.numerodocumento,
-                nombre: inv.nombre,
-                apellidos: inv.apellidos,
-                correo: inv.correo,
-                codigoProyecto: 'Sin proyectos',
-                tituloProyecto: '',
-                idProducto: 'Sin productos',
-                tituloProducto: ''
-              });
-            }
-
-            proyectosInv.forEach(p => {
-              filter.push({
-                tipodocumento: inv.tipodocumento,
-                numerodocumento: inv.numerodocumento,
-                nombre: inv.nombre,
-                apellidos: inv.apellidos,
-                correo: inv.correo,
-                codigoProyecto: p.codigo,
-                tituloProyecto: p.titulo,
-                idProducto: '', // Dejar vacío si solo hay proyecto
-                tituloProducto: ''
-              });
-            });
-
-            productosInv.forEach(p => {
-              filter.push({
-                tipodocumento: inv.tipodocumento,
-                numerodocumento: inv.numerodocumento,
-                nombre: inv.nombre,
-                apellidos: inv.apellidos,
-                correo: inv.correo,
-                codigoProyecto: '', // Dejar vacío si solo hay producto
-                tituloProyecto: '',
-                idProducto: p.id,
-                tituloProducto: p.tituloProducto
-              });
+            const productosInv = this.productosData
+              .filter(p => p.investigador === nombreCompleto)
+              .map(p => `${p.id}: ${p.tituloProducto}`).join('; ') || 'Sin productos';
+            
+            // Agregar una fila por investigador con sus proyectos y productos
+            filter.push({
+              tipodocumento: inv.tipodocumento,
+              numerodocumento: inv.numerodocumento,
+              nombre: inv.nombre,
+              apellidos: inv.apellidos,
+              correo: inv.correo,
+              proyectos: proyectosInv,
+              productos: productosInv
             });
           });
         }
@@ -466,6 +409,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
     XLSX.utils.book_append_sheet(wb, ws, tipo);
     XLSX.writeFile(wb, `Reporte${tipo}.xls`);
 }
+
 
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
     const dialogRef = this.dialog.open(DialogoEstadisticaComponent, {
