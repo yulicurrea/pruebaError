@@ -314,6 +314,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
 
   exportAsXLSX(data: any = undefined, tipo: string): void {
     let filter: any[] = [];
+
     switch(tipo) { 
       case 'Proyectos': {
         if(data == undefined){
@@ -332,53 +333,22 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         break; 
       } 
       default: {        
-        if(data == undefined) {
-          const investigadores = [...this.investigadoresData];
-
-          investigadores.forEach(inv => {
-            const nombreCompleto = `${inv.nombre} ${inv.apellidos}`;
-            
-            // Obtener proyectos y productos del investigador
-            const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto);
-            const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto);
-
-            // Si no hay proyectos o productos, agregar una fila vacía con texto aclaratorio
-            if (proyectosInv.length === 0 && productosInv.length === 0) {
-              filter.push({
-                tipodocumento: inv.tipodocumento,
-                numerodocumento: inv.numerodocumento,
-                nombre: inv.nombre,
-                apellidos: inv.apellidos,
-                correo: inv.correo,
-                codigoProyecto: 'Sin proyectos',
-                tituloProyecto: '',
-                idProducto: 'Sin productos',
-                tituloProducto: ''
-              });
-            }
-
-            // Agregar proyectos y productos en columnas separadas, asegurando que el investigador se muestre una sola vez
-            const maxLength = Math.max(proyectosInv.length, productosInv.length);
-            
-            for (let i = 0; i < maxLength; i++) {
-              filter.push({
-                tipodocumento: i === 0 ? inv.tipodocumento : '', // Mostrar investigador solo en la primera fila
-                numerodocumento: i === 0 ? inv.numerodocumento : '',
-                nombre: i === 0 ? inv.nombre : '',
-                apellidos: i === 0 ? inv.apellidos : '',
-                correo: i === 0 ? inv.correo : '',
-                codigoProyecto: proyectosInv[i]?.codigo || '',
-                tituloProyecto: proyectosInv[i]?.titulo || '',
-                idProducto: productosInv[i]?.id || '',
-                tituloProducto: productosInv[i]?.tituloProducto || ''
-              });
-            }
-          });
+        if (data == undefined) {
+          // Descarga general: solo exportar los datos básicos de los investigadores
+          filter = this.investigadoresData.map(inv => ({
+            tipodocumento: inv.tipodocumento,
+            numerodocumento: inv.numerodocumento,
+            nombre: inv.nombre,
+            apellidos: inv.apellidos,
+            correo: inv.correo
+          }));
         } else {
+          // Descarga individual: agregar proyectos y productos del investigador
           const investigador = this.investigadoresData.filter(x => x.numerodocumento == data.numerodocumento);
-          
+
           investigador.forEach(inv => {
             const nombreCompleto = `${inv.nombre} ${inv.apellidos}`;
+            
             const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto);
             const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto);
             
@@ -402,7 +372,6 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         break; 
       } 
     } 
-
     console.log('Datos finales a exportar:', filter);
     
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
