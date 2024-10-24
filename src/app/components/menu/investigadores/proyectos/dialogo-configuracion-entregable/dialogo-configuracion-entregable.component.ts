@@ -14,6 +14,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import * as moment from 'moment';
 import { UsuarioSesion } from '../../../modelo/usuario';
 import { InvestigadorService } from '../../../services/registroInvestigador';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-dialogo-configuracion-entregable',
@@ -24,6 +25,7 @@ import { InvestigadorService } from '../../../services/registroInvestigador';
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
+    MatButtonToggleModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
