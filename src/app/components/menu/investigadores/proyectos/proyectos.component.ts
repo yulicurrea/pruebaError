@@ -784,6 +784,8 @@ export class ProyectosComponent implements OnInit {
           c.nombre !== investigador.nombre || 
           c.apellidos !== investigador.apellidos
       );
+      console.log(this.proyecto.coinvestigadores); // Verifica que se haya actualizado correctamente
+
     }
   }
 
