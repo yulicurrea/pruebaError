@@ -1677,6 +1677,8 @@ thumbLabel6 = false;
 
 
   ngAfterViewInit() {
+    this.dataSourceses.paginator = this.paginator1;
+
     this.dataSource.paginator = this.paginator;
     
     console.log("DATOS TRAIDOS:" ,this.ProyectoyproductoService.getProductosDelUsuario())
@@ -1743,6 +1745,9 @@ thumbLabel6 = false;
         const userData = this.AutenticacionService.obtenerDatosUsuario();
         const userId = userData ? userData.numerodocumento : '';
         this.data = this.transformData(data, userId);
+        
+        this.dataSource = new MatTableDataSource(this.data);
+        this.dataSource.paginator = this.paginator2;
     });
   }
 
@@ -1805,7 +1810,6 @@ thumbLabel6 = false;
       this.idConfiguracion = data[0].id;
     }
     this.dataSourceses.data = data;
-    this.dataSourceses.paginator = this.paginator;
   });
   }
 
