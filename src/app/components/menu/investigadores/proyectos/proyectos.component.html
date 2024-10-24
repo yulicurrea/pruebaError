@@ -100,8 +100,9 @@
                       </ng-container>
     
                       <!-- Header and Row Definitions -->
-                      <tr mat-header-row *matHeaderRowDef="displayedColumnas"></tr>
-                      <tr mat-row *matRowDef="let row; columns: displayedColumnas;"></tr>
+                      <tr mat-header-row *matHeaderRowDef="displayedColumn"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumn;"></tr>
+                      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
                     </table>
                     
                     <!-- Pagination Controls -->
