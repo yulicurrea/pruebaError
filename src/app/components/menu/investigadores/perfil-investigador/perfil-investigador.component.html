@@ -20,7 +20,7 @@
     <h2>Información Personal</h2>
     <div class="personal-info">
         <div class="custom-input-container">
-            <label for="tipodocumento">Tipo de documento</label>
+            <label for="tipodocumento"matTooltip="Seleccione el tipo de documento">Tipo de documento</label>
             <mat-select panelClass="matRole" [value]="userData?.tipodocumento" formControlName="tipodocumento">
                 <mat-option *ngFor="let data of tipodpcumento" [value]="data">
                     {{data}}
@@ -28,25 +28,25 @@
             </mat-select>
         </div>
         <div class="custom-input-container"> 
-            <label for="numerodocumento">Número de documento</label>
+            <label for="numerodocumento"matTooltip="No puede modificar esta información por regla establecida">Número de documento</label>
             <input matInput formControlName="numerodocumento">        
         </div>
         <div class="custom-input-container">
-            <label for="nombre">Nombres</label>
+            <label for="nombre" matTooltip="Ingrese sus nombres. EJEMPLO: Lina Fernanda">Nombres</label>
             <input matInput type="text" id="nombre" placeholder="Ingrese su nombre" formControlName="nombre">
             <mat-error *ngIf="firstFormGroup.get('nombre').invalid">
                 Por favor ingrese solo letras (sin números ni caracteres especiales).
             </mat-error>
         </div>      
         <div class="custom-input-container">
-            <label for="apellidos">Apellidos</label>
+           <label for="apellidos"matTooltip="Ingrese sus apellidos. EJEMPLO: Pérez Currea">Apellidos</label>
             <input matInput type="text" id="apellidos" placeholder="Ingrese sus apellidos" formControlName="apellidos">
             <mat-error *ngIf="firstFormGroup.get('apellidos').hasError('pattern')">
                 Por favor ingrese solo letras y espacios (sin números ni caracteres especiales).
             </mat-error> 
         </div>
         <div class="custom-input-container">
-            <label for="correo">Correo</label>
+            <label for="correo"matTooltip="Ingrese su correo electronico institucional. EJEMPLO: lc@unbosque.edu.co">Correo</label>
             <input matInput type="email" id="correo" placeholder="Ingrese su correo" formControlName="correo">
             <mat-error *ngIf="firstFormGroup.get('correo').hasError('pattern')">
                 Por favor ingrese un correo electrónico válido que termine en &#64;unbosque.edu.co.
@@ -58,7 +58,7 @@
     <h2>Información Académica</h2>
     <div class="academic-info">
         <div class="custom-input-container">
-            <label for="lineainvestigacion">Línea Investigación</label>
+            <label for="lineainvestigacion"matTooltip="Seleccione la línea de investigación a la que pertenece">Línea Investigación</label>
             <mat-select panelClass="matRole" [value]="userData?.lineainvestigacion" formControlName="lineainvestigacion">
             <mat-option *ngFor="let data of lineainvestigacion1" [value]="data">
                 {{data}}
@@ -66,7 +66,7 @@
             </mat-select>
         </div>
         <div class="custom-input-container">
-            <label for="unidadAcademica">Unidad Académica</label>
+            <label for="unidadAcademica"matTooltip="Seleccione la unidad Académica a la que pertenece">Unidad Académica</label>
                 <mat-select panelClass="matRole" [value]="userData?.unidadAcademica" formControlName="unidadAcademica">
                 <mat-option *ngFor="let data of unidadAcademica1" [value]="data">
                     {{data}}
@@ -74,18 +74,18 @@
             </mat-select>
         </div>  
         <div class="custom-input-container">
-            <label for="escalofonodocente">Escalofon Docente</label>
+            <label for="escalofonodocente"matTooltip="Ingrese el escalofon docente">Escalofon Docente</label>
             <input matInput type="text" id="escalofonodocente" placeholder="Ingrese su escalafon docente" formControlName="escalofonodocente">
             <mat-error *ngIf="firstFormGroup.get('escalofonodocente').hasError('pattern')">
                 Por favor ingrese solo letras y espacios (sin números ni caracteres especiales).
             </mat-error>
         </div>
         <div class="custom-input-container">
-            <label for="horasestricto">Horarios Estricto</label>
+            <label for="horasestricto"matTooltip="Ingrese las horas en sentido estricto a trabajar en el grupo de investigación">Horarios Estricto</label>
             <input matInput type="number" id="horasestricto" placeholder="Ingrese horas estricto" required formControlName="horasestricto" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
         </div>
         <div class="custom-input-container">
-            <label for="horasformacion">Horarios Formación</label>
+            <label for="horasformacion"matTooltip="Ingrese las horas en sentido formación a trabajar en el grupo de investigación">Horarios Formación</label>
             <input matInput type="number" id="horasformacion" placeholder="Ingrese horas de formación" required formControlName="horasformacion" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
         </div>
             
@@ -93,7 +93,7 @@
 
 
     <br>
-    <h2>Información Profesional</h2>
+    <h2 matTooltip="Ingrese los pregrados o posgrados que ha realizado o se encuentra realizando"> Información Profesional</h2>
     <div class="academic-info">
         <div *ngIf="pregradoData.length">
             <h3><mat-icon style="margin: 0px 0px -6px 0px; color:burlywood">star</mat-icon> Pregados</h3>

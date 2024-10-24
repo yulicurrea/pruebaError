@@ -15,6 +15,8 @@ import { InvestigadorService } from '../../services/registroInvestigador';
 import Swal from 'sweetalert2';
 import { DialogoCargaEstudiosComponent } from './dialogo-carga-estudios/dialogo-carga-estudios.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 @Component({
   selector: 'app-perfil-investigador',
   templateUrl: './perfil-investigador.component.html',
@@ -22,6 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   imports: [
     FormsModule, 
+    MatTooltipModule,
     MatFormFieldModule, 
     MatInputModule,
     MatSelectModule,

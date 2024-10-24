@@ -4,25 +4,23 @@
     <div *ngIf="type === 'Pregrado'; else elseBlock">
       <form [formGroup]="firstFormGroup">
         <div class="custom-input-container">
-          <label for="titulo">Título</label>
-          <input matInput type="text" id="titulo" placeholder="Ingrese el título" formControlName="titulo">
+          <label for="titulo" matTooltip="Debe ingresar el nombre del pregrado. EJEMPLO: Ingeniería de sistemas">Título profesional</label>          <input matInput type="text" id="titulo" placeholder="Ingrese el título" formControlName="titulo">
           <mat-error *ngIf="firstFormGroup.get('titulo').invalid && firstFormGroup.get('titulo').touched">
-            Por favor ingrese solo letras (sin números ni caracteres especiales).
+            Por favor ingrese solo letras.
           </mat-error>
         </div>
 
         <div class="custom-input-container">
-          <label for="fecha">Fecha</label>
+          <label for="fecha"matTooltip="Debe ingresar la fecha en la cual se graduo o una fecha tentativa para el grado">Fecha de grado o tentativa</label>
           <input matInput id="fecha" placeholder="Seleccione la fecha" [matDatepicker]="picker" formControlName="fecha">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </div>
 
         <div class="custom-input-container">
-          <label for="institucion">Institución</label>
-          <input matInput type="text" id="institucion" placeholder="Ingrese la institución" formControlName="institucion">
+          <label for="institucion" matTooltip="Ingresar el nombre de la institucion donde realizo su pregrado. EJEMPLO: Universidad El Bosque">Institución</label>          <input matInput type="text" id="institucion" placeholder="Ingrese la institución" formControlName="institucion">
           <mat-error *ngIf="firstFormGroup.get('institucion').invalid && firstFormGroup.get('institucion').touched">
-            Por favor ingrese solo letras (sin números ni caracteres especiales).
+            Por favor ingrese solo letras.
           </mat-error>
         </div>
       </form>
@@ -30,30 +28,27 @@
     <ng-template #elseBlock>
       <form [formGroup]="secondFormGroup">
         <div class="custom-input-container">
-          <label for="titulo2">Título</label>
-          <input matInput type="text" id="titulo2" placeholder="Ingrese el título" formControlName="titulo2">
+          <label for="titulo2"matTooltip="Debe ingresar el último título académico. EJEMPLO: Maestría en ingeniería de sistemas y computación ">Título profesional</label>          <input matInput type="text" id="titulo2" placeholder="Ingrese el título" formControlName="titulo2">
           <mat-error *ngIf="secondFormGroup.get('titulo2').invalid && secondFormGroup.get('titulo2').touched">
             Por favor ingrese solo letras (sin números ni caracteres especiales).
           </mat-error>
         </div>
 
         <div class="custom-input-container">
-          <label for="fecha2">Fecha</label>
-          <input matInput id="fecha2" placeholder="Seleccione la fecha" [matDatepicker]="picker2" formControlName="fecha2">
+          <label for="fecha2"matTooltip="Debe ingresar la fecha en la cual se graduo o una fecha tentativa para el grado">Fecha de grado o tentativa </label>          <input matInput id="fecha2" placeholder="Seleccione la fecha" [matDatepicker]="picker2" formControlName="fecha2">
           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
           <mat-datepicker #picker2></mat-datepicker>
         </div>
 
         <div class="custom-input-container">
-          <label for="institucion2">Institución</label>
-          <input matInput type="text" id="institucion2" placeholder="Ingrese la institución" formControlName="institucion2">
+          <label for="institucion2" matTooltip="Ingresar el nombre de la institucion donde realizo su posgrado. EJEMPLO: Universidad El Bosque">Institución</label>          <input matInput type="text" id="institucion2" placeholder="Ingrese la institución" formControlName="institucion2">
           <mat-error *ngIf="secondFormGroup.get('institucion2').invalid && secondFormGroup.get('institucion2').touched">
-            Por favor ingrese solo letras (sin números ni caracteres especiales).
+            Por favor ingrese solo letras.
           </mat-error>
         </div>
 
         <div class="custom-input-container">
-          <label for="tipo2">Tipo</label>
+          <label for="tipo2"matTooltip="Seleccione el tipo de posgrado.">Tipo</label>
           <mat-select id="tipo2" formControlName="tipo2">
             <mat-option *ngFor="let data of tipoPosgrado" [value]="data">{{ data }}</mat-option>
           </mat-select>
