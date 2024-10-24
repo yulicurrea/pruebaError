@@ -120,6 +120,8 @@ export class ProyectosComponent implements OnInit {
   usuarioSesion!: UsuarioSesion; 
   dataSources = new MatTableDataSource<any>(); 
   dataSourceses = new MatTableDataSource<any>(); 
+  dataSour= new MatTableDataSource<any>(); 
+
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
   origenData: any[] = [
     {value: 'nacional', viewValue: 'nacional'},
@@ -546,6 +548,7 @@ export class ProyectosComponent implements OnInit {
     this.obtenerUsuarios();
     this.configurarDatasource();
     this.configurarDatasourceses();
+    this.configurarDatasour();
     this.obtenerDatosUsuarioSesion();
     this.obtenerEstudiantes();
     this.obtenerParticipantesExternos();
@@ -721,7 +724,12 @@ export class ProyectosComponent implements OnInit {
       this.dataSourceses.filter = query.trim().toLowerCase(); // Ajusta según corresponda
     });
   }
- 
+  configurarDatasour() { 
+    this.dataSour.paginator = this.paginator; // Verifica si es correcto usar dataSourceses aquí
+    this.SearchService.getSearchQuery().subscribe(query => {
+      this.dataSour.filter = query.trim().toLowerCase(); // Ajusta según corresponda
+    });
+  }
   openDialogEstudiante(): void {
     const dialogRef = this.dialog.open(DialogoCreacionEstudiantesComponent, {
       data: {
@@ -1806,6 +1814,7 @@ thumbLabel6 = false;
     }
     this.dataSourceses.data = data;
     this.dataSourceses.paginator = this.paginator;
+    this.dataSour.paginator= this.paginator;
   });
   }
 

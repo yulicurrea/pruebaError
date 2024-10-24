@@ -43,7 +43,7 @@
               <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumn.length">
                 <div class="expanded-row-detail" *ngIf="expandedElements === element">
                   <div class="inner-table-container mat-elevation-z8">
-                    <table mat-table [dataSource]="data" matSort>
+                    <table mat-table [dataSource]="dataSour" matSort>
                       
                       <!-- Checkbox Column -->
                       <ng-container matColumnDef="select">
