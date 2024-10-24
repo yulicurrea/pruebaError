@@ -121,7 +121,7 @@ export class ProyectosComponent implements OnInit {
   dataSources = new MatTableDataSource<any>(); 
   dataSourceses = new MatTableDataSource<any>();
   dataSourceses2 = new MatTableDataSource<any>();
-  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
+  dataSource = new MatTableDataSource<any>();
   origenData: any[] = [
     {value: 'nacional', viewValue: 'nacional'},
     {value: 'internacional', viewValue: 'internacional'},
@@ -1542,6 +1542,8 @@ thumbLabel6 = false;
         const userData = this.AutenticacionService.obtenerDatosUsuario();
         const userId = userData ? userData.numerodocumento : '';
         this.data = this.transformData(data, userId);
+        this.dataSourceses2.paginator = this.paginator2;  // Asigna el segundo paginador
+
 
     });
   }
@@ -1603,7 +1605,7 @@ thumbLabel6 = false;
       this.idConfiguracion = data[0].id;
     }
     this.dataSourceses.data = data;
-    this.dataSourceses.paginator = this.paginator;
+    this.dataSourceses.paginator = this.paginator1;
 
     
   });
