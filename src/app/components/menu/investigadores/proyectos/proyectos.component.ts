@@ -120,6 +120,7 @@ export class ProyectosComponent implements OnInit {
   usuarioSesion!: UsuarioSesion; 
   dataSources = new MatTableDataSource<any>(); 
   dataSourceses = new MatTableDataSource<any>();
+  dataSourceses2 = new MatTableDataSource<any>();
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
   origenData: any[] = [
     {value: 'nacional', viewValue: 'nacional'},
@@ -185,7 +186,7 @@ export class ProyectosComponent implements OnInit {
     private ProyectoyproductoService: ProyectoyproductoService,
     private formBuilder: FormBuilder,
     private investigatorService: InvestigadorService,
-    private SearchService:SearchService,
+    private searchService: SearchService, 
     private AutenticacionService:AutenticacionService,
     private estudiantesService: EstudiantesService,
     private participantesExternosService: ParticipantesExternosService,
@@ -438,8 +439,6 @@ export class ProyectosComponent implements OnInit {
     this.ngAfterViewInit();
     this.obtenerCodigosProyectos();
     this.obtenerUsuarios();
-    this.configurarDatasource();
-    this.configurarDatasourceses();
     this.obtenerDatosUsuarioSesion();
     this.obtenerEstudiantes();
     this.obtenerParticipantesExternos();
@@ -452,6 +451,11 @@ export class ProyectosComponent implements OnInit {
     this.loadProjectsAndProducts();
     this.obtenerTipoProducto();
 
+    this.searchService.getSearchQuery().subscribe(query => {
+      this.dataSource.filter = query.trim().toLowerCase();
+      this.dataSourceses.filter = query.trim().toLowerCase();
+      this.dataSourceses2.filter = query.trim().toLowerCase();
+    });
     
   }
 
@@ -613,18 +617,7 @@ export class ProyectosComponent implements OnInit {
     });
   }
 
-  configurarDatasource(){ 
-    this.dataSource.paginator = this.paginator;
-    this.SearchService.getSearchQuery().subscribe(query => {
-      this.dataSource.filter = query.trim().toLowerCase();
-    });
-  }
-  configurarDatasourceses() { 
-    this.dataSourceses.paginator = this.paginator; // Verifica si es correcto usar dataSourceses aquí
-    this.SearchService.getSearchQuery().subscribe(query => {
-      this.dataSourceses.filter = query.trim().toLowerCase(); // Ajusta según corresponda
-    });
-  }
+ 
  
   openDialogEstudiante(): void {
     const dialogRef = this.dialog.open(DialogoCreacionEstudiantesComponent, {
@@ -1473,12 +1466,17 @@ thumbLabel6 = false;
   
   expandedDetail = false;
 
-  @ViewChild('paginator', { static: true }) paginator!: MatPaginator;
+  @ViewChild('paginator') paginator!: MatPaginator;
+  @ViewChild('paginator1') paginator1!: MatPaginator;
+  @ViewChild('paginator2') paginator2!: MatPaginator;
+
 
 
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSourceses.paginator = this.paginator1;
+    this.dataSourceses2.paginator = this.paginator2;
     
     console.log("DATOS TRAIDOS:" ,this.ProyectoyproductoService.getProductosDelUsuario())
     forkJoin([
@@ -1548,8 +1546,6 @@ thumbLabel6 = false;
     });
   }
 
-  @ViewChild('paginator1') paginator1!: MatPaginator; 
-  @ViewChild('paginator2') paginator2!: MatPaginator; 
 
   
   transformData(data: Person[], userId: string): any[] {

@@ -117,7 +117,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
       this.dataSourcePlanTrabajo.filter = query.trim().toLowerCase();
     });
   }
-
+ 
   ngAfterViewInit() {
     this.dataSourceInvestigador.paginator = this.paginator;
     this.dataSourceProyecto.paginator = this.paginator2;
