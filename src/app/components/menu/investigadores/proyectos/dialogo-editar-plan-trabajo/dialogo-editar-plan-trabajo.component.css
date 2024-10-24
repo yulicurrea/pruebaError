@@ -103,3 +103,11 @@ body {
     border-radius: 4px; /* Bordes redondeados */
     padding: 8px; /* Espaciado interno */
 }
+.table-container {
+    max-height: 400px; /* Altura máxima para el área de la tabla */
+    overflow-y: auto; /* Permite el desplazamiento vertical */
+    display: block; /* Necesario para el desplazamiento */
+  }
+  
+ 
+  

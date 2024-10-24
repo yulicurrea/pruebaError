@@ -35,12 +35,20 @@ export class DialogoEditarPlanTrabajoComponent implements AfterViewInit,OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackBar: MatSnackBar
   ) {}
+  
   scrollUp() {
-    window.scrollBy({ top: -window.innerHeight, behavior: 'smooth' });
+    const tableContainer = document.querySelector('.table-container');
+    if (tableContainer) {
+      tableContainer.scrollTop -= 50; // Ajusta el valor según lo necesario
+    }
   }
 
+  // Método para desplazarse hacia abajo
   scrollDown() {
-      window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+    const tableContainer = document.querySelector('.table-container');
+    if (tableContainer) {
+      tableContainer.scrollTop += 50; // Ajusta el valor según lo necesario
+    }
   }
 
   closeDialog() {
