@@ -312,7 +312,6 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
     );
   }
 
- 
   exportAsXLSX(data: any = undefined, tipo: string): void {
     let filter: any[] = [];
     switch(tipo) { 
@@ -334,91 +333,114 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
       } 
       default: {        
         if(data == undefined){
-          // Crear una copia de los datos de investigadores
           const investigadores = [...this.investigadoresData];
           
-          // Para cada investigador, agregar sus proyectos y productos
-          filter = investigadores.map(inv => {
-            // Construir el nombre completo del investigador
+          // Organizar los datos de los investigadores
+          investigadores.forEach(inv => {
             const nombreCompleto = `${inv.nombre} ${inv.apellidos}`;
             console.log('Buscando proyectos y productos para:', nombreCompleto);
             
             // Obtener proyectos del investigador
-            const proyectosInv = this.proyectosData
-              .filter(p => p.investigador === nombreCompleto)
-              .map(p => ({
-                codigo: p.codigo,
-                titulo: p.titulo
-              }));
-            
+            const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto);
             // Obtener productos del investigador
-            const productosInv = this.productosData
-              .filter(p => p.investigador === nombreCompleto)
-              .map(p => ({
-                id: p.id,
-                titulo: p.tituloProducto
-              }));
+            const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto);
             
-            // Formatear proyectos y productos para el Excel
-            const proyectosStr = proyectosInv.length > 0 
-              ? proyectosInv.map(p => `${p.codigo}: ${p.titulo}`).join('; ')
-              : 'Sin proyectos';
-            
-            const productosStr = productosInv.length > 0
-              ? productosInv.map(p => `${p.id}: ${p.titulo}`).join('; ')
-              : 'Sin productos';
-            
-            console.log('Proyectos encontrados:', proyectosInv.length);
-            console.log('Productos encontrados:', productosInv.length);
-            
-            // Retornar investigador con sus proyectos y productos
-            return {
-              tipodocumento: inv.tipodocumento,
-              numerodocumento: inv.numerodocumento,
-              nombre: inv.nombre,
-              apellidos: inv.apellidos,
-              correo: inv.correo,
-              proyectos: proyectosStr,
-              productos: productosStr
-            };
+            // Agregar cada proyecto como una fila
+            proyectosInv.forEach(p => {
+              filter.push({
+                tipodocumento: inv.tipodocumento,
+                numerodocumento: inv.numerodocumento,
+                nombre: inv.nombre,
+                apellidos: inv.apellidos,
+                correo: inv.correo,
+                proyectos: `${p.codigo}: ${p.titulo}`,
+                productos: 'Sin productos' // Placeholder por ahora
+              });
+            });
+
+            // Agregar cada producto como una fila
+            productosInv.forEach(p => {
+              filter.push({
+                tipodocumento: inv.tipodocumento,
+                numerodocumento: inv.numerodocumento,
+                nombre: inv.nombre,
+                apellidos: inv.apellidos,
+                correo: inv.correo,
+                proyectos: 'Sin proyectos', // Placeholder por ahora
+                productos: `${p.id}: ${p.tituloProducto}`
+              });
+            });
+
+            // Si no tiene proyectos ni productos
+            if (proyectosInv.length === 0 && productosInv.length === 0) {
+              filter.push({
+                tipodocumento: inv.tipodocumento,
+                numerodocumento: inv.numerodocumento,
+                nombre: inv.nombre,
+                apellidos: inv.apellidos,
+                correo: inv.correo,
+                proyectos: 'Sin proyectos',
+                productos: 'Sin productos'
+              });
+            }
           });
         } else {
           const investigador = this.investigadoresData.filter(x => x.numerodocumento == data.numerodocumento);
           
-          filter = investigador.map(inv => {
+          investigador.forEach(inv => {
             const nombreCompleto = `${inv.nombre} ${inv.apellidos}`;
+            const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto);
+            const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto);
             
-            const proyectosInv = this.proyectosData
-              .filter(p => p.investigador === nombreCompleto)
-              .map(p => `${p.codigo}: ${p.titulo}`).join('; ');
-            
-            const productosInv = this.productosData
-              .filter(p => p.investigador === nombreCompleto)
-              .map(p => `${p.id}: ${p.tituloProducto}`).join('; ');
-            
-            return {
-              tipodocumento: inv.tipodocumento,
-              numerodocumento: inv.numerodocumento,
-              nombre: inv.nombre,
-              apellidos: inv.apellidos,
-              correo: inv.correo,
-              proyectos: proyectosInv || 'Sin proyectos',
-              productos: productosInv || 'Sin productos'
-            };
+            proyectosInv.forEach(p => {
+              filter.push({
+                tipodocumento: inv.tipodocumento,
+                numerodocumento: inv.numerodocumento,
+                nombre: inv.nombre,
+                apellidos: inv.apellidos,
+                correo: inv.correo,
+                proyectos: `${p.codigo}: ${p.titulo}`,
+                productos: 'Sin productos' // Placeholder por ahora
+              });
+            });
+
+            productosInv.forEach(p => {
+              filter.push({
+                tipodocumento: inv.tipodocumento,
+                numerodocumento: inv.numerodocumento,
+                nombre: inv.nombre,
+                apellidos: inv.apellidos,
+                correo: inv.correo,
+                proyectos: 'Sin proyectos', // Placeholder por ahora
+                productos: `${p.id}: ${p.tituloProducto}`
+              });
+            });
+
+            if (proyectosInv.length === 0 && productosInv.length === 0) {
+              filter.push({
+                tipodocumento: inv.tipodocumento,
+                numerodocumento: inv.numerodocumento,
+                nombre: inv.nombre,
+                apellidos: inv.apellidos,
+                correo: inv.correo,
+                proyectos: 'Sin proyectos',
+                productos: 'Sin productos'
+              });
+            }
           });
         }
         break; 
       } 
     } 
-    
+
     console.log('Datos finales a exportar:', filter);
     
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, tipo);
     XLSX.writeFile(wb, `Reporte${tipo}.xls`);
-  }
-  
+}
+
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
     const dialogRef = this.dialog.open(DialogoEstadisticaComponent, {
       data: {
