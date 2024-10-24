@@ -338,9 +338,17 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
           filter = this.investigadoresData.map(inv => ({
             tipodocumento: inv.tipodocumento,
             numerodocumento: inv.numerodocumento,
+            correo: inv.correo,
             nombre: inv.nombre,
             apellidos: inv.apellidos,
-            correo: inv.correo
+            estado: inv.estado,
+            horasestricto: inv.horasestricto,
+            horasformacion: inv.horasformacion,
+            categoriaminciencias: inv.categoriaminciencias,
+            rolinvestigador: inv.rolinvestigador,
+            fechacreacion: inv.created_at,
+            fechaactualizacion: inv.updated_at
+
           }));
         } else {
           // Descarga individual: agregar proyectos y productos del investigador
@@ -358,9 +366,16 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
               filter.push({
                 tipodocumento: i === 0 ? inv.tipodocumento : '', // Mostrar investigador solo en la primera fila
                 numerodocumento: i === 0 ? inv.numerodocumento : '',
+                correo: i === 0 ? inv.correo : '',
                 nombre: i === 0 ? inv.nombre : '',
                 apellidos: i === 0 ? inv.apellidos : '',
-                correo: i === 0 ? inv.correo : '',
+                estado: inv.estado,
+                horasestricto: i === 0 ? inv.horasestricto: '',
+                horasformacion:i === 0 ? inv.horasformacion: '',
+                categoriaminciencias:i === 0 ?inv.categoriaminciencias: '',
+                rolinvestigador: i === 0 ?inv.rolinvestigador: '',
+                fechacreacion: i === 0 ?inv.created_at: '',
+                fechaactualizacion: i === 0 ?inv.updated_at: '',
                 codigoProyecto: proyectosInv[i]?.codigo || '',
                 tituloProyecto: proyectosInv[i]?.titulo || '',
                 idProducto: productosInv[i]?.id || '',
