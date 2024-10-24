@@ -52,7 +52,7 @@
                                     <mat-form-field class="form-field-spacing" appearance="fill">
                                         <mat-select formControlName="coinvestigador" multiple>
                                             <mat-option *ngFor="let data of usuariosCoinvestigaData" [value]="data?.numerodocumento">
-                                                {{data?.correo}}
+                                                {{data?.nombre}}{{data?.apellidos}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
@@ -329,7 +329,7 @@
                                     <mat-form-field class="form-field-spacing" appearance="fill">
                                         <mat-select formControlName="coinvestigador" multiple>
                                             <mat-option *ngFor="let data of usuariosCoinvestigaData" [value]="data?.numerodocumento">
-                                                {{data?.correo}}
+                                                {{data?.nombre}}{{data?.apellidos}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
