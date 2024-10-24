@@ -74,7 +74,7 @@
             </mat-select>
         </div>  
         <div class="custom-input-container">
-            <label for="escalofonodocente"matTooltip="Ingrese el escalofon docente">Escalofon Docente</label>
+            <label for="escalofonodocente"matTooltip="Por favor, indique su escalafón docente (Auxiliar, Asistente, Asociado, Titular) según su categoría actual en la institución, basada en su formación académica y experiencia.">Escalofon Docente</label>
             <input matInput type="text" id="escalofonodocente" placeholder="Ingrese su escalafon docente" formControlName="escalofonodocente">
             <mat-error *ngIf="firstFormGroup.get('escalofonodocente').hasError('pattern')">
                 Por favor ingrese solo letras y espacios (sin números ni caracteres especiales).
