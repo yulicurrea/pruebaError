@@ -334,9 +334,51 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
       } 
       default: {        
         if(data == undefined){
-          filter = this.investigadoresData;
+          // Crear una copia de los datos de investigadores
+          const investigadores = [...this.investigadoresData];
+          
+          // Para cada investigador, agregar sus proyectos y productos como columnas adicionales
+          filter = investigadores.map(inv => {
+            // Obtener proyectos del investigador
+            const proyectosInv = this.proyectosData
+              .filter(p => p.investigadorId === inv.numerodocumento)
+              .map(p => p.nombre || p.titulo)
+              .join(', ');
+            
+            // Obtener productos del investigador
+            const productosInv = this.productosData
+              .filter(p => p.investigadorId === inv.numerodocumento)
+              .map(p => p.nombre || p.titulo)
+              .join(', ');
+            
+            // Retornar investigador con sus proyectos y productos
+            return {
+              ...inv,
+              proyectos: proyectosInv,
+              productos: productosInv
+            };
+          });
         } else {
-          filter = this.investigadoresData.filter(x => x.numerodocumento == data.numerodocumento);
+          // Filtrar por un investigador específico y agregar sus proyectos y productos
+          const investigador = this.investigadoresData.filter(x => x.numerodocumento == data.numerodocumento);
+          
+          filter = investigador.map(inv => {
+            const proyectosInv = this.proyectosData
+              .filter(p => p.investigadorId === inv.numerodocumento)
+              .map(p => p.nombre || p.titulo)
+              .join(', ');
+            
+            const productosInv = this.productosData
+              .filter(p => p.investigadorId === inv.numerodocumento)
+              .map(p => p.nombre || p.titulo)
+              .join(', ');
+            
+            return {
+              ...inv,
+              proyectos: proyectosInv,
+              productos: productosInv
+            };
+          });
         }
         break; 
       } 
@@ -346,6 +388,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
     XLSX.utils.book_append_sheet(wb, ws, tipo);
     XLSX.writeFile(wb, `Reporte${tipo}.xls`);
   }
+  
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
     const dialogRef = this.dialog.open(DialogoEstadisticaComponent, {
       data: {
