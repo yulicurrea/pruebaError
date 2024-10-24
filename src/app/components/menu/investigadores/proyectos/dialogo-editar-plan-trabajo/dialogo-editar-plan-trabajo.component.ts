@@ -5,14 +5,18 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { ProyectoyproductoService } from '../../../services/proyectoyproducto';
 import { PlanTableData,MostrarPlan,PlanDeTrabajo } from '../../../modelo/planDeTrabajo';
 import { AutenticacionService } from '../../../services/autenticacion';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select'; 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { InvestigadorService } from '../../../services/registroInvestigador';
+import { MatIconModule } from '@angular/material/icon'; 
+import { MatButtonModule } from '@angular/material/button'; 
+import { MatDialogModule } from '@angular/material/dialog'; 
+
 @Component({
   selector: 'app-dialogo-editar-plan-trabajo',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatSelectModule, FormsModule],
+  imports: [MatTableModule, MatPaginatorModule, MatSelectModule, FormsModule,MatIconModule,MatButtonModule, MatDialogModule, ],
   templateUrl: './dialogo-editar-plan-trabajo.component.html',
   styleUrl: './dialogo-editar-plan-trabajo.component.css'
 })
@@ -26,11 +30,22 @@ export class DialogoEditarPlanTrabajoComponent implements AfterViewInit,OnInit {
   constructor(
     private planTrabajoService: ProyectoyproductoService,
     private autenticacionService: AutenticacionService,
+    public dialogRef: MatDialogRef<DialogoEditarPlanTrabajoComponent>,
     private InvestigadorService :InvestigadorService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackBar: MatSnackBar
   ) {}
-  
+  scrollUp() {
+    window.scrollBy({ top: -window.innerHeight, behavior: 'smooth' });
+  }
+
+  scrollDown() {
+      window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+  }
+
+  closeDialog() {
+      this.dialogRef.close(); // Cierra el diálogo
+  }
 
   ngOnInit() {
     this.planTrabajoService.getPlanTrabajo().subscribe((allPlans: MostrarPlan[]) => {

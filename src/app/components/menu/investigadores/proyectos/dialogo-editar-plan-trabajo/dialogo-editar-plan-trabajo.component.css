@@ -91,3 +91,15 @@ body {
 .mat-paginator {
     margin-top: 16px; /* Espaciado superior */
 }
+.scroll-buttons {
+    display: flex;
+    justify-content: space-between; /* Alinea los botones en los extremos */
+    margin-bottom: 10px; /* Espacio inferior para separar de la tabla */
+}
+
+.scroll-buttons button {
+    background-color: #6AABA0; /* Color de fondo */
+    color: white; /* Texto blanco para contraste */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 8px; /* Espaciado interno */
+}
