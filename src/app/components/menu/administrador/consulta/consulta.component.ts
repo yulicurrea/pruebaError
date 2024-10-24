@@ -369,7 +369,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
                 correo: i === 0 ? inv.correo : '',
                 nombre: i === 0 ? inv.nombre : '',
                 apellidos: i === 0 ? inv.apellidos : '',
-                estado: inv.estado,
+                estado: i === 0 ? inv.estado: '',
                 horasestricto: i === 0 ? inv.horasestricto: '',
                 horasformacion:i === 0 ? inv.horasformacion: '',
                 categoriaminciencias:i === 0 ?inv.categoriaminciencias: '',
