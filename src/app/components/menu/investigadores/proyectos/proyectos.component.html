@@ -261,9 +261,9 @@
                     <mat-chip-row
                       *ngFor="let investigator of activeInvestigators; let i = index; trackBy: trackByFn"
                       (removed)="remove(investigator)">
-                      {{ investigator.nombre }}{{ investigator.apellidos }}
+                      {{ investigator.correo }}
                       <button matChipRemove
-                        [attr.aria-label]="'remove ' + investigator.nombre"
+                        [attr.aria-label]="'remove ' + investigator.correo"
                         (click)="removeCoinvestigador(investigator)">
                         <mat-icon>cancel</mat-icon>
                       </button>
