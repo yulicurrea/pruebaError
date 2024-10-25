@@ -735,20 +735,19 @@ export class ProyectosComponent implements OnInit {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    const investigadorSeleccionado = event.option.value; // Esto ahora es el objeto completo
-  
+    const correo = event.option.value.correo;
     // Verificar si el investigador ya está en activeInvestigators
     const investigadorExistente = this.activeInvestigators.find(
       (investigador) =>
-        investigador.correo === investigadorSeleccionado.correo
+        investigador.correo === correo
     );
-  
+
     if (!investigadorExistente) {
-      // Agregar el investigador seleccionado solo si no está en la lista
-      this.activeInvestigators.push(investigadorSeleccionado); // Guarda el objeto completo
-      this.selectedInvestigators.push(investigadorSeleccionado.correo); // Guarda solo el correo
+       // Agregar el investigador seleccionado solo si no está en la lista
+       this.activeInvestigators.push({ correo , nombre:'',apellidos:''});
+       this.selectedInvestigators.push(`${correo}`);
     }
-  
+
     this.investigatorInput.nativeElement.value = '';
     this.investigatorCtrl.setValue(null);
   }
