@@ -337,8 +337,8 @@
                   </mat-select>
               </div>
               <div class="custom-input-container">
-                <label for="coinvestigadoresProducto" matTooltip="Si tiene un documento inicial, agregue el documento.">Acta de inicio</label>
-              <input formControlName="soporte" type="file" (change)="onFileSelected($event)" />
+                <label for="coinvestigadoresProducto" matTooltip="ingrese el documento de propuesta inicial.">Acta de inicio<span class="required" title="Este campo es obligatorio">*</span></label>
+              <input  required formControlName="soporte" type="file" (change)="onFileSelected($event)" />
             </div>
             </div>
           <!----Porcentajes-->
@@ -612,8 +612,8 @@
                 </mat-select>
               </div>              
               <div class="custom-input-container">
-                <label for="soporte"matTooltip="Si tiene un documento inicial, agregue el documento.">Acta de inicio</label>
-                <input formControlName="Soporte" type="file" (change)="onFileSelected2($event)" />
+                <label for="soporte"matTooltip="Si tiene un documento inicial, agregue el documento.">Acta de inicio<span class="required" title="Este campo es obligatorio">*</span></label>
+                <input required formControlName="Soporte" type="file" (change)="onFileSelected2($event)" />
               </div>
             </div>
             <div class="titulo">
