@@ -757,7 +757,7 @@ export class ProyectosComponent implements OnInit {
     this.investigatorInput.nativeElement.value = '';
     this.investigatorCtrl.setValue(null);
   }
-  
+
   displayInvestigator(investigator: any): string {
     // Busca el usuario completo en usuariosData usando el correo
     const usuarioCompleto = this.usuariosData.find(u => u.correo === investigator.correo);
@@ -992,8 +992,7 @@ export class ProyectosComponent implements OnInit {
           'porcentajeEjecucionFinCorte'
         )?.value,
         porcentajeAvance: this.firstFormGroup.get('porcentajeAvance')?.value,
-        soporte: this.selectedFileProyecto,
-        soporteProducto: this.selectedFileProduct,
+        soporte: this.selectedFileProyecto || null,
         transacciones: {
           fecha: this.firstFormGroup.get('transacciones.fecha')?.value,
           descripcion: this.firstFormGroup.get('transacciones.descripcion')?.value,
@@ -1367,7 +1366,7 @@ thumbLabel6 = false;
         porcentajeComSemestral: this.productoFormGroup.value.porcentajeComSemestral,
         porcentajeRealMensual: this.productoFormGroup.value.porcentajeRealMensual,
         origen: this.productoFormGroup.value.origen,
-        Soporte: this.selectedFileProduct,
+        Soporte: this.selectedFileProduct ||null,
         estudiantesProducto:  this.productoFormGroup.value.estudiantesProducto,
         participantesExternosProducto:  this.productoFormGroup.value.participantesExternosProducto,
         coinvestigadoresProducto:  this.productoFormGroup.value.coinvestigadoresProducto,
