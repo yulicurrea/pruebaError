@@ -1670,11 +1670,7 @@ thumbLabel6 = false;
     this.expandedElements = this.expandedElements === element ? null : element;
     if (this.expandedElements) {
       this.selectedPlanId = this.expandedElements.id;  // Guarda el ID del plan seleccionado
-      setTimeout(() => {
-        if (this.paginator2) {
-          this.dataSourceses2.paginator = this.paginator2;
-        }
-      });
+
     } else {
       this.selectedPlanId = ' ';
     }
@@ -1786,13 +1782,4 @@ thumbLabel6 = false;
       } 
     });
   }
-  refreshPaginators() {
-    if (this.paginator1) {
-      this.dataSourceses.paginator = this.paginator1;
-    }
-    if (this.paginator2) {
-      this.dataSourceses2.paginator = this.paginator2;
-    }
-  }
-
 }
