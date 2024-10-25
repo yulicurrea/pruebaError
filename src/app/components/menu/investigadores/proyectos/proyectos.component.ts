@@ -114,7 +114,7 @@ export class ProyectosComponent implements OnInit {
   separatorKeysCodes: number[] = [13, 188];
   investigatorCtrl = new FormControl('');
   filteredInvestigators!: Observable<{ correo: string; }[]>;
-  activeInvestigators: { correo: string; }[] = [];
+  activeInvestigators: { correo: string; nombre:string; apellidos:string; }[] = [];
   selectedInvestigators: string[] = [];
   proyecto: Proyecto = {};
   usuarioSesion!: UsuarioSesion; 
@@ -606,7 +606,10 @@ export class ProyectosComponent implements OnInit {
       this.usuariosData = data.filter(x => x.correo !== this.usuarioSesion.correo);
       const activeInvestigators = data.filter(x => x.correo !== this.usuarioSesion.correo).map((investigador) => ({
         correo: investigador.correo,
+        nombre: investigador.nombre,      // Asegurarse de que estos campos existan
+        apellidos: investigador.apellidos, // Asegurarse de que estos campos existan
       }));
+      
 
       this.filteredInvestigators = this.investigatorCtrl.valueChanges.pipe(
         startWith(''),
@@ -661,10 +664,11 @@ export class ProyectosComponent implements OnInit {
     });
   }
 
-  addCoinvestigador(investigador: {correo: string;}) {
+  addCoinvestigador(investigador: {correo: string; nombre: string; apellidos: string}) {
     const newCoinvestigador: Coinvestigador = {
     correo: investigador.correo,
-
+    nombre: investigador.nombre,
+    apellidos: investigador.apellidos
     };
     if (!this.proyecto.coinvestigadores) {
       this.proyecto.coinvestigadores = [newCoinvestigador];
@@ -684,7 +688,7 @@ export class ProyectosComponent implements OnInit {
     }
   }
 
-  private _filter(value: string): { correo: string }[] {
+  private _filter(value: string): { correo: string  }[] {
     const filterValue = value.toLowerCase();
 
     if (!filterValue) {
@@ -712,7 +716,7 @@ export class ProyectosComponent implements OnInit {
   
   }
 
-  remove(investigador: { correo: string }): void {
+  remove(investigador: { correo: string; nombre: string; apellidos:string }): void {
     const index = this.activeInvestigators.indexOf(investigador);
     if (index >= 0) {
       this.activeInvestigators.splice(index, 1);
@@ -723,7 +727,7 @@ export class ProyectosComponent implements OnInit {
     const value = (event.value || '').trim();
     if (value) {
       const [correo] = value;
-      this.activeInvestigators.push({ correo });
+      this.activeInvestigators.push({ nombre:'', apellidos:'' ,correo });
 
     }
     event.chipInput!.clear();
@@ -740,7 +744,7 @@ export class ProyectosComponent implements OnInit {
 
     if (!investigadorExistente) {
        // Agregar el investigador seleccionado solo si no está en la lista
-       this.activeInvestigators.push({ correo });
+       this.activeInvestigators.push({ correo , nombre:'',apellidos:''});
        this.selectedInvestigators.push(`${correo}`);
     }
 
