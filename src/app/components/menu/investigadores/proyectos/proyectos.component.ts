@@ -756,6 +756,8 @@ export class ProyectosComponent implements OnInit {
     const usuarioCompleto = this.usuariosData.find(u => u.correo === correo);
   
     if (usuarioCompleto && !this.activeInvestigators.some(inv => inv.correo === correo)) {
+      console.log("Usuario completo encontrado:", usuarioCompleto); // Verificar los datos de usuarioCompleto
+  
       // Agrega el investigador a la lista de investigadores activos
       this.activeInvestigators.push({
         correo: correo,
@@ -774,6 +776,8 @@ export class ProyectosComponent implements OnInit {
         nombre: usuarioCompleto.nombre,
         apellidos: usuarioCompleto.apellidos
       });
+    } else {
+      console.error("No se encontró un usuario completo con el correo proporcionado");
     }
   
     // Resetea el campo de entrada y control del autocompletado

@@ -156,8 +156,8 @@ export class DialogoDetalleComponent implements OnInit {
         porcentajeAvance: [this.data?.porcentajeAvance,[Validators.required]],
         porcentajeEjecucionCorte: [this.data?.porcentajeEjecucionCorte,[Validators.required]],
         porcentajeEjecucionFinCorte: [this.data?.porcentajeEjecucionFinCorte,[Validators.required]],
-        tipoProducto: [this.data?.tipoProducto,[Validators.required]],
-        cantidadProducto:[this.data?.cantidadProducto,[Validators.required]],
+        tipoProducto: [this.data?.tipoProducto],
+        cantidadProducto:[this.data?.cantidadProducto],
       });
 
       console.log('Form Group Value:', this.firstFormGroup.value);
