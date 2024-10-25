@@ -784,7 +784,6 @@ export class ProyectosComponent implements OnInit {
     this.investigatorInput.nativeElement.value = '';
     this.investigatorCtrl.setValue(null);
   }
-  
   displayInvestigator(investigator: any): string {
     // Busca el usuario completo en usuariosData usando el correo
     const usuarioCompleto = this.usuariosData.find(u => u.correo === investigator.correo);
