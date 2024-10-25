@@ -664,10 +664,10 @@ export class ProyectosComponent implements OnInit {
     });
   }
 
-  addCoinvestigador(investigador: {correo: string;}) {
+  addCoinvestigador(investigador: {correo: string; nombre: string; apellidos: string}) {
     const newCoinvestigador: Coinvestigador = {
       correo: investigador.correo,
-      coinvestigador: investigador.correo  // Asigna el correo al campo coinvestigador
+      coinvestigador: investigador.correo  // Mantienes el correo como identificador
     };
   
     if (!this.proyecto.coinvestigadores) {
@@ -680,6 +680,15 @@ export class ProyectosComponent implements OnInit {
       if (!existe) {
         this.proyecto.coinvestigadores.push(newCoinvestigador);
       }
+    }
+  
+    // Asegúrate de agregarlo también a la lista de activeInvestigators si es necesario
+    if (!this.activeInvestigators.some(inv => inv.correo === investigador.correo)) {
+      this.activeInvestigators.push({
+        correo: investigador.correo,
+        nombre: investigador.nombre,
+        apellidos: investigador.apellidos
+      });
     }
   }
 
@@ -754,7 +763,6 @@ export class ProyectosComponent implements OnInit {
     event.chipInput!.clear();
     this.investigatorCtrl.setValue(null);
   }
-
   selected(event: MatAutocompleteSelectedEvent): void {
     const investigadorSeleccionado = event.option.value;
     const correo = investigadorSeleccionado.correo;
@@ -763,18 +771,23 @@ export class ProyectosComponent implements OnInit {
     const usuarioCompleto = this.usuariosData.find(u => u.correo === correo);
   
     if (usuarioCompleto && !this.activeInvestigators.some(inv => inv.correo === correo)) {
-      // Agrega el investigador con toda su información
+      // Agrega el investigador con toda su información a activeInvestigators
       this.activeInvestigators.push({
         correo: correo,
         nombre: usuarioCompleto.nombre,
         apellidos: usuarioCompleto.apellidos
       });
       this.selectedInvestigators.push(correo);
-      
-      // Llama a addCoinvestigador con el correo
-      this.addCoinvestigador({ correo: correo });
+  
+      // Llama a addCoinvestigador con toda la información del usuario
+      this.addCoinvestigador({
+        correo: usuarioCompleto.correo,
+        nombre: usuarioCompleto.nombre,
+        apellidos: usuarioCompleto.apellidos
+      });
     }
   
+    // Limpia el input de autocompletado
     this.investigatorInput.nativeElement.value = '';
     this.investigatorCtrl.setValue(null);
   }
