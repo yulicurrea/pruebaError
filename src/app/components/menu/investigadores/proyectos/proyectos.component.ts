@@ -687,26 +687,27 @@ export class ProyectosComponent implements OnInit {
     }
   }
 
-  private _filter(value: string): { correo: string  }[] {
+  private _filter(value: string): { correo: string; }[] {
     const filterValue = value.toLowerCase();
-
+  
     if (!filterValue) {
-      return this.activeInvestigators.slice();
+      return this.usuariosData.map(user => ({
+        correo: user.correo
+      }));
     }
-
-    const filteredActiveInvestigators = this.activeInvestigators.filter(
-      (investigador) =>
-        `${investigador.correo.toLowerCase()}`.includes(
-          filterValue 
-        )
-    );
-    return filteredActiveInvestigators.filter(
-      (investigador) =>
-        !this.selectedInvestigators.includes(
-          `${investigador.correo}`
-        )
-    );
+  
+    // Filtra usando nombre y apellidos también
+    return this.usuariosData
+      .filter(user => 
+        user.nombre.toLowerCase().includes(filterValue) ||
+        user.apellidos.toLowerCase().includes(filterValue) ||
+        user.correo.toLowerCase().includes(filterValue)
+      )
+      .map(user => ({
+        correo: user.correo
+      }));
   }
+  
   trackByFn(
     index: number,
     item: { correo: string }
@@ -734,39 +735,38 @@ export class ProyectosComponent implements OnInit {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    const investigadorSeleccionado = event.option.value; // Obtén el objeto completo
-
+    const investigadorSeleccionado = event.option.value;
     const correo = investigadorSeleccionado.correo;
-
-    // Verificar si el investigador ya está en activeInvestigators
-    const investigadorExistente = this.activeInvestigators.find(
-      (investigador) =>
-        investigador.correo === correo
-    );
-
-    if (!investigadorExistente) {
-        // Agregar el investigador seleccionado solo si no está en la lista
-        this.activeInvestigators.push({
-            correo,
-            nombre: investigadorSeleccionado.nombre, // Añade el nombre
-            apellidos: investigadorSeleccionado.apellidos // Añade los apellidos
-        });
-        this.selectedInvestigators.push(`${correo}`);
+  
+    // Busca la información completa del usuario
+    const usuarioCompleto = this.usuariosData.find(u => u.correo === correo);
+  
+    if (usuarioCompleto && !this.activeInvestigators.some(inv => inv.correo === correo)) {
+      // Agrega el investigador con toda su información
+      this.activeInvestigators.push({
+        correo: correo,
+        nombre: usuarioCompleto.nombre,
+        apellidos: usuarioCompleto.apellidos
+      });
+      this.selectedInvestigators.push(correo);
+      
+      // Llama a addCoinvestigador con el correo
+      this.addCoinvestigador({ correo: correo });
     }
+  
     this.investigatorInput.nativeElement.value = '';
     this.investigatorCtrl.setValue(null);
   }
-
-  displayInvestigator(investigator: Investigador): string {
-    if (
-      investigator &&
-      investigator.correo
-    ) {
-      return `${investigator.correo}`;
-    } else {
-      return '';
+  
+  displayInvestigator(investigator: any): string {
+    // Busca el usuario completo en usuariosData usando el correo
+    const usuarioCompleto = this.usuariosData.find(u => u.correo === investigator.correo);
+    if (usuarioCompleto) {
+      return `${usuarioCompleto.nombre} ${usuarioCompleto.apellidos}`;
     }
+    return investigator.correo || '';
   }
+  
 
 
   //subir archivo proyecto
