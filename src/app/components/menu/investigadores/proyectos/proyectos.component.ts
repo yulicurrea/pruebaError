@@ -666,24 +666,43 @@ export class ProyectosComponent implements OnInit {
 
   addCoinvestigador(investigador: {correo: string;}) {
     const newCoinvestigador: Coinvestigador = {
-    correo: investigador.correo,
-    
+      correo: investigador.correo,
+      coinvestigador: investigador.correo  // Asigna el correo al campo coinvestigador
     };
+  
     if (!this.proyecto.coinvestigadores) {
       this.proyecto.coinvestigadores = [newCoinvestigador];
     } else {
-      this.proyecto.coinvestigadores.push(newCoinvestigador);
+      // Verifica si ya existe
+      const existe = this.proyecto.coinvestigadores.some(
+        c => c.coinvestigador === investigador.correo
+      );
+      if (!existe) {
+        this.proyecto.coinvestigadores.push(newCoinvestigador);
+      }
     }
   }
 
   removeCoinvestigador(investigador: { correo: string }) {
     if (this.proyecto.coinvestigadores) {
+      // Filtra usando el campo correcto
       this.proyecto.coinvestigadores = this.proyecto.coinvestigadores.filter(
-        (c) =>
-          c.coinvestigador !==
-          `${investigador.correo}`
-
-        );
+        (c) => c.coinvestigador !== investigador.correo
+      );
+  
+      // También remueve de activeInvestigators
+      const index = this.activeInvestigators.findIndex(
+        inv => inv.correo === investigador.correo
+      );
+      if (index >= 0) {
+        this.activeInvestigators.splice(index, 1);
+      }
+  
+      // Y de selectedInvestigators si lo estás usando
+      const selectedIndex = this.selectedInvestigators.indexOf(investigador.correo);
+      if (selectedIndex >= 0) {
+        this.selectedInvestigators.splice(selectedIndex, 1);
+      }
     }
   }
 
@@ -716,12 +735,14 @@ export class ProyectosComponent implements OnInit {
   
   }
 
-  remove(investigador: { correo: string; nombre: string; apellidos:string }): void {
+  remove(investigador: { correo: string; nombre: string; apellidos: string }): void {
     const index = this.activeInvestigators.indexOf(investigador);
     if (index >= 0) {
       this.activeInvestigators.splice(index, 1);
+      this.removeCoinvestigador(investigador);  // Asegúrate de llamar a esta función
     }
   }
+ 
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
