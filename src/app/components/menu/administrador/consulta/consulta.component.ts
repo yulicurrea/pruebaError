@@ -323,6 +323,8 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
 
   exportAsXLSX(data: any = undefined, tipo: string): void {
     let filter: any[] = [];
+    
+    console.log('Iniciando exportación:', { data, tipo });
 
     switch(tipo) { 
       case 'Proyectos': {
@@ -331,6 +333,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         } else {
           filter = this.proyectosData.filter(x => x.codigo == data.codigo);
         }
+        console.log('Datos de proyectos:', filter);
         break; 
       } 
       case 'Productos': {
@@ -339,11 +342,12 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         } else {
           filter = this.productosData.filter(x => x.id == data.id);
         }
+        console.log('Datos de productos:', filter);
         break; 
       } 
       default: {        
         if (data == undefined) {
-          // Descarga general: solo exportar los datos básicos de los investigadores
+          // Descarga general
           filter = this.investigadoresData.map(inv => ({
             tipodocumento: inv.tipodocumento,
             numerodocumento: inv.numerodocumento,
@@ -357,55 +361,76 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
             rolinvestigador: inv.rolinvestigador,
             fechacreacion: inv.created_at,
             fechaactualizacion: inv.updated_at
-
           }));
-        // Descarga individual: agregar proyectos y productos del investigador
-        filter = []; // Asegurarnos que el array está vacío
-        const investigador = this.investigadoresData.find(x => x.numerodocumento == data.numerodocumento);
-
-        if (investigador) {
-          const nombreCompleto = `${investigador.nombre} ${investigador.apellidos}`;
+          console.log('Datos generales de investigadores:', filter);
+        } else {
+          console.log('Intentando encontrar investigador con documento:', data.numerodocumento);
+          console.log('Lista completa de investigadores:', this.investigadoresData);
           
-          const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto) || [];
-          const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto) || [];
-          
-          const maxLength = Math.max(proyectosInv.length, productosInv.length, 1); // Mínimo 1 para mostrar datos del investigador
-          
-          for (let i = 0; i < maxLength; i++) {
-            filter.push({
-              tipodocumento: i === 0 ? investigador.tipodocumento : '',
-              numerodocumento: i === 0 ? investigador.numerodocumento : '',
-              correo: i === 0 ? investigador.correo : '',
-              nombre: i === 0 ? investigador.nombre : '',
-              apellidos: i === 0 ? investigador.apellidos : '',
-              estado: i === 0 ? investigador.estado : '',
-              horasestricto: i === 0 ? investigador.horasestricto : '',
-              horasformacion: i === 0 ? investigador.horasformacion : '',
-              categoriaminciencias: i === 0 ? investigador.categoriaminciencias : '',
-              rolinvestigador: i === 0 ? investigador.rolinvestigador : '',
-              fechacreacion: i === 0 ? investigador.created_at : '',
-              fechaactualizacion: i === 0 ? investigador.updated_at : '',
-              codigoProyecto: proyectosInv[i]?.codigo || '',
-              tituloProyecto: proyectosInv[i]?.titulo || '',
-              idProducto: productosInv[i]?.id || '',
-              tituloProducto: productosInv[i]?.tituloProducto || ''
+          // Descarga individual
+          const investigador = this.investigadoresData.find(x => {
+            console.log('Comparando:', {
+              documentoABuscar: data.numerodocumento,
+              documentoActual: x.numerodocumento,
+              sonIguales: x.numerodocumento == data.numerodocumento
             });
+            return x.numerodocumento == data.numerodocumento;
+          });
+
+          console.log('Investigador encontrado:', investigador);
+
+          if (investigador) {
+            const nombreCompleto = `${investigador.nombre} ${investigador.apellidos}`;
+            console.log('Nombre completo para búsqueda:', nombreCompleto);
+            
+            const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto) || [];
+            const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto) || [];
+            
+            console.log('Proyectos encontrados:', proyectosInv);
+            console.log('Productos encontrados:', productosInv);
+            
+            const maxLength = Math.max(proyectosInv.length, productosInv.length, 1);
+            
+            for (let i = 0; i < maxLength; i++) {
+              const row = {
+                tipodocumento: i === 0 ? investigador.tipodocumento : '',
+                numerodocumento: i === 0 ? investigador.numerodocumento : '',
+                correo: i === 0 ? investigador.correo : '',
+                nombre: i === 0 ? investigador.nombre : '',
+                apellidos: i === 0 ? investigador.apellidos : '',
+                estado: i === 0 ? investigador.estado : '',
+                horasestricto: i === 0 ? investigador.horasestricto : '',
+                horasformacion: i === 0 ? investigador.horasformacion : '',
+                categoriaminciencias: i === 0 ? investigador.categoriaminciencias : '',
+                rolinvestigador: i === 0 ? investigador.rolinvestigador : '',
+                fechacreacion: i === 0 ? investigador.created_at : '',
+                fechaactualizacion: i === 0 ? investigador.updated_at : '',
+                codigoProyecto: proyectosInv[i]?.codigo || '',
+                tituloProyecto: proyectosInv[i]?.titulo || '',
+                idProducto: productosInv[i]?.id || '',
+                tituloProducto: productosInv[i]?.tituloProducto || ''
+              };
+              filter.push(row);
+              console.log(`Agregada fila ${i}:`, row);
+            }
+          } else {
+            console.error('No se encontró el investigador');
           }
         }
-      }
-      break; 
+        break; 
+      } 
     } 
-  } 
 
-  // Solo exportar si hay datos
-  if (filter.length > 0) {
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, tipo);
-    XLSX.writeFile(wb, `Reporte${tipo}.xls`);
-  } else {
-    console.error('No hay datos para exportar');
-  }
+    console.log('Array final de datos:', filter);
+
+    if (filter.length > 0) {
+      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, tipo);
+      XLSX.writeFile(wb, `Reporte${tipo}.xls`);
+    } else {
+      console.error('No hay datos para exportar');
+    }
 }
 
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
