@@ -1006,7 +1006,10 @@ export class ProyectosComponent implements OnInit {
           'porcentajeEjecucionCorte'
         )?.value,
         entidadPostulo: this.firstFormGroup.get('entidadPostulo')?.value,
-        financiacion: this.firstFormGroup.get('financiacion')?.value,
+        financiacion: {
+          valorPropuestoFin: this.firstFormGroup.get('valorPropuestoFin')?.value,
+          valorEjecutadoFin: this.firstFormGroup.get('valorEjecutadoFin')?.value,
+        },
         grupoInvestigacionPro: this.firstFormGroup.get('grupoInvestigacionPro')
           ?.value,
         porcentajeEjecucionFinCorte: this.firstFormGroup.get(
