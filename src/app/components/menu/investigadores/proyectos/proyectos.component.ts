@@ -742,7 +742,7 @@ export class ProyectosComponent implements OnInit {
     const value = (event.value || '').trim();
     if (value) {
       const [correo] = value;
-      this.activeInvestigators.push({ nombre:'', apellidos:'' ,correo });
+      this.activeInvestigators.push({ correo, nombre:'', apellidos:'' ,});
 
     }
     event.chipInput!.clear();
@@ -777,10 +777,11 @@ export class ProyectosComponent implements OnInit {
     this.investigatorCtrl.setValue(null);
   }
   
-  displayInvestigator(investigator: any): string {
+  displayInvestigator(investigator: Investigador): string {
     // Busca el usuario completo en usuariosData usando el correo
     const usuarioCompleto = this.usuariosData.find(u => u.correo === investigator.correo);
-    if (usuarioCompleto) {
+    if (usuarioCompleto &&
+        investigator.correo) {
       return `${usuarioCompleto.nombre} ${usuarioCompleto.apellidos}`;
     }
     return investigator.correo || '';
