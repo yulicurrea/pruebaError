@@ -607,7 +607,7 @@
                 <label for="codigo"matTooltip="Seleccione los investigadores que van a participar en el producto como COINVESTIGADORES.">Coinvestigadores</label>
                 <mat-select formControlName="coinvestigadoresProducto" multiple>
                   <mat-option *ngFor="let data of usuariosData" [value]="data.correo">
-                    {{data.nombre}} {{data.apellidos}}
+                  {{data.nombre}} {{data.apellidos}}
                   </mat-option>
                 </mat-select>
               </div>              
