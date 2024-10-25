@@ -684,25 +684,18 @@ export class ProyectosComponent implements OnInit {
     }
   }
 
-  removeCoinvestigador(investigador: { correo: string }) {
-    if (this.proyecto.coinvestigadores) {
-      // Filtra usando el campo correcto
-      this.proyecto.coinvestigadores = this.proyecto.coinvestigadores.filter(
-        (c) => c.coinvestigador !== investigador.correo
-      );
+  removeCoinvestigador(investigator: any): void {
+    // Elimina al investigador de la lista de investigadores activos
+    const index = this.activeInvestigators.indexOf(investigator);
+    if (index >= 0) {
+      this.activeInvestigators.splice(index, 1);
   
-      // También remueve de activeInvestigators
-      const index = this.activeInvestigators.findIndex(
-        inv => inv.correo === investigador.correo
-      );
-      if (index >= 0) {
-        this.activeInvestigators.splice(index, 1);
-      }
-  
-      // Y de selectedInvestigators si lo estás usando
-      const selectedIndex = this.selectedInvestigators.indexOf(investigador.correo);
-      if (selectedIndex >= 0) {
-        this.selectedInvestigators.splice(selectedIndex, 1);
+      // Actualiza el FormControl coinvestigadores
+      const coinvestigadores = this.form.get('coinvestigadores')?.value || [];
+      const correoIndex = coinvestigadores.indexOf(investigator.correo);
+      if (correoIndex >= 0) {
+        coinvestigadores.splice(correoIndex, 1);
+        this.form.get('coinvestigadores')?.setValue(coinvestigadores);
       }
     }
   }
@@ -763,27 +756,31 @@ export class ProyectosComponent implements OnInit {
     const usuarioCompleto = this.usuariosData.find(u => u.correo === correo);
   
     if (usuarioCompleto && !this.activeInvestigators.some(inv => inv.correo === correo)) {
-      // Agrega el investigador con toda su información a activeInvestigators
+      // Agrega el investigador a la lista de investigadores activos
       this.activeInvestigators.push({
         correo: correo,
         nombre: usuarioCompleto.nombre,
         apellidos: usuarioCompleto.apellidos
       });
-      this.selectedInvestigators.push(correo);
   
-      // Llama a addCoinvestigador con toda la información del usuario
+      // Añade el correo al FormControl coinvestigadores
+      const coinvestigadores = this.form.get('coinvestigadores')?.value || [];
+      coinvestigadores.push(correo);
+      this.form.get('coinvestigadores')?.setValue(coinvestigadores);
+  
+      // Llama a addCoinvestigador con todos los datos del investigador
       this.addCoinvestigador({
-        correo: usuarioCompleto.correo,
+        correo: correo,
         nombre: usuarioCompleto.nombre,
         apellidos: usuarioCompleto.apellidos
       });
     }
   
-    // Limpia el input de autocompletado
+    // Resetea el campo de entrada y control del autocompletado
     this.investigatorInput.nativeElement.value = '';
     this.investigatorCtrl.setValue(null);
   }
-
+  
   displayInvestigator(investigator: any): string {
     // Busca el usuario completo en usuariosData usando el correo
     const usuarioCompleto = this.usuariosData.find(u => u.correo === investigator.correo);
