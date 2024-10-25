@@ -113,7 +113,7 @@ export class ProyectosComponent implements OnInit {
   //mostrar los coinvestigadores que hay
   separatorKeysCodes: number[] = [13, 188];
   investigatorCtrl = new FormControl('');
-  filteredInvestigators!: Observable< Investigador []>;
+  filteredInvestigators!: Observable<Investigador[]>;
   activeInvestigators: Investigador[] = [];
   selectedInvestigators: Investigador[] = [];
   proyecto: Proyecto = {};
@@ -596,14 +596,16 @@ export class ProyectosComponent implements OnInit {
   usuariosData: UsuarioSesion[] = [];
   usuariosAdmin: any[] = [];
   obtenerUsuarios(){
+    
     this.activeInvestigators = []; // Inicializa activeInvestigators como un array vacío
     this.selectedInvestigators = []; // Asegúrate de que selectedInvestigators esté vacío al principio
+
     this.investigatorService.getUsuarios().subscribe((data) => {   
+
       const usersAdmin = data.filter(u => u.rolinvestigador === 'Administrador');
-      usersAdmin.forEach(element => {
-        this.usuariosAdmin.push(element.numerodocumento);
-      });
+      this.usuariosAdmin = usersAdmin.map(element => element.numerodocumento);
       this.usuariosData = data.filter(x => x.correo !== this.usuarioSesion.correo);
+
       const activeInvestigators = data.filter(x => x.correo !== this.usuarioSesion.correo).map((investigador) => ({
         nombre: investigador.nombre,
         apellidos: investigador.apellidos
@@ -663,26 +665,45 @@ export class ProyectosComponent implements OnInit {
   }
 
   addCoinvestigador(investigador: Investigador) {
+    if (!investigador.nombre || !investigador.apellidos) {
+      console.error('Investigador inválido:', investigador);
+      return;
+    }
+
     const newCoinvestigador: Coinvestigador = {
-      nombre: investigador.nombre,
-      apellidos: investigador.apellidos
+      nombre: investigador.nombre.trim(),
+      apellidos: investigador.apellidos.trim()
     };
+
     if (!this.proyecto.coinvestigadores) {
-      this.proyecto.coinvestigadores = [newCoinvestigador];
-    } else {
+      this.proyecto.coinvestigadores = [];
+    }
+
+    // Verificar si ya existe
+    const exists = this.proyecto.coinvestigadores.some(
+      c => c.nombre === newCoinvestigador.nombre && 
+           c.apellidos === newCoinvestigador.apellidos
+    );
+
+    if (!exists) {
       this.proyecto.coinvestigadores.push(newCoinvestigador);
+      console.log('Coinvestigador agregado:', this.proyecto.coinvestigadores);
     }
   }
 
-  removeCoinvestigador(investigador: Investigador) {
-    if (this.proyecto.coinvestigadores) {
-      this.proyecto.coinvestigadores = this.proyecto.coinvestigadores.filter(
-        (c) => 
-          c.nombre !== investigador.nombre || 
-          c.apellidos !== investigador.apellidos
-      );
-      console.log(this.proyecto.coinvestigadores); // Verifica que se haya actualizado correctamente
 
+  removeCoinvestigador(investigador: Investigador) {
+    if (!this.proyecto.coinvestigadores) {
+      return;
+    }
+
+    const initialLength = this.proyecto.coinvestigadores.length;
+    this.proyecto.coinvestigadores = this.proyecto.coinvestigadores.filter(
+      (c) => !(c.nombre === investigador.nombre && c.apellidos === investigador.apellidos)
+    );
+
+    if (initialLength !== this.proyecto.coinvestigadores.length) {
+      console.log('Coinvestigador removido. Nuevos coinvestigadores:', this.proyecto.coinvestigadores);
     }
   }
 
@@ -713,6 +734,7 @@ export class ProyectosComponent implements OnInit {
 
     if (index >= 0) {
       this.activeInvestigators.splice(index, 1);
+      this.removeCoinvestigador(investigador); // Agregar esta línea
     }
   }
 
@@ -730,21 +752,26 @@ export class ProyectosComponent implements OnInit {
 
   selected(event: MatAutocompleteSelectedEvent): void {
     const investigador: Investigador = event.option.value;
+    
+    if (!investigador) {
+      console.error('No se seleccionó un investigador válido');
+      return;
+    }
+
     const investigadorExistente = this.activeInvestigators.find(
-      (inv) => 
-        inv.nombre === investigador.nombre && 
-        inv.apellidos === investigador.apellidos
+      (inv) => inv.nombre === investigador.nombre && 
+               inv.apellidos === investigador.apellidos
     );
 
     if (!investigadorExistente) {
       this.activeInvestigators.push(investigador);
       this.selectedInvestigators.push(investigador);
+      this.addCoinvestigador(investigador); // Agregar esta línea
     }
 
     this.investigatorInput.nativeElement.value = '';
     this.investigatorCtrl.setValue(null);
   }
-
   displayInvestigator(investigator: Investigador): string {
     if (investigator) {
       return `${investigator.nombre} ${investigator.apellidos}`;
