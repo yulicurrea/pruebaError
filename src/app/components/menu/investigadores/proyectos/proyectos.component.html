@@ -43,9 +43,8 @@
               <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumn.length">
                 <div class="expanded-row-detail" *ngIf="expandedElements === element">
                   <div class="inner-table-container mat-elevation-z8">
-                    <table mat-table [dataSource]="dataSourceses2" matSort 
-                           matTooltip="Seleccione los proyectos y productos que va a manejar en el semestre. Se observan los proyectos y productos propios y en los que se encuentra participando.">
-
+                    <table mat-table [dataSource]="data" matSort matTooltip="Seleccione los proyectos y productos que va a manejar en el semestre. Se observan los proyectos y productos propios y en los que se encuentra participando.">
+                      
                       <!-- Checkbox Column -->
                       <ng-container matColumnDef="select">
                         <th mat-header-cell *matHeaderCellDef>
@@ -106,10 +105,7 @@
                     </table>
                     
                     <!-- Pagination Controls -->
-                    <mat-paginator #paginator2 
-                    [pageSize]="5" 
-                    [pageSizeOptions]="[5, 10, 25]" 
-                    showFirstLastButtons>
+                    <mat-paginator #paginator1 [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons>
                     </mat-paginator>
                     <button mat-raised-button  style="background-color: #6AABA0; color: white;" class="save-button" (click)="guardar()">Guardar</button>
                   </div>
@@ -123,7 +119,7 @@
             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
           </table>
           
-          <mat-paginator #paginator1 [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+          <mat-paginator #paginator2 [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
         </div>
       </div>
     </mat-tab>
@@ -255,15 +251,13 @@
             </div>
             <div class="titulo">
               <div class="custom-input-container">
-                <label for="investigatorInput" matTooltip="Seleccione los investigadores que van a participar en el proyecto como COINVESTIGADORES.">
-                  Coinvestigadores
-                </label>
+                <label for="investigatorInput" matTooltip="Seleccione los investigadores que van a participar en el proyecto como COINVESTIGADORES.">Coinvestigadores</label>
                 <div class="custom-chip-list">
                   <mat-chip-grid formControlName="coinvestigadores" #chipGrid aria-label="Active Investigators">
                     <mat-chip-row
                       *ngFor="let investigator of activeInvestigators; let i = index; trackBy: trackByFn"
                       (removed)="remove(investigator)">
-                      {{ investigator.nombre }} {{ investigator.apellidos }}
+                      {{ investigator.nombre }}{{ investigator.apellidos }}
                       <button matChipRemove
                         [attr.aria-label]="'remove ' + investigator.nombre"
                         (click)="removeCoinvestigador(investigator)">
@@ -271,21 +265,13 @@
                       </button>
                     </mat-chip-row>
                   </mat-chip-grid>
-                  <input 
-                    matInput 
-                    placeholder="Añadir coinvestigador" 
-                    #investigatorInput 
-                    [formControl]="investigatorCtrl"
-                    [matChipInputFor]="chipGrid" 
-                    [matAutocomplete]="auto"
-                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" 
-                    (matChipInputTokenEnd)="add($event)" 
-                  />
+                  <input matInput placeholder="Añadir coinvestigador" #investigatorInput [formControl]="investigatorCtrl"
+                    [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
                   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                    <mat-option 
-                      *ngFor="let investigator of filteredInvestigators | async; trackBy: trackByFn"
+                    <mat-option *ngFor="let investigator of filteredInvestigators | async; trackBy: trackByFn"
                       [value]="investigator">
-                      {{ investigator.nombre }} {{ investigator.apellidos }}
+                      {{ displayInvestigator(investigator) }}
                     </mat-option>
                   </mat-autocomplete>
                 </div>
@@ -616,7 +602,7 @@
               <div class="custom-input-container form-field-spacing" appearance="fill">
                 <label for="codigo"matTooltip="Seleccione los investigadores que van a participar en el producto como COINVESTIGADORES.">Coinvestigadores</label>
                 <mat-select formControlName="coinvestigadoresProducto" multiple>
-                  <mat-option *ngFor="let data of usuariosData" [value]="{ nombre: data.nombre, apellidos: data.apellidos }">
+                  <mat-option *ngFor="let data of usuariosData" [value]="data.nombre">
                     {{data.nombre}}{{data.apellidos}}
                   </mat-option>
                 </mat-select>
