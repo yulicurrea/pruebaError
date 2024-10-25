@@ -756,8 +756,6 @@ export class ProyectosComponent implements OnInit {
     const usuarioCompleto = this.usuariosData.find(u => u.correo === correo);
   
     if (usuarioCompleto && !this.activeInvestigators.some(inv => inv.correo === correo)) {
-      console.log("Usuario completo encontrado:", usuarioCompleto); // Verificar los datos de usuarioCompleto
-  
       // Agrega el investigador a la lista de investigadores activos
       this.activeInvestigators.push({
         correo: correo,
@@ -771,19 +769,14 @@ export class ProyectosComponent implements OnInit {
       this.form.get('coinvestigadores')?.setValue(coinvestigadores);
   
       // Llama a addCoinvestigador con todos los datos del investigador
-      this.addCoinvestigador({
-        correo: correo,
-        nombre: usuarioCompleto.nombre,
-        apellidos: usuarioCompleto.apellidos
-      });
-    } else {
-      console.error("No se encontró un usuario completo con el correo proporcionado");
+      this.addCoinvestigador(usuarioCompleto); // Pasando el objeto completo
     }
-  
+    
     // Resetea el campo de entrada y control del autocompletado
     this.investigatorInput.nativeElement.value = '';
     this.investigatorCtrl.setValue(null);
   }
+  
   displayInvestigator(investigator: any): string {
     // Busca el usuario completo en usuariosData usando el correo
     const usuarioCompleto = this.usuariosData.find(u => u.correo === investigator.correo);
