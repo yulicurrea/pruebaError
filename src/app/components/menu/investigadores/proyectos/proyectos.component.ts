@@ -1028,6 +1028,7 @@ export class ProyectosComponent implements OnInit {
           }).then(() => {
             window.location.reload(); 
           });
+          this.firstFormGroup.reset();
           this.ngAfterViewInit();
           this.ngOnInit();
           this.demo1TabIndex = 0;
