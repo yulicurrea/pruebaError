@@ -274,7 +274,7 @@
                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
                   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                     <mat-option *ngFor="let investigator of filteredInvestigators | async; trackBy: trackByFn"
-                      [value]="investigator.numerodocumento">
+                      [value]="investigator">
                       {{ displayInvestigator(investigator) }}
                     </mat-option>
                   </mat-autocomplete>
