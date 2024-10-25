@@ -323,10 +323,10 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
 
   exportAsXLSX(data: any = undefined, tipo: string): void {
     let filter: any[] = [];
-    
+
     switch(tipo) { 
       case 'Proyectos': {
-        if (data == undefined) {
+        if(data == undefined){
           filter = this.proyectosData;
         } else {
           filter = this.proyectosData.filter(x => x.codigo == data.codigo);
@@ -334,62 +334,65 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         break; 
       } 
       case 'Productos': {
-        if (data == undefined) {
+        if(data == undefined){
           filter = this.productosData;
         } else {
           filter = this.productosData.filter(x => x.id == data.id);
         }
         break; 
       } 
-      default: { // Para el caso de Investigadores
+      default: {        
         if (data == undefined) {
-          filter = this.investigadoresData.map(investigador => {
-            // Buscar proyectos asociados al investigador
-            const proyectos = this.proyectosData.filter(proyecto => {
-              console.log(`Investigador: ${investigador.id} -> Proyecto: ${proyecto.investigadorId}`);
-              return proyecto.investigadorId === investigador.id;
-            });
-  
-            // Buscar productos asociados al investigador
-            const productos = this.productosData.filter(producto => {
-              console.log(`Investigador: ${investigador.id} -> Producto: ${producto.investigadorId}`);
-              return producto.investigadorId === investigador.id;
-            });
-  
-            // Log para depuración
-            console.log('Proyectos:', proyectos);
-            console.log('Productos:', productos);
-  
-            return {
-              ...investigador,
-              proyectos: proyectos.length > 0 ? proyectos.map(p => p.nombre).join(', ') : 'Sin proyectos',
-              productos: productos.length > 0 ? productos.map(p => p.nombre).join(', ') : 'Sin productos'
-            };
-          });
+          // Descarga general: solo exportar los datos básicos de los investigadores
+          filter = this.investigadoresData.map(inv => ({
+            tipodocumento: inv.tipodocumento,
+            numerodocumento: inv.numerodocumento,
+            nombre: inv.nombre,
+            apellidos: inv.apellidos,
+            correo: inv.correo
+          }));
         } else {
-          filter = this.investigadoresData.filter(x => x.numerodocumento == data.numerodocumento).map(investigador => {
-            const proyectos = this.proyectosData.filter(proyecto => proyecto.investigadorId === investigador.id);
-            const productos = this.productosData.filter(producto => producto.investigadorId === investigador.id);
-  
-            return {
-              ...investigador,
-              proyectos: proyectos.length > 0 ? proyectos.map(p => p.nombre).join(', ') : 'Sin proyectos',
-              productos: productos.length > 0 ? productos.map(p => p.nombre).join(', ') : 'Sin productos'
-            };
+          // Descarga individual: agregar proyectos y productos del investigador
+          const investigador = this.investigadoresData.filter(x => x.numerodocumento == data.numerodocumento);
+
+          investigador.forEach(inv => {
+            const nombreCompleto = `${inv.nombre} ${inv.apellidos}`;
+            
+            const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto);
+            const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto);
+            
+            const maxLength = Math.max(proyectosInv.length, productosInv.length);
+            
+            for (let i = 0; i < maxLength; i++) {
+              filter.push({
+                tipodocumento: i === 0 ? inv.tipodocumento : '', // Mostrar investigador solo en la primera fila
+                numerodocumento: i === 0 ? inv.numerodocumento : '',
+                nombre: i === 0 ? inv.nombre : '',
+                apellidos: i === 0 ? inv.apellidos : '',
+                correo: i === 0 ? inv.correo : '',
+                codigoProyecto: proyectosInv[i]?.codigo || '',
+                tituloProyecto: proyectosInv[i]?.titulo || '',
+                idProducto: productosInv[i]?.id || '',
+                tituloProducto: productosInv[i]?.tituloProducto || ''
+              });
+            }
           });
         }
         break; 
       } 
-    }
-  
-    console.log('Filtro final:', filter); // Para depuración
-  
+    } 
+
+    console.log('Datos finales a exportar:', filter);
+
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
+
     XLSX.utils.book_append_sheet(wb, ws, tipo);
+
+    // Descargar el archivo
     XLSX.writeFile(wb, `Reporte${tipo}.xls`);
-  }
-  
+}
+
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
     const dialogRef = this.dialog.open(DialogoEstadisticaComponent, {
       data: {
