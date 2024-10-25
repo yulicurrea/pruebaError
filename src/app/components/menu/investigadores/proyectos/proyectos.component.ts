@@ -688,7 +688,7 @@ export class ProyectosComponent implements OnInit {
     }
   }
 
-  private _filter(value: string): { correo: string; nombre: string; apellidos: string }[] {
+  private _filter(value: string): { correo: string  }[] {
     const filterValue = value.toLowerCase();
 
     if (!filterValue) {
@@ -704,7 +704,7 @@ export class ProyectosComponent implements OnInit {
     return filteredActiveInvestigators.filter(
       (investigador) =>
         !this.selectedInvestigators.includes(
-          `${investigador.nombre}${investigador.apellidos}`
+          `${investigador.correo}`
         )
     );
   }
@@ -727,7 +727,7 @@ export class ProyectosComponent implements OnInit {
     const value = (event.value || '').trim();
     if (value) {
       const [correo] = value;
-      this.activeInvestigators.push({  correo, nombre:'',apellidos:'' });
+      this.activeInvestigators.push({ nombre:'', apellidos:'' ,correo });
 
     }
     event.chipInput!.clear();
