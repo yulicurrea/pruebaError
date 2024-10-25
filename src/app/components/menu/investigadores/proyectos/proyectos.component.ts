@@ -664,31 +664,23 @@ export class ProyectosComponent implements OnInit {
     });
   }
 
-  addCoinvestigador(investigador: {correo: string; nombre: string; apellidos: string}) {
+  addCoinvestigador(investigador: {correo: string, nombre: string, apellidos: string}) {
     const newCoinvestigador: Coinvestigador = {
       correo: investigador.correo,
-      coinvestigador: investigador.correo  // Mantienes el correo como identificador
+      coinvestigador: investigador.correo  // Usa correo como identificador
     };
   
     if (!this.proyecto.coinvestigadores) {
-      this.proyecto.coinvestigadores = [newCoinvestigador];
-    } else {
-      // Verifica si ya existe
-      const existe = this.proyecto.coinvestigadores.some(
-        c => c.coinvestigador === investigador.correo
-      );
-      if (!existe) {
-        this.proyecto.coinvestigadores.push(newCoinvestigador);
-      }
+      this.proyecto.coinvestigadores = []; // Inicializa como array vacío si no existe
     }
   
-    // Asegúrate de agregarlo también a la lista de activeInvestigators si es necesario
-    if (!this.activeInvestigators.some(inv => inv.correo === investigador.correo)) {
-      this.activeInvestigators.push({
-        correo: investigador.correo,
-        nombre: investigador.nombre,
-        apellidos: investigador.apellidos
-      });
+    // Verifica si ya existe
+    const existe = this.proyecto.coinvestigadores.some(
+      c => c.coinvestigador === investigador.correo
+    );
+  
+    if (!existe) {
+      this.proyecto.coinvestigadores.push(newCoinvestigador); // Agrega si no existe
     }
   }
 
