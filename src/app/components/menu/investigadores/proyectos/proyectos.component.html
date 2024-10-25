@@ -606,8 +606,8 @@
               <div class="custom-input-container form-field-spacing" appearance="fill">
                 <label for="codigo"matTooltip="Seleccione los investigadores que van a participar en el producto como COINVESTIGADORES.">Coinvestigadores</label>
                 <mat-select formControlName="coinvestigadoresProducto" multiple>
-                  <mat-option *ngFor="let data of usuariosData" [value]="data.nombre">
-                    {{data.nombre}}{{data.apellidos}}
+                  <mat-option *ngFor="let data of usuariosData" [value]="data.correo">
+                    {{data.correo}}
                   </mat-option>
                 </mat-select>
               </div>              
