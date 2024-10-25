@@ -664,11 +664,10 @@ export class ProyectosComponent implements OnInit {
     });
   }
 
-  addCoinvestigador(investigador: {correo: string; nombre: string; apellidos: string}) {
+  addCoinvestigador(investigador: {correo: string;}) {
     const newCoinvestigador: Coinvestigador = {
     correo: investigador.correo,
-    nombre: investigador.nombre,
-    apellidos: investigador.apellidos
+    
     };
     if (!this.proyecto.coinvestigadores) {
       this.proyecto.coinvestigadores = [newCoinvestigador];
