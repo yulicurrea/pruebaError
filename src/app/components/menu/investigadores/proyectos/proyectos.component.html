@@ -254,31 +254,14 @@
               
             </div>
             <div class="titulo">
-              <div class="custom-input-container">
-                <label for="investigatorInput" matTooltip="Seleccione los investigadores que van a participar en el proyecto como COINVESTIGADORES.">Coinvestigadores</label>
-                <div class="custom-chip-list">
-                  <mat-chip-grid formControlName="coinvestigadores" #chipGrid aria-label="Active Investigators">
-                    <mat-chip-row
-                      *ngFor="let investigator of activeInvestigators; let i = index; trackBy: trackByFn"
-                      (removed)="remove(investigator)">
-                       {{investigator.nombre}} {{investigator.apellidos}}
-                      <button matChipRemove
-                        [attr.aria-label]="'remove ' + investigator.correo"
-                        (click)="removeCoinvestigador(investigator)">
-                        <mat-icon>cancel</mat-icon>
-                      </button>
-                    </mat-chip-row>
-                  </mat-chip-grid>
-                  <input matInput placeholder="Añadir coinvestigador" #investigatorInput [formControl]="investigatorCtrl"
-                    [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
-                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
-                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                    <mat-option *ngFor="let investigator of filteredInvestigators | async; trackBy: trackByFn"
-                      [value]="investigator">
-                      {{ displayInvestigator(investigator) }}
-                    </mat-option>
-                  </mat-autocomplete>
-                </div>
+              <div class="custom-input-container form-field-spacing" appearance="fill">
+                <label for="codigo"matTooltip="Seleccione los investigadores que van a participar en el producto como COINVESTIGADORES.">Coinvestigadores</label>
+                <mat-select formControlName="coinvestigadores" multiple>
+                  <mat-option *ngFor="let data of usuariosData" [value]="data.correo">
+                    {{data.nombre}} {{data.apellidos}}
+                  </mat-option>
+                </mat-select>                
+                
               </div>
             
               <div class="custom-input-container">

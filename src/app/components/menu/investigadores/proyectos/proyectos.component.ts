@@ -198,7 +198,7 @@ export class ProyectosComponent implements OnInit {
       titulo: [''],
       investigador: [''],
       unidadAcademica: [''],
-      coinvestigadores: ['', this.selectedInvestigators],
+      coinvestigadores: [''],
       estudiantesProyecto: ['', this.estudiantesData],
       participantesExternosProyecto: ['', this.participanteExternoData],
       area: [''],
@@ -595,6 +595,7 @@ export class ProyectosComponent implements OnInit {
 
   usuariosData: UsuarioSesion[] = [];
   usuariosAdmin: any[] = [];
+  
   obtenerUsuarios(){
     this.activeInvestigators = []; // Inicializa activeInvestigators como un array vacío
     this.selectedInvestigators = []; // Asegúrate de que selectedInvestigators esté vacío al principio
@@ -664,7 +665,7 @@ export class ProyectosComponent implements OnInit {
     });
   }
 
-  addCoinvestigador(investigador: {correo: string, nombre: string, apellidos: string}) {
+  addCoinvestigador(investigador: { correo: string; nombre: string; apellidos: string }) {
     const newCoinvestigador: Coinvestigador = {
       correo: investigador.correo,
       coinvestigador: investigador.correo  // Usa correo como identificador
@@ -684,7 +685,7 @@ export class ProyectosComponent implements OnInit {
     }
   }
 
-  removeCoinvestigador(investigator: any): void {
+removeCoinvestigador(investigator: any): void {
     // Elimina al investigador de la lista de investigadores activos
     const index = this.activeInvestigators.indexOf(investigator);
     if (index >= 0) {
@@ -736,7 +737,6 @@ export class ProyectosComponent implements OnInit {
       this.removeCoinvestigador(investigador);  // Asegúrate de llamar a esta función
     }
   }
- 
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
@@ -748,31 +748,27 @@ export class ProyectosComponent implements OnInit {
     event.chipInput!.clear();
     this.investigatorCtrl.setValue(null);
   }
+
   selected(event: MatAutocompleteSelectedEvent): void {
     const investigadorSeleccionado = event.option.value;
     const correo = investigadorSeleccionado.correo;
   
-    // Busca la información completa del usuario
     const usuarioCompleto = this.usuariosData.find(u => u.correo === correo);
   
     if (usuarioCompleto && !this.activeInvestigators.some(inv => inv.correo === correo)) {
-      // Agrega el investigador a la lista de investigadores activos
       this.activeInvestigators.push({
         correo: correo,
         nombre: usuarioCompleto.nombre,
         apellidos: usuarioCompleto.apellidos
       });
   
-      // Añade el correo al FormControl coinvestigadores
-      const coinvestigadores = this.form.get('coinvestigadores')?.value || [];
+      const coinvestigadores = this.firstFormGroup.get('coinvestigadores')?.value || [];
       coinvestigadores.push(correo);
-      this.form.get('coinvestigadores')?.setValue(coinvestigadores);
+      this.firstFormGroup.get('coinvestigadores')?.setValue(coinvestigadores);
   
-      // Llama a addCoinvestigador con todos los datos del investigador
-      this.addCoinvestigador(usuarioCompleto); // Pasando el objeto completo
+      this.addCoinvestigador(usuarioCompleto);
     }
     
-    // Resetea el campo de entrada y control del autocompletado
     this.investigatorInput.nativeElement.value = '';
     this.investigatorCtrl.setValue(null);
   }
