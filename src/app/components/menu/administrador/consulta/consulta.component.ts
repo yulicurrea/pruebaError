@@ -343,7 +343,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
       }
       default: { // Caso Investigadores
         if (data == undefined) {
-          // Descarga general: mantiene el comportamiento original
+          // Descarga general de investigadores
           filter = this.investigadoresData.map(inv => ({
             tipodocumento: inv.tipodocumento,
             numerodocumento: inv.numerodocumento,
@@ -359,47 +359,77 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
             fechaactualizacion: inv.updated_at
           }));
         } else {
-          // Descarga individual: creamos un nuevo array para este caso específico
-          const investigador = this.investigadoresData.find(x => x.numerodocumento == data.numerodocumento);
+          // Descarga individual de investigador
+          const investigador = this.investigadoresData.find(x => x.numerodocumento === data.numerodocumento);
           
           if (investigador) {
             const nombreCompleto = `${investigador.nombre} ${investigador.apellidos}`;
-            const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto);
-            const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto);
+            
+            // Obtener proyectos y productos del investigador
+            const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto || 
+                                                               p.coinvestigador?.includes(nombreCompleto));
+            const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto || 
+                                                               p.coinvestigador?.includes(nombreCompleto));
   
-            // Primero agregamos la información básica del investigador
-            const infoBasica = {
-              tipodocumento: investigador.tipodocumento,
-              numerodocumento: investigador.numerodocumento,
-              correo: investigador.correo,
-              nombre: investigador.nombre,
-              apellidos: investigador.apellidos,
-              estado: investigador.estado,
-              horasestricto: investigador.horasestricto,
-              horasformacion: investigador.horasformacion,
-              categoriaminciencias: investigador.categoriaminciencias,
-              rolinvestigador: investigador.rolinvestigador,
-              fechacreacion: investigador.created_at,
-              fechaactualizacion: investigador.updated_at
-            };
+            // Si no hay proyectos ni productos, al menos incluir la información básica
+            if (proyectosInv.length === 0 && productosInv.length === 0) {
+              filter.push({
+                tipodocumento: investigador.tipodocumento,
+                numerodocumento: investigador.numerodocumento,
+                correo: investigador.correo,
+                nombre: investigador.nombre,
+                apellidos: investigador.apellidos,
+                estado: investigador.estado,
+                horasestricto: investigador.horasestricto,
+                horasformacion: investigador.horasformacion,
+                categoriaminciencias: investigador.categoriaminciencias,
+                rolinvestigador: investigador.rolinvestigador,
+                fechacreacion: investigador.created_at,
+                fechaactualizacion: investigador.updated_at
+              });
+            }
   
-            // Creamos hojas separadas para proyectos y productos
-            const proyectosSheet = proyectosInv.map(proyecto => ({
-              ...infoBasica,
-              codigoProyecto: proyecto.codigo || '',
-              tituloProyecto: proyecto.titulo || ''
-            }));
+            // Agregar filas para cada proyecto
+            proyectosInv.forEach(proyecto => {
+              filter.push({
+                tipodocumento: investigador.tipodocumento,
+                numerodocumento: investigador.numerodocumento,
+                correo: investigador.correo,
+                nombre: investigador.nombre,
+                apellidos: investigador.apellidos,
+                estado: investigador.estado,
+                horasestricto: investigador.horasestricto,
+                horasformacion: investigador.horasformacion,
+                categoriaminciencias: investigador.categoriaminciencias,
+                rolinvestigador: investigador.rolinvestigador,
+                fechacreacion: investigador.created_at,
+                fechaactualizacion: investigador.updated_at,
+                proyecto_codigo: proyecto.codigo,
+                proyecto_titulo: proyecto.titulo,
+                proyecto_coinvestigador: proyecto.coinvestigador
+              });
+            });
   
-            const productosSheet = productosInv.map(producto => ({
-              ...infoBasica,
-              idProducto: producto.id || '',
-              tituloProducto: producto.tituloProducto || ''
-            }));
-  
-            // Si no hay proyectos ni productos, al menos mostramos la información básica
-            filter = proyectosSheet.length > 0 ? proyectosSheet : 
-                    productosSheet.length > 0 ? productosSheet : 
-                    [infoBasica];
+            // Agregar filas para cada producto
+            productosInv.forEach(producto => {
+              filter.push({
+                tipodocumento: investigador.tipodocumento,
+                numerodocumento: investigador.numerodocumento,
+                correo: investigador.correo,
+                nombre: investigador.nombre,
+                apellidos: investigador.apellidos,
+                estado: investigador.estado,
+                horasestricto: investigador.horasestricto,
+                horasformacion: investigador.horasformacion,
+                categoriaminciencias: investigador.categoriaminciencias,
+                rolinvestigador: investigador.rolinvestigador,
+                fechacreacion: investigador.created_at,
+                fechaactualizacion: investigador.updated_at,
+                producto_id: producto.id,
+                producto_titulo: producto.tituloProducto,
+                producto_coinvestigador: producto.coinvestigador
+              });
+            });
           }
         }
         break;
