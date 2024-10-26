@@ -1499,13 +1499,14 @@ thumbLabel6 = false;
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('paginator1') paginator1!: MatPaginator;
   @ViewChild('paginator2') paginator2!: MatPaginator;
+  @ViewChild('paginatores') paginatores!: MatPaginator;
 
-
-
+  dataSourceProyectos = new MatTableDataSource<any>([]);
+  dataSourceProductos = new MatTableDataSource<any>([]);
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSourceses.paginator = this.paginator1;
+    this.dataSourceProyectos.paginator = this.paginator;
+    this.dataSourceProductos.paginator = this.paginatores;
     this.dataSourceses2.paginator = this.paginator2;
     
     console.log("DATOS TRAIDOS:" ,this.ProyectoyproductoService.getProductosDelUsuario())
@@ -1546,11 +1547,14 @@ thumbLabel6 = false;
     
       // Concatenar los datos ajustados de proyectos con los datos de productos
       const combinedData = [...proyectosAjustados, ...productosAjustados];
-      
-      // Asignar los datos combinados a dataSource
-      this.dataSource.data = combinedData;
+    
+
+      // Filtered data sources
+      this.dataSourceProyectos.data = combinedData.filter(item => item.tipo === 'Proyecto');
+      this.dataSourceProductos.data = combinedData.filter(item => item.tipo === 'Producto');
     });
   }
+
   
   accionUno(element: any) {
     console.log("Editar")

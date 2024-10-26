@@ -1,227 +1,5 @@
 <div class="tabs">
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [(selectedIndex)]="demo1TabIndex">
-    <!--plan de trabajo-->
-    <mat-tab label="Plan de trabajo">
-      <div class="work-plan-container">
-        <div class="table-container mat-elevation-z8">
-          <table mat-table [dataSource]="dataSourceses" multiTemplateDataRows>
-            
-            <!-- Título Column -->
-            <ng-container matColumnDef="titulo">
-              <th mat-header-cell *matHeaderCellDef>Título</th>
-              <td mat-cell *matCellDef="let element">{{element.titulo}}</td>
-            </ng-container>
-            
-            <!-- Fecha Column -->
-            <ng-container matColumnDef="fecha" >
-              <th mat-header-cell *matHeaderCellDef matTooltip="Se observan los planes de trabajo que se realizan semestralmente.">Fecha</th>
-              <td mat-cell *matCellDef="let element">{{element.fecha | date}}</td>
-            </ng-container>
-            
-            <!-- Editar Column -->
-            <ng-container matColumnDef="editar">
-              <th mat-header-cell *matHeaderCellDef>Editar</th>
-              <td mat-cell *matCellDef="let element">
-                <button mat-icon-button  style="color: #6AABA0;" (click)="editarElemento(element, 'tipoPorDefecto', false)" *ngIf="element.estado !== false">
-                  <mat-icon>edit</mat-icon>
-                </button>
-              </td>
-            </ng-container>
-    
-            <!-- Expand Column -->
-            <ng-container matColumnDef="expand">
-              <th mat-header-cell *matHeaderCellDef>Agregar Plan de trabajo</th>
-              <td mat-cell *matCellDef="let element">
-                <button mat-icon-button  style="color: #6AABA0;" (click)="toggleRow(element)" *ngIf="element.estado !== false">
-                  <mat-icon>{{expandedElements === element ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</mat-icon>
-                </button>
-              </td>
-            </ng-container>
-            
-            <!-- Row Detail Column -->
-            <ng-container matColumnDef="expandedDetail">
-              <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumn.length">
-                <div class="expanded-row-detail" *ngIf="expandedElements === element">
-                  <div class="inner-table-container mat-elevation-z8">
-                    <table mat-table [dataSource]="dataSourceses2" matSort 
-                           matTooltip="Seleccione los proyectos y productos que va a manejar en el semestre. Se observan los proyectos y productos propios y en los que se encuentra participando.">
-
-                      <!-- Checkbox Column -->
-                      <ng-container matColumnDef="select">
-                        <th mat-header-cell *matHeaderCellDef>
-                          <mat-checkbox
-                            (change)="$event ? masterToggle() : null"
-                            [checked]="selection.hasValue() && isAllSelected()"
-                            [indeterminate]="selection.hasValue() && !isAllSelected()">
-                          </mat-checkbox>
-                        </th>
-                        <td mat-cell *matCellDef="let row">
-                          <mat-checkbox
-                            (click)="$event.stopPropagation()"
-                            (change)="toggleSelection(row)"
-                            [checked]="row.isSelected">
-                          </mat-checkbox>
-                        </td>
-                      </ng-container>
-                      
-                      <!-- Título Proyecto Column -->
-                      <ng-container matColumnDef="titulo">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Título proyecto</th>
-                        <td mat-cell *matCellDef="let element">{{element.titulo}}</td>
-                      </ng-container>
-    
-                      <!-- Título Producto Column -->
-                      <ng-container matColumnDef="tituloproducto">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Título producto</th>
-                        <td mat-cell *matCellDef="let element">{{element.tituloproducto || ''}}</td>
-                      </ng-container>
-    
-                      <!-- Rol Column -->
-                      <ng-container matColumnDef="rol">
-                        <th mat-header-cell *matHeaderCellDef>Rol en producto</th>
-                        <td mat-cell *matCellDef="let element">
-                          <mat-form-field appearance="outline">
-                            <mat-select [(value)]="element.rol" [disabled]="!element.isSelected">
-                              <mat-option *ngFor="let rol of typerol" [value]="rol">
-                                {{ rol }}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </td>
-                      </ng-container>
-    
-                      <!-- HorasEstricto Column -->
-                      <ng-container matColumnDef="horasestricto">
-                        <th mat-header-cell *matHeaderCellDef>Horas Estricto</th>
-                        <td mat-cell *matCellDef="let element">
-                          <mat-form-field appearance="outline">
-                            <input matInput type="number" [(ngModel)]="element.horasestricto" min="0" step="1" [disabled]="!element.isSelected">
-                          </mat-form-field>
-                        </td>
-                      </ng-container>
-    
-                      <!-- Header and Row Definitions -->
-                      <tr mat-header-row *matHeaderRowDef="displayedColumnas"></tr>
-                      <tr mat-row *matRowDef="let row; columns: displayedColumnas;"></tr>
-                    </table>
-                    
-                    <!-- Pagination Controls -->
-                    <mat-paginator
-                    [pageSize]="5" 
-                    [pageSizeOptions]="[5, 10, 25]" 
-                    showFirstLastButtons>
-                    </mat-paginator>
-                    <button mat-raised-button  style="background-color: #6AABA0; color: white;" class="save-button" (click)="guardar()">Guardar</button>
-                  </div>
-                </div>
-              </td>
-            </ng-container>
-            
-            <!-- Table Rows -->
-            <tr mat-header-row *matHeaderRowDef="displayedColumn"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumn;"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-          </table>
-          
-          <mat-paginator  [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
-        </div>
-      </div>
-    </mat-tab>
-    <!--proyectos y productos-->
-    <mat-tab label="Proyectos y Productos">
-      <!-- tabla -->
-      <div class="mat-elevation-z8">
-        <table mat-table [dataSource]="dataSource" multiTemplateDataRows  matTooltip="Se observan los proyectos y productos que usted como investigador principal creo.">
-
-          <!-- Columnas de la tabla -->
-          <ng-container matColumnDef="tipo">
-            <th mat-header-cell *matHeaderCellDef> Tipo</th>
-            <td mat-cell *matCellDef="let element"> {{element.tipo}} </td>
-          </ng-container>
-        
-          <ng-container matColumnDef="titulo">
-            <th mat-header-cell *matHeaderCellDef> Titulo </th>
-            <td mat-cell *matCellDef="let element"> {{element.tituloProducto}} </td>
-          </ng-container>
-        
-          <ng-container matColumnDef="estado">
-            <th mat-header-cell *matHeaderCellDef> Estado </th>
-            <td mat-cell *matCellDef="let element"> {{element.estadoProceso}} </td>
-          </ng-container>
-        
-          <ng-container matColumnDef="etapa">
-            <th mat-header-cell *matHeaderCellDef> Etapa </th>
-            <td mat-cell *matCellDef="let element" matTooltip="{{element.observacion}}" matTooltipPosition="above"> {{element.etapa}} </td>
-          </ng-container>
-        
-          <ng-container matColumnDef="acciones">
-            <th mat-header-cell *matHeaderCellDef> Acciones</th>
-            <td mat-cell *matCellDef="let element"> 
-              <!-- Botones de acción -->
-              <button mat-icon-button color="primary" matTooltip="Editar" matTooltipPosition="above" (click)="openDialogoDetalle(element, element.tipo,true)">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button color="accent"  matTooltip="Detalle" matTooltipPosition="above" (click)="openDialogoDetalle(element, element.tipo,false)">
-                <mat-icon>info</mat-icon>
-              </button>
-              <button mat-icon-button color="warn" [disabled]="element.estadoProceso == 'Aprobado' ? false : true " matTooltip="Configurar Entregables. Ingrese para establecer el nombre de su entregable y la fecha limite para subir el avance." matTooltipPosition="above" (click)="openDialogoConfiguracionEntregable(element,element.tipo)">
-                <mat-icon>settings</mat-icon>
-              </button>
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="expand">
-            <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-            <td mat-cell *matCellDef="let element">
-              <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-                <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-                <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-              </button>
-            </td>
-          </ng-container>
-
-            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-          <ng-container matColumnDef="expandedDetail">
-            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
-              <div class="example-element-detail"
-                  [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                <div class="example-element-description">
-                  <div *ngIf="element.tipo == 'Proyecto'; else elseProducto">
-                    <div *ngFor="let item of proyectosData; index as i; trackBy: trackByFn">
-                      <div *ngIf="item.proyecto_id === element.id">
-                        <mat-icon matListItemIcon [ngStyle]="{'color': item.estado ? '#acc686' : '#c9c9c9' }" style="float:left" (click)="openDialogoConfiguracionAvance(element,item, 'Proyecto');addEvent(item)">{{item.select ? 'folder_copy' : 'folder'}}</mat-icon>
-                        <div style="margin-top: 10px;margin-left: 40px;">
-                          {{item.descripcion}}<br>
-                          <span class="example-element-description-attribution">-- {{item.fecha | date }} <span *ngIf="item.estado" style="font-size: 10px;">({{item.diferenciaDias}} días de plazo)</span></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <ng-template #elseProducto>
-                    <div *ngFor="let item of productosData; index as i; trackBy: trackByFn">
-                      <div *ngIf="item.producto_id === element.id">
-                        <mat-icon matListItemIcon [ngStyle]="{'color': item.estado ? '#acc686' : '#c9c9c9' }"  style="float:left" (click)="openDialogoConfiguracionAvance(element, item, 'Producto');addEvent(item)">{{item.select ? 'folder_copy' : 'folder'}}</mat-icon>
-                        <div style="margin-top: 10px;margin-left: 40px;">
-                          {{item.descripcion}}<br>
-                          <span class="example-element-description-attribution">-- {{item.fecha | date }} <span *ngIf="item.estado" style="font-size: 10px;">({{item.diferenciaDias}} días de plazo)</span></span>
-                        </div>
-                      </div>
-                    </div>
-                  </ng-template>
-                </div>
-              </div>
-            </td>
-          </ng-container>
-        
-          <!-- Filas de la tabla -->
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-        </table> <!-- Esta etiqueta debe estar aquí -->
-        
-        <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10]" showFirstLastButtons aria-label="Select page of periodic elements">
-        </mat-paginator>        
-      </div>
-    </mat-tab>
     <!-- nuevo -->
     <mat-tab label="Nuevo">
       <mat-tab-group class="nuevo vertical-tabs" mat-stretch-tabs="false" mat-align-tabs="end">
@@ -980,5 +758,333 @@
         </mat-tab>
       </mat-tab-group>
     </mat-tab>
+   
+    <!--proyectos y productos-->
+    <mat-tab label="Proyectos y Productos">
+      <mat-tab-group class="nuevo vertical-tabs" mat-stretch-tabs="false" mat-align-tabs="end">
+        <mat-tab label="Proyectos">
+          <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSourceProyectos" multiTemplateDataRows matTooltip="Proyectos y productos creados por usted.">
+    
+              <!-- Tipo Column -->
+              <ng-container matColumnDef="tipo">
+                <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                <td mat-cell *matCellDef="let element"> {{ element.tipo }} </td>
+              </ng-container>
+    
+              <!-- Título Column -->
+              <ng-container matColumnDef="titulo">
+                <th mat-header-cell *matHeaderCellDef> Título </th>
+                <td mat-cell *matCellDef="let element"> {{ element.tituloProducto }} </td>
+              </ng-container>
+    
+              <!-- Estado Column -->
+              <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                <td mat-cell *matCellDef="let element"> {{ element.estadoProceso }} </td>
+              </ng-container>
+    
+              <!-- Etapa Column with Tooltip -->
+              <ng-container matColumnDef="etapa">
+                <th mat-header-cell *matHeaderCellDef> Etapa </th>
+                <td mat-cell *matCellDef="let element" matTooltip="{{ element.observacion }}" matTooltipPosition="above"> {{ element.etapa }} </td>
+              </ng-container>
+    
+              <!-- Acciones Column -->
+              <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let element">
+                  <!-- Action Buttons -->
+                  <button mat-icon-button color="primary" matTooltip="Editar" matTooltipPosition="above" (click)="openDialogoDetalle(element, element.tipo, true)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="accent" matTooltip="Detalle" matTooltipPosition="above" (click)="openDialogoDetalle(element, element.tipo, false)">
+                    <mat-icon>info</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" [disabled]="element.estadoProceso == 'Aprobado' ? false : true" matTooltip="Configurar Entregables" matTooltipPosition="above" (click)="openDialogoConfiguracionEntregable(element, element.tipo)">
+                    <mat-icon>settings</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+    
+              <!-- Expand Column -->
+              <ng-container matColumnDef="expand">
+                <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                    <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                    <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+    
+              <!-- Expanded Detail Row -->
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+                  <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <div class="example-element-description">
+                      <div *ngIf="element.tipo === 'Proyecto'; else elseProducto">
+                        <div *ngFor="let item of proyectosData; index as i; trackBy: trackByFn">
+                          <div *ngIf="item.proyecto_id === element.id">
+                            <mat-icon matListItemIcon [ngStyle]="{'color': item.estado ? '#acc686' : '#c9c9c9' }" style="float:left" (click)="openDialogoConfiguracionAvance(element, item, 'Proyecto'); addEvent(item)">{{ item.select ? 'folder_copy' : 'folder' }}</mat-icon>
+                            <div style="margin-top: 10px; margin-left: 40px;">
+                              {{ item.descripcion }}<br>
+                              <span class="example-element-description-attribution">-- {{ item.fecha | date }} <span *ngIf="item.estado" style="font-size: 10px;">({{ item.diferenciaDias }} días de plazo)</span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <ng-template #elseProducto>
+                        <div *ngFor="let item of productosData; index as i; trackBy: trackByFn">
+                          <div *ngIf="item.producto_id === element.id">
+                            <mat-icon matListItemIcon [ngStyle]="{'color': item.estado ? '#acc686' : '#c9c9c9' }" style="float:left" (click)="openDialogoConfiguracionAvance(element, item, 'Producto'); addEvent(item)">{{ item.select ? 'folder_copy' : 'folder' }}</mat-icon>
+                            <div style="margin-top: 10px; margin-left: 40px;">
+                              {{ item.descripcion }}<br>
+                              <span class="example-element-description-attribution">-- {{ item.fecha | date }} <span *ngIf="item.estado" style="font-size: 10px;">({{ item.diferenciaDias }} días de plazo)</span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+    
+              <!-- Table Rows -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+            </table>
+    
+            <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+          </div>
+        </mat-tab>
+        <mat-tab label="Productos">
+          <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSourceProductos" multiTemplateDataRows matTooltip="Proyectos y productos creados por usted.">
+    
+              <!-- Tipo Column -->
+              <ng-container matColumnDef="tipo">
+                <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                <td mat-cell *matCellDef="let element"> {{ element.tipo }} </td>
+              </ng-container>
+    
+              <!-- Título Column -->
+              <ng-container matColumnDef="titulo">
+                <th mat-header-cell *matHeaderCellDef> Título </th>
+                <td mat-cell *matCellDef="let element"> {{ element.tituloProducto }} </td>
+              </ng-container>
+    
+              <!-- Estado Column -->
+              <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                <td mat-cell *matCellDef="let element"> {{ element.estadoProceso }} </td>
+              </ng-container>
+    
+              <!-- Etapa Column with Tooltip -->
+              <ng-container matColumnDef="etapa">
+                <th mat-header-cell *matHeaderCellDef> Etapa </th>
+                <td mat-cell *matCellDef="let element" matTooltip="{{ element.observacion }}" matTooltipPosition="above"> {{ element.etapa }} </td>
+              </ng-container>
+    
+              <!-- Acciones Column -->
+              <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let element">
+                  <!-- Action Buttons -->
+                  <button mat-icon-button color="primary" matTooltip="Editar" matTooltipPosition="above" (click)="openDialogoDetalle(element, element.tipo, true)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="accent" matTooltip="Detalle" matTooltipPosition="above" (click)="openDialogoDetalle(element, element.tipo, false)">
+                    <mat-icon>info</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" [disabled]="element.estadoProceso == 'Aprobado' ? false : true" matTooltip="Configurar Entregables" matTooltipPosition="above" (click)="openDialogoConfiguracionEntregable(element, element.tipo)">
+                    <mat-icon>settings</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+    
+              <!-- Expand Column -->
+              <ng-container matColumnDef="expand">
+                <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                    <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                    <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+    
+              <!-- Expanded Detail Row -->
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+                  <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <div class="example-element-description">
+                      <div *ngIf="element.tipo === 'Proyecto'; else elseProducto">
+                        <div *ngFor="let item of proyectosData; index as i; trackBy: trackByFn">
+                          <div *ngIf="item.proyecto_id === element.id">
+                            <mat-icon matListItemIcon [ngStyle]="{'color': item.estado ? '#acc686' : '#c9c9c9' }" style="float:left" (click)="openDialogoConfiguracionAvance(element, item, 'Proyecto'); addEvent(item)">{{ item.select ? 'folder_copy' : 'folder' }}</mat-icon>
+                            <div style="margin-top: 10px; margin-left: 40px;">
+                              {{ item.descripcion }}<br>
+                              <span class="example-element-description-attribution">-- {{ item.fecha | date }} <span *ngIf="item.estado" style="font-size: 10px;">({{ item.diferenciaDias }} días de plazo)</span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <ng-template #elseProducto>
+                        <div *ngFor="let item of productosData; index as i; trackBy: trackByFn">
+                          <div *ngIf="item.producto_id === element.id">
+                            <mat-icon matListItemIcon [ngStyle]="{'color': item.estado ? '#acc686' : '#c9c9c9' }" style="float:left" (click)="openDialogoConfiguracionAvance(element, item, 'Producto'); addEvent(item)">{{ item.select ? 'folder_copy' : 'folder' }}</mat-icon>
+                            <div style="margin-top: 10px; margin-left: 40px;">
+                              {{ item.descripcion }}<br>
+                              <span class="example-element-description-attribution">-- {{ item.fecha | date }} <span *ngIf="item.estado" style="font-size: 10px;">({{ item.diferenciaDias }} días de plazo)</span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+    
+              <!-- Table Rows -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+            </table>
+    
+            <mat-paginator #paginatores [pageSize]="5" [pageSizeOptions]="[5, 10]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-tab>
+    <!--plan de trabajo-->
+    <mat-tab label="Plan de trabajo">
+      <div class="work-plan-container">
+        <div class="table-container mat-elevation-z8">
+          <table mat-table [dataSource]="dataSourceses" multiTemplateDataRows>
+            
+            <!-- Título Column -->
+            <ng-container matColumnDef="titulo">
+              <th mat-header-cell *matHeaderCellDef>Título</th>
+              <td mat-cell *matCellDef="let element">{{element.titulo}}</td>
+            </ng-container>
+            
+            <!-- Fecha Column -->
+            <ng-container matColumnDef="fecha" >
+              <th mat-header-cell *matHeaderCellDef matTooltip="Se observan los planes de trabajo que se realizan semestralmente.">Fecha</th>
+              <td mat-cell *matCellDef="let element">{{element.fecha | date}}</td>
+            </ng-container>
+            
+            <!-- Editar Column -->
+            <ng-container matColumnDef="editar">
+              <th mat-header-cell *matHeaderCellDef>Editar</th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button  style="color: #6AABA0;" (click)="editarElemento(element, 'tipoPorDefecto', false)" *ngIf="element.estado !== false">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+    
+            <!-- Expand Column -->
+            <ng-container matColumnDef="expand">
+              <th mat-header-cell *matHeaderCellDef>Agregar Plan de trabajo</th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button  style="color: #6AABA0;" (click)="toggleRow(element)" *ngIf="element.estado !== false">
+                  <mat-icon>{{expandedElements === element ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            
+            <!-- Row Detail Column -->
+            <ng-container matColumnDef="expandedDetail">
+              <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumn.length">
+                <div class="expanded-row-detail" *ngIf="expandedElements === element">
+                  <div class="inner-table-container mat-elevation-z8">
+                    <table mat-table [dataSource]="dataSourceses2" matSort 
+                           matTooltip="Seleccione los proyectos y productos que va a manejar en el semestre. Se observan los proyectos y productos propios y en los que se encuentra participando.">
+
+                      <!-- Checkbox Column -->
+                      <ng-container matColumnDef="select">
+                        <th mat-header-cell *matHeaderCellDef>
+                          <mat-checkbox
+                            (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+                          </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                          <mat-checkbox
+                            (click)="$event.stopPropagation()"
+                            (change)="toggleSelection(row)"
+                            [checked]="row.isSelected">
+                          </mat-checkbox>
+                        </td>
+                      </ng-container>
+                      
+                      <!-- Título Proyecto Column -->
+                      <ng-container matColumnDef="titulo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Título proyecto</th>
+                        <td mat-cell *matCellDef="let element">{{element.titulo}}</td>
+                      </ng-container>
+    
+                      <!-- Título Producto Column -->
+                      <ng-container matColumnDef="tituloproducto">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Título producto</th>
+                        <td mat-cell *matCellDef="let element">{{element.tituloproducto || ''}}</td>
+                      </ng-container>
+    
+                      <!-- Rol Column -->
+                      <ng-container matColumnDef="rol">
+                        <th mat-header-cell *matHeaderCellDef>Rol en producto</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field appearance="outline">
+                            <mat-select [(value)]="element.rol" [disabled]="!element.isSelected">
+                              <mat-option *ngFor="let rol of typerol" [value]="rol">
+                                {{ rol }}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+    
+                      <!-- HorasEstricto Column -->
+                      <ng-container matColumnDef="horasestricto">
+                        <th mat-header-cell *matHeaderCellDef>Horas Estricto</th>
+                        <td mat-cell *matCellDef="let element">
+                          <mat-form-field appearance="outline">
+                            <input matInput type="number" [(ngModel)]="element.horasestricto" min="0" step="1" [disabled]="!element.isSelected">
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+    
+                      <!-- Header and Row Definitions -->
+                      <tr mat-header-row *matHeaderRowDef="displayedColumnas"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumnas;"></tr>
+                    </table>
+                    
+                    <!-- Pagination Controls -->
+                    <mat-paginator
+                    [pageSize]="5" 
+                    [pageSizeOptions]="[5, 10, 25]" 
+                    showFirstLastButtons>
+                    </mat-paginator>
+                    <button mat-raised-button  style="background-color: #6AABA0; color: white;" class="save-button" (click)="guardar()">Guardar</button>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+            
+            <!-- Table Rows -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumn"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumn;"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+          </table>
+          
+          <mat-paginator  [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+        </div>
+      </div>
+    </mat-tab>
+     
   </mat-tab-group>
 </div>

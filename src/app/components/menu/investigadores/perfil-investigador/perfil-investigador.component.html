@@ -55,7 +55,7 @@
     </div>
 
     <!-- Información Académica -->
-    <h2>Información Académica</h2>
+    <h2></h2>
     <div class="academic-info">
         <div class="custom-input-container">
             <label for="lineainvestigacion"matTooltip="Seleccione la línea de investigación a la que pertenece">Línea Investigación</label>
@@ -85,7 +85,7 @@
             <input matInput type="number" id="horasestricto" placeholder="Ingrese horas estricto" required formControlName="horasestricto" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
         </div>
         <div class="custom-input-container">
-            <label for="horasformacion"matTooltip="Ingrese las horas en sentido formación a trabajar en el grupo de investigación">Horarios Formación</label>
+            <label for="horasformacion"matTooltip="Ingrese las horas de proyectos asociados en formación. Ejemplos: Horas en formacion semilleros trabajo de grado">Horarios Formación</label>
             <input matInput type="number" id="horasformacion" placeholder="Ingrese horas de formación" required formControlName="horasformacion" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
         </div>
             
@@ -93,7 +93,7 @@
 
 
     <br>
-    <h2 matTooltip="Ingrese los pregrados o posgrados que ha realizado o se encuentra realizando"> Información Profesional</h2>
+    <h2 matTooltip="Ingrese los pregrados o posgrados que ha realizado o se encuentra realizando">Formación Académica</h2>
     <div class="academic-info">
         <div *ngIf="pregradoData.length">
             <h3><mat-icon style="margin: 0px 0px -6px 0px; color:burlywood">star</mat-icon> Pregados</h3>
