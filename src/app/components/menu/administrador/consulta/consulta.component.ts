@@ -357,7 +357,6 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
             rolinvestigador: inv.rolinvestigador,
             fechacreacion: inv.created_at,
             fechaactualizacion: inv.updated_at
-
           }));
         } else {
           // Descarga individual: agregar proyectos y productos del investigador
@@ -373,7 +372,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
             
             for (let i = 0; i < maxLength; i++) {
               filter.push({
-                tipodocumento: i === 0 ? inv.tipodocumento : '', // Mostrar investigador solo en la primera fila
+                tipodocumento: i === 0 ? inv.tipodocumento : '',
                 numerodocumento: i === 0 ? inv.numerodocumento : '',
                 correo: i === 0 ? inv.correo : '',
                 nombre: i === 0 ? inv.nombre : '',
@@ -398,10 +397,25 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
     } 
     console.log('Datos finales a exportar:', filter);
     
+    // Aquí comienza el cambio - reemplazamos las últimas 4 líneas con esto:
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, tipo);
-    XLSX.writeFile(wb, `Reporte${tipo}.xls`);
+    
+    // En lugar de XLSX.writeFile, usamos esto:
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([excelBuffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
+    
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `Reporte${tipo}.xlsx`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
 }
 
 
