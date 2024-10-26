@@ -378,17 +378,23 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
               producto_coinvestigadores: productosInv.length > 0 ? productosInv[0].coinvestigador : ''
             });
   
-            // Agrega los proyectos y productos restantes sin repetir los datos personales
+            // Agrega solo proyectos y productos adicionales sin los datos personales
             proyectosInv.slice(1).forEach((proyecto) => {
               filter.push({
                 proyecto_codigo: proyecto.codigo,
                 proyecto_titulo: proyecto.titulo,
-                proyecto_coinvestigadores: proyecto.coinvestigador || ''
+                proyecto_coinvestigadores: proyecto.coinvestigador || '',
+                producto_id: '',
+                producto_titulo: '',
+                producto_coinvestigadores: ''
               });
             });
   
             productosInv.slice(1).forEach((producto) => {
               filter.push({
+                proyecto_codigo: '',
+                proyecto_titulo: '',
+                proyecto_coinvestigadores: '',
                 producto_id: producto.id,
                 producto_titulo: producto.tituloProducto,
                 producto_coinvestigadores: producto.coinvestigador || ''
@@ -407,6 +413,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
     XLSX.utils.book_append_sheet(wb, ws, tipo);
     XLSX.writeFile(wb, `Reporte${tipo}.xls`);
   }
+  
   
   
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
