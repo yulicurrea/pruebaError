@@ -326,28 +326,24 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
 
     switch(tipo) { 
       case 'Proyectos': {
-        console.log('Datos de proyectos disponibles:', this.proyectosData);
         if(data == undefined){
           filter = this.proyectosData;
         } else {
-          console.log('Buscando proyecto con código:', data.codigo);
           filter = this.proyectosData.filter(x => x.codigo == data.codigo);
         }
         break; 
       } 
       case 'Productos': {
-        console.log('Datos de productos disponibles:', this.productosData);
         if(data == undefined){
           filter = this.productosData;
         } else {
-          console.log('Buscando producto con ID:', data.id);
           filter = this.productosData.filter(x => x.id == data.id);
         }
         break; 
       } 
       default: {        
-        console.log('Datos de investigadores disponibles:', this.investigadoresData);
         if (data == undefined) {
+          // Descarga general: solo exportar los datos básicos de los investigadores
           filter = this.investigadoresData.map(inv => ({
             tipodocumento: inv.tipodocumento,
             numerodocumento: inv.numerodocumento,
@@ -361,27 +357,23 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
             rolinvestigador: inv.rolinvestigador,
             fechacreacion: inv.created_at,
             fechaactualizacion: inv.updated_at
+
           }));
         } else {
-          console.log('Buscando investigador con número de documento:', data.numerodocumento);
+          // Descarga individual: agregar proyectos y productos del investigador
           const investigador = this.investigadoresData.filter(x => x.numerodocumento == data.numerodocumento);
-          console.log('Investigador encontrado:', investigador);
 
           investigador.forEach(inv => {
             const nombreCompleto = `${inv.nombre} ${inv.apellidos}`;
-            console.log('Buscando proyectos y productos para:', nombreCompleto);
             
             const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto);
             const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto);
-            
-            console.log('Proyectos encontrados:', proyectosInv);
-            console.log('Productos encontrados:', productosInv);
             
             const maxLength = Math.max(proyectosInv.length, productosInv.length);
             
             for (let i = 0; i < maxLength; i++) {
               filter.push({
-                tipodocumento: i === 0 ? inv.tipodocumento : '',
+                tipodocumento: i === 0 ? inv.tipodocumento : '', // Mostrar investigador solo en la primera fila
                 numerodocumento: i === 0 ? inv.numerodocumento : '',
                 correo: i === 0 ? inv.correo : '',
                 nombre: i === 0 ? inv.nombre : '',
@@ -404,32 +396,14 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
         break; 
       } 
     } 
-    
     console.log('Datos finales a exportar:', filter);
-    
-    if (filter.length === 0) {
-        console.error('No hay datos para exportar');
-        return;
-    }
     
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, tipo);
-    
-    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([excelBuffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    });
-    
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `Reporte${tipo}.xlsx`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
+    XLSX.writeFile(wb, `Reporte${tipo}.xls`);
 }
+
 
 
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
