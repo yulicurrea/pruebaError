@@ -356,7 +356,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
             const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto || p.coinvestigador?.includes(nombreCompleto));
             const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto || p.coinvestigador?.includes(nombreCompleto));
   
-            // Agrega solo una vez la información básica del investigador
+            // Agrega la información básica del investigador solo en la primera fila
             filter.push({
               tipodocumento: investigador.tipodocumento,
               numerodocumento: investigador.numerodocumento,
@@ -378,9 +378,10 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
               producto_coinvestigadores: productosInv.length > 0 ? productosInv[0].coinvestigador : ''
             });
   
-            // Agrega solo proyectos y productos adicionales sin los datos personales
+            // Agrega solo proyectos adicionales en filas independientes
             proyectosInv.slice(1).forEach((proyecto) => {
               filter.push({
+                tipodocumento: '', numerodocumento: '', correo: '', nombre: '', apellidos: '', estado: '', horasestricto: '', horasformacion: '', categoriaminciencias: '', rolinvestigador: '', fechacreacion: '', fechaactualizacion: '',
                 proyecto_codigo: proyecto.codigo,
                 proyecto_titulo: proyecto.titulo,
                 proyecto_coinvestigadores: proyecto.coinvestigador || '',
@@ -390,8 +391,10 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
               });
             });
   
+            // Agrega solo productos adicionales en filas independientes
             productosInv.slice(1).forEach((producto) => {
               filter.push({
+                tipodocumento: '', numerodocumento: '', correo: '', nombre: '', apellidos: '', estado: '', horasestricto: '', horasformacion: '', categoriaminciencias: '', rolinvestigador: '', fechacreacion: '', fechaactualizacion: '',
                 proyecto_codigo: '',
                 proyecto_titulo: '',
                 proyecto_coinvestigadores: '',
