@@ -371,16 +371,18 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
               fechaactualizacion: investigador.updated_at
             };
   
-            filter.push(baseInfo);  // Agregar la fila de información básica solo una vez
+            let isBaseInfoAdded = false; // Variable para controlar la adición de datos básicos
   
-            // Crear filas separadas para proyectos y productos
             proyectosInv.forEach((proyecto, index) => {
               const rowData: any = {
                 proyecto_codigo: proyecto.codigo,
                 proyecto_titulo: proyecto.titulo,
                 proyecto_coinvestigadores: proyecto.coinvestigador || ''
               };
-              if (index === 0) Object.assign(rowData, baseInfo);  // Solo en la primera fila se muestra la info básica
+              if (!isBaseInfoAdded) {
+                Object.assign(rowData, baseInfo);  // Añadir datos básicos solo en la primera fila
+                isBaseInfoAdded = true;  // Evitar añadir datos básicos en filas siguientes
+              }
               filter.push(rowData);
             });
   
@@ -390,10 +392,14 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
                 producto_titulo: producto.tituloProducto,
                 producto_coinvestigadores: producto.coinvestigador || ''
               };
-              if (index === 0 && proyectosInv.length === 0) Object.assign(rowData, baseInfo);
+              if (!isBaseInfoAdded) {
+                Object.assign(rowData, baseInfo);  // Añadir datos básicos solo en la primera fila si no hay proyectos
+                isBaseInfoAdded = true;
+              }
               filter.push(rowData);
             });
   
+            // Si no hay proyectos ni productos, solo añade la fila básica
             if (proyectosInv.length === 0 && productosInv.length === 0) filter.push(baseInfo);
           }
         }
@@ -409,7 +415,6 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
     XLSX.writeFile(wb, `Reporte${tipo}.xls`);
   }
   
-
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
     const dialogRef = this.dialog.open(DialogoEstadisticaComponent, {
       data: {
