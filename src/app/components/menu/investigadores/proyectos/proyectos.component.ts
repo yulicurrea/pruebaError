@@ -1715,7 +1715,7 @@ thumbLabel6 = false;
   }
   
   guardar() {
-    const datosAGuardar = this.data
+    const datosAGuardar = this.dataSourceses2.data
       .filter(row => row.isSelected && row.horasestricto !== undefined)
       .map(row => ({
         configPlanTrabajoId: this.selectedPlanId || this.idConfiguracion,
@@ -1756,6 +1756,8 @@ thumbLabel6 = false;
               row.horasestricto = undefined;
             }
           });
+          this.dataSourceses2._updateChangeSubscription();
+
   
           // Retarda la recarga para permitir que se completen las notificaciones
           setTimeout(() => {
