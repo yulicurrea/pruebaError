@@ -371,64 +371,38 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
             const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto || 
                                                                p.coinvestigador?.includes(nombreCompleto));
   
-            // Si no hay proyectos ni productos, al menos incluir la información básica
-            if (proyectosInv.length === 0 && productosInv.length === 0) {
-              filter.push({
-                tipodocumento: investigador.tipodocumento,
-                numerodocumento: investigador.numerodocumento,
-                correo: investigador.correo,
-                nombre: investigador.nombre,
-                apellidos: investigador.apellidos,
-                estado: investigador.estado,
-                horasestricto: investigador.horasestricto,
-                horasformacion: investigador.horasformacion,
-                categoriaminciencias: investigador.categoriaminciencias,
-                rolinvestigador: investigador.rolinvestigador,
-                fechacreacion: investigador.created_at,
-                fechaactualizacion: investigador.updated_at
-              });
-            }
+            // Crear strings concatenados de proyectos y productos
+            const proyectosStr = proyectosInv.map(p => 
+              `[Código: ${p.codigo} - Título: ${p.titulo}${p.coinvestigador ? ' - Coinvestigadores: ' + p.coinvestigador : ''}]`
+            ).join('; ');
   
-            // Agregar filas para cada proyecto
-            proyectosInv.forEach(proyecto => {
-              filter.push({
-                tipodocumento: investigador.tipodocumento,
-                numerodocumento: investigador.numerodocumento,
-                correo: investigador.correo,
-                nombre: investigador.nombre,
-                apellidos: investigador.apellidos,
-                estado: investigador.estado,
-                horasestricto: investigador.horasestricto,
-                horasformacion: investigador.horasformacion,
-                categoriaminciencias: investigador.categoriaminciencias,
-                rolinvestigador: investigador.rolinvestigador,
-                fechacreacion: investigador.created_at,
-                fechaactualizacion: investigador.updated_at,
-                proyecto_codigo: proyecto.codigo,
-                proyecto_titulo: proyecto.titulo,
-                proyecto_coinvestigador: proyecto.coinvestigador
-              });
-            });
+            const productosStr = productosInv.map(p => 
+              `[ID: ${p.id} - Título: ${p.tituloProducto}${p.coinvestigador ? ' - Coinvestigadores: ' + p.coinvestigador : ''}]`
+            ).join('; ');
   
-            // Agregar filas para cada producto
-            productosInv.forEach(producto => {
-              filter.push({
-                tipodocumento: investigador.tipodocumento,
-                numerodocumento: investigador.numerodocumento,
-                correo: investigador.correo,
-                nombre: investigador.nombre,
-                apellidos: investigador.apellidos,
-                estado: investigador.estado,
-                horasestricto: investigador.horasestricto,
-                horasformacion: investigador.horasformacion,
-                categoriaminciencias: investigador.categoriaminciencias,
-                rolinvestigador: investigador.rolinvestigador,
-                fechacreacion: investigador.created_at,
-                fechaactualizacion: investigador.updated_at,
-                producto_id: producto.id,
-                producto_titulo: producto.tituloProducto,
-                producto_coinvestigador: producto.coinvestigador
-              });
+            // Crear un solo registro con toda la información
+            filter.push({
+              // Información básica del investigador
+              tipodocumento: investigador.tipodocumento,
+              numerodocumento: investigador.numerodocumento,
+              correo: investigador.correo,
+              nombre: investigador.nombre,
+              apellidos: investigador.apellidos,
+              estado: investigador.estado,
+              horasestricto: investigador.horasestricto,
+              horasformacion: investigador.horasformacion,
+              categoriaminciencias: investigador.categoriaminciencias,
+              rolinvestigador: investigador.rolinvestigador,
+              fechacreacion: investigador.created_at,
+              fechaactualizacion: investigador.updated_at,
+              
+              // Proyectos y productos concatenados
+              proyectos: proyectosStr || 'Sin proyectos asociados',
+              productos: productosStr || 'Sin productos asociados',
+              
+              // Contadores
+              total_proyectos: proyectosInv.length,
+              total_productos: productosInv.length
             });
           }
         }
