@@ -356,7 +356,8 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
             const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto || p.coinvestigador?.includes(nombreCompleto));
             const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto || p.coinvestigador?.includes(nombreCompleto));
   
-            const baseInfo = {
+            // Agrega solo una vez la información básica del investigador
+            filter.push({
               tipodocumento: investigador.tipodocumento,
               numerodocumento: investigador.numerodocumento,
               correo: investigador.correo,
@@ -368,39 +369,31 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
               categoriaminciencias: investigador.categoriaminciencias,
               rolinvestigador: investigador.rolinvestigador,
               fechacreacion: investigador.created_at,
-              fechaactualizacion: investigador.updated_at
-            };
+              fechaactualizacion: investigador.updated_at,
+              proyecto_codigo: proyectosInv.length > 0 ? proyectosInv[0].codigo : '',
+              proyecto_titulo: proyectosInv.length > 0 ? proyectosInv[0].titulo : '',
+              proyecto_coinvestigadores: proyectosInv.length > 0 ? proyectosInv[0].coinvestigador : '',
+              producto_id: productosInv.length > 0 ? productosInv[0].id : '',
+              producto_titulo: productosInv.length > 0 ? productosInv[0].tituloProducto : '',
+              producto_coinvestigadores: productosInv.length > 0 ? productosInv[0].coinvestigador : ''
+            });
   
-            let isBaseInfoAdded = false; // Variable para controlar la adición de datos básicos
-  
-            proyectosInv.forEach((proyecto, index) => {
-              const rowData: any = {
+            // Agrega los proyectos y productos restantes sin repetir los datos personales
+            proyectosInv.slice(1).forEach((proyecto) => {
+              filter.push({
                 proyecto_codigo: proyecto.codigo,
                 proyecto_titulo: proyecto.titulo,
                 proyecto_coinvestigadores: proyecto.coinvestigador || ''
-              };
-              if (!isBaseInfoAdded) {
-                Object.assign(rowData, baseInfo);  // Añadir datos básicos solo en la primera fila
-                isBaseInfoAdded = true;  // Evitar añadir datos básicos en filas siguientes
-              }
-              filter.push(rowData);
+              });
             });
   
-            productosInv.forEach((producto, index) => {
-              const rowData: any = {
+            productosInv.slice(1).forEach((producto) => {
+              filter.push({
                 producto_id: producto.id,
                 producto_titulo: producto.tituloProducto,
                 producto_coinvestigadores: producto.coinvestigador || ''
-              };
-              if (!isBaseInfoAdded) {
-                Object.assign(rowData, baseInfo);  // Añadir datos básicos solo en la primera fila si no hay proyectos
-                isBaseInfoAdded = true;
-              }
-              filter.push(rowData);
+              });
             });
-  
-            // Si no hay proyectos ni productos, solo añade la fila básica
-            if (proyectosInv.length === 0 && productosInv.length === 0) filter.push(baseInfo);
           }
         }
         break;
@@ -414,6 +407,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
     XLSX.utils.book_append_sheet(wb, ws, tipo);
     XLSX.writeFile(wb, `Reporte${tipo}.xls`);
   }
+  
   
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
     const dialogRef = this.dialog.open(DialogoEstadisticaComponent, {
