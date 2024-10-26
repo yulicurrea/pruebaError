@@ -1001,7 +1001,7 @@
               <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumn.length">
                 <div class="expanded-row-detail" *ngIf="expandedElements === element">
                   <div class="inner-table-container mat-elevation-z8">
-                    <table mat-table [dataSource]="data" matSort 
+                    <table mat-table [dataSource]="dataSourceses2" matSort 
                            matTooltip="Seleccione los proyectos y productos que va a manejar en el semestre. Se observan los proyectos y productos propios y en los que se encuentra participando.">
 
                       <!-- Checkbox Column -->
@@ -1064,7 +1064,7 @@
                     </table>
                     
                     <!-- Pagination Controls -->
-                    <mat-paginator
+                    <mat-paginator #paginator2
                     [pageSize]="5" 
                     [pageSizeOptions]="[5, 10, 25]" 
                     showFirstLastButtons>
@@ -1081,7 +1081,7 @@
             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
           </table>
           
-          <mat-paginator  [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+          <mat-paginator  #paginator1 [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
         </div>
       </div>
     </mat-tab>

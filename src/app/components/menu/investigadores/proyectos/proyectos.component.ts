@@ -1552,7 +1552,15 @@ thumbLabel6 = false;
       // Filtered data sources
       this.dataSourceProyectos.data = combinedData.filter(item => item.tipo === 'Proyecto');
       this.dataSourceProductos.data = combinedData.filter(item => item.tipo === 'Producto');
+
+      
     });
+    setTimeout(() => {
+      if (this.paginator2) {
+        this.dataSourceses2.paginator = this.paginator2;
+      }
+    });
+  
   }
 
   
@@ -1674,7 +1682,12 @@ thumbLabel6 = false;
     this.expandedElements = this.expandedElements === element ? null : element;
     if (this.expandedElements) {
       this.selectedPlanId = this.expandedElements.id;  // Guarda el ID del plan seleccionado
-
+      
+      setTimeout(() => {
+        if (this.paginator2) {
+          this.dataSourceses2.paginator = this.paginator2;
+        }
+      });
     } else {
       this.selectedPlanId = ' ';
     }
