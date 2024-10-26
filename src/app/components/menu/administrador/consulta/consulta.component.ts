@@ -323,7 +323,6 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
 
   exportAsXLSX(data: any = undefined, tipo: string): void {
     let filter: any[] = [];
-    console.log('Iniciando exportación:', { data, tipo });
 
     switch(tipo) { 
       case 'Proyectos': {
@@ -348,83 +347,80 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
           filter = this.investigadoresData.map(inv => ({
             tipodocumento: inv.tipodocumento,
             numerodocumento: inv.numerodocumento,
+            correo: inv.correo,
             nombre: inv.nombre,
             apellidos: inv.apellidos,
-            correo: inv.correo
+            estado: inv.estado,
+            horasestricto: inv.horasestricto,
+            horasformacion: inv.horasformacion,
+            categoriaminciencias: inv.categoriaminciencias,
+            rolinvestigador: inv.rolinvestigador,
+            fechacreacion: inv.created_at,
+            fechaactualizacion: inv.updated_at
+
           }));
         } else {
           // Descarga individual: agregar proyectos y productos del investigador
-          console.log('Buscando investigador con documento:', data.numerodocumento);
           const investigador = this.investigadoresData.filter(x => x.numerodocumento == data.numerodocumento);
-          console.log('Investigadores encontrados:', investigador);
 
           investigador.forEach(inv => {
-            // Crear diferentes variantes del nombre para la búsqueda
             const nombreCompleto = `${inv.nombre} ${inv.apellidos}`;
-            const nombreCompletoTrim = nombreCompleto.trim();
             
-            console.log('Buscando por nombre completo:', nombreCompleto);
-            
-            const proyectosInv = this.proyectosData.filter(p => {
-              const invNombre = (p.investigador || '').trim();
-              return invNombre === nombreCompletoTrim;
-            });
-
-            const productosInv = this.productosData.filter(p => {
-              const invNombre = (p.investigador || '').trim();
-              return invNombre === nombreCompletoTrim;
-            });
-            
-            console.log('Proyectos encontrados:', proyectosInv);
-            console.log('Productos encontrados:', productosInv);
+            const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto);
+            const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto);
             
             const maxLength = Math.max(proyectosInv.length, productosInv.length);
             
-            // Si no hay proyectos ni productos, al menos mostrar los datos del investigador
-            if (maxLength === 0) {
+            for (let i = 0; i < maxLength; i++) {
               filter.push({
-                tipodocumento: inv.tipodocumento,
-                numerodocumento: inv.numerodocumento,
-                nombre: inv.nombre,
-                apellidos: inv.apellidos,
-                correo: inv.correo,
-                codigoProyecto: '',
-                tituloProyecto: '',
-                idProducto: '',
-                tituloProducto: ''
+                tipodocumento: i === 0 ? inv.tipodocumento : '', // Mostrar investigador solo en la primera fila
+                numerodocumento: i === 0 ? inv.numerodocumento : '',
+                correo: i === 0 ? inv.correo : '',
+                nombre: i === 0 ? inv.nombre : '',
+                apellidos: i === 0 ? inv.apellidos : '',
+                estado: i === 0 ? inv.estado: '',
+                horasestricto: i === 0 ? inv.horasestricto: '',
+                horasformacion:i === 0 ? inv.horasformacion: '',
+                categoriaminciencias:i === 0 ?inv.categoriaminciencias: '',
+                rolinvestigador: i === 0 ?inv.rolinvestigador: '',
+                fechacreacion: i === 0 ?inv.created_at: '',
+                fechaactualizacion: i === 0 ?inv.updated_at: '',
+                codigoProyecto: proyectosInv[i]?.codigo || '',
+                tituloProyecto: proyectosInv[i]?.titulo || '',
+                idProducto: productosInv[i]?.id || '',
+                tituloProducto: productosInv[i]?.tituloProducto || ''
               });
-            } else {
-              for (let i = 0; i < maxLength; i++) {
-                filter.push({
-                  tipodocumento: i === 0 ? inv.tipodocumento : '',
-                  numerodocumento: i === 0 ? inv.numerodocumento : '',
-                  nombre: i === 0 ? inv.nombre : '',
-                  apellidos: i === 0 ? inv.apellidos : '',
-                  correo: i === 0 ? inv.correo : '',
-                  codigoProyecto: proyectosInv[i]?.codigo || '',
-                  tituloProyecto: proyectosInv[i]?.titulo || '',
-                  idProducto: productosInv[i]?.id || '',
-                  tituloProducto: productosInv[i]?.tituloProducto || ''
-                });
-              }
             }
           });
         }
         break; 
       } 
     } 
-
     console.log('Datos finales a exportar:', filter);
     
-    if (filter.length > 0) {
-      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
-      const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, tipo);
-      XLSX.writeFile(wb, `Reporte${tipo}.xls`);
-    } else {
-      console.error('No hay datos para exportar');
-    }
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filter);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, tipo);
+    XLSX.writeFile(wb, `Reporte${tipo}.xls`);
 }
+
+
+
+  openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
+    const dialogRef = this.dialog.open(DialogoEstadisticaComponent, {
+      data: {
+        type: type,
+        data: data,
+        detail: detail,
+      },
+      width: '60%'
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+      } 
+    });
+  }
+
   //PLAN DE TRABAJO
   openDialogoPlanTrabajo(data: any = undefined, type:string, detail:boolean): void {
     const dialogRef = this.dialog.open(DialogoPlanDeTrabajoComponent, {
