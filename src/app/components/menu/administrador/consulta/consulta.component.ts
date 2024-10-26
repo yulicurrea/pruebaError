@@ -324,26 +324,17 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
   exportAsXLSX(data: any = undefined, tipo: string): void {
     let filter: any[] = [];
   
-    switch(tipo) {
+    switch (tipo) {
       case 'Proyectos': {
-        if(data == undefined){
-          filter = this.proyectosData;
-        } else {
-          filter = this.proyectosData.filter(x => x.codigo == data.codigo);
-        }
+        filter = data == undefined ? this.proyectosData : this.proyectosData.filter(x => x.codigo == data.codigo);
         break;
       }
       case 'Productos': {
-        if(data == undefined){
-          filter = this.productosData;
-        } else {
-          filter = this.productosData.filter(x => x.id == data.id);
-        }
+        filter = data == undefined ? this.productosData : this.productosData.filter(x => x.id == data.id);
         break;
       }
       default: { // Caso Investigadores
         if (data == undefined) {
-          // Descarga general de investigadores
           filter = this.investigadoresData.map(inv => ({
             tipodocumento: inv.tipodocumento,
             numerodocumento: inv.numerodocumento,
@@ -359,19 +350,12 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
             fechaactualizacion: inv.updated_at
           }));
         } else {
-          // Descarga individual de investigador
           const investigador = this.investigadoresData.find(x => x.numerodocumento === data.numerodocumento);
-          
           if (investigador) {
             const nombreCompleto = `${investigador.nombre} ${investigador.apellidos}`;
-            
-            // Obtener proyectos y productos del investigador
-            const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto || 
-                                                               p.coinvestigador?.includes(nombreCompleto));
-            const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto || 
-                                                               p.coinvestigador?.includes(nombreCompleto));
+            const proyectosInv = this.proyectosData.filter(p => p.investigador === nombreCompleto || p.coinvestigador?.includes(nombreCompleto));
+            const productosInv = this.productosData.filter(p => p.investigador === nombreCompleto || p.coinvestigador?.includes(nombreCompleto));
   
-            // Crear un objeto base con la información del investigador
             const baseInfo = {
               tipodocumento: investigador.tipodocumento,
               numerodocumento: investigador.numerodocumento,
@@ -387,37 +371,30 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
               fechaactualizacion: investigador.updated_at
             };
   
-            // Encontrar el máximo número de proyectos o productos
-            const maxCount = Math.max(proyectosInv.length, productosInv.length) || 1;
+            filter.push(baseInfo);  // Agregar la fila de información básica solo una vez
   
-            // Crear columnas para cada proyecto y producto
-            for (let i = 0; i < maxCount; i++) {
-              const rowData: any = { ...baseInfo };
+            // Crear filas separadas para proyectos y productos
+            proyectosInv.forEach((proyecto, index) => {
+              const rowData: any = {
+                proyecto_codigo: proyecto.codigo,
+                proyecto_titulo: proyecto.titulo,
+                proyecto_coinvestigadores: proyecto.coinvestigador || ''
+              };
+              if (index === 0) Object.assign(rowData, baseInfo);  // Solo en la primera fila se muestra la info básica
+              filter.push(rowData);
+            });
   
-              // Agregar columnas de proyecto si existe
-              if (i < proyectosInv.length) {
-                rowData[`proyecto_${i + 1}_codigo`] = proyectosInv[i].codigo;
-                rowData[`proyecto_${i + 1}_titulo`] = proyectosInv[i].titulo;
-                rowData[`proyecto_${i + 1}_coinvestigadores`] = proyectosInv[i].coinvestigador || '';
-              }
+            productosInv.forEach((producto, index) => {
+              const rowData: any = {
+                producto_id: producto.id,
+                producto_titulo: producto.tituloProducto,
+                producto_coinvestigadores: producto.coinvestigador || ''
+              };
+              if (index === 0 && proyectosInv.length === 0) Object.assign(rowData, baseInfo);
+              filter.push(rowData);
+            });
   
-              // Agregar columnas de producto si existe
-              if (i < productosInv.length) {
-                rowData[`producto_${i + 1}_id`] = productosInv[i].id;
-                rowData[`producto_${i + 1}_titulo`] = productosInv[i].tituloProducto;
-                rowData[`producto_${i + 1}_coinvestigadores`] = productosInv[i].coinvestigador || '';
-              }
-  
-              // Solo agregar la fila si hay datos en ella (más allá de la info básica)
-              if (i === 0 || i < proyectosInv.length || i < productosInv.length) {
-                filter.push(rowData);
-              }
-            }
-  
-            // Si no hay proyectos ni productos, agregar al menos la información básica
-            if (filter.length === 0) {
-              filter.push(baseInfo);
-            }
+            if (proyectosInv.length === 0 && productosInv.length === 0) filter.push(baseInfo);
           }
         }
         break;
@@ -431,6 +408,7 @@ export class ConsultaComponent implements OnInit, AfterViewInit {
     XLSX.utils.book_append_sheet(wb, ws, tipo);
     XLSX.writeFile(wb, `Reporte${tipo}.xls`);
   }
+  
 
   openDialogoEstadistica(data: any = undefined, type:string, detail:boolean): void {
     const dialogRef = this.dialog.open(DialogoEstadisticaComponent, {
