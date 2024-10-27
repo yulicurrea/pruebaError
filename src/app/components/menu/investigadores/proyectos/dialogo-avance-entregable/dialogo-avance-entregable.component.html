@@ -64,7 +64,11 @@
                         <div class="timeline-badge done" [ngClass]="{'done': i === 0, 'fail' : i !== 0 }"><i class="glyphicon glyphicon-hand-left"></i></div>
                         <div class="timeline-panel">
                             <div class="timeline-body">
-                                <a href="{{item.url !== '' ? item.url : item.soporte}}" target="_blank">Avance #{{item.id}} Proyecto</a><br>
+                                <a [href]="item.url || item.soporte" target="_blank">
+                                    Avance #{{item.id}} Proyecto
+                                    <span *ngIf="item.url">(URL)</span>
+                                    <span *ngIf="item.soporte">(Archivo)</span>
+                                </a><br>
                                 {{item.fecha | date }}
                             </div>
                         </div>
@@ -78,7 +82,11 @@
                         <div class="timeline-badge done" [ngClass]="{'done': i === 0, 'fail' : i !== 0 }"><i class="glyphicon glyphicon-hand-left"></i></div>
                         <div class="timeline-panel">
                             <div class="timeline-body">
-                                <a href="{{item.url !== '' ? item.url : item.soporte}}" target="_blank">Avance #{{item.id}} Producto</a><br>
+                                <a [href]="item.url || item.soporte" target="_blank">
+                                    Avance #{{item.id}} Producto
+                                    <span *ngIf="item.url">(URL)</span>
+                                    <span *ngIf="item.soporte">(Archivo)</span>
+                                </a><br>
                                 {{item.fecha | date }}
                             </div>
                         </div>

@@ -104,7 +104,7 @@ export class DialogoAvanceEntregableComponent implements OnInit {
       });
     } else {
       this.registroForm = this.formBuilder.group({
-        url: [{value:'', disabled: !this.data?.estado} ],
+        url: [{value:'', disabled: !this.data?.estado} , [Validators.pattern('https?://.+')]],
         soporte: ['',this.selectedFile],
       });
     }
@@ -175,7 +175,7 @@ export class DialogoAvanceEntregableComponent implements OnInit {
       if(this.type === 'Proyecto') {
         const tramiteGeneral = {
           soporte: this.selectedFile,
-          url: this.url?.value,
+          url: this.tipoAvance === 'Url' ? (this.url?.value || '') : '',
           fecha: moment(new Date()).format('YYYY-MM-DD'),
           estado: 'True',
           configuracionEntregableProyecto_id_id: this.data?.id,
@@ -190,6 +190,7 @@ export class DialogoAvanceEntregableComponent implements OnInit {
               this.usuariosAdmin,
               `Se ha configurado un nuevo avance al entregable ${this.data?.descripcion} del proyecto ${this.data?.proyecto_id}`
             );
+            this.obtenerEntregableProyecto();
             this.dialogRef.close(true);
           },
           (error) => {
@@ -214,6 +215,7 @@ export class DialogoAvanceEntregableComponent implements OnInit {
               this.usuariosAdmin,
               `Se ha configurado un nuevo avance al entregable ${this.data?.descripcion} del proyecto ${this.data?.producto_id}`
             );
+            this.obtenerEntregableProducto();
             this.dialogRef.close(true);
           },
           (error) => {
